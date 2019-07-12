@@ -79,85 +79,42 @@
 											<div class="row">
 												<div class="col-lg-12 no-pdd">
 													<div class="sn-field">
-														<input type="text" name="name" placeholder="昵称">
+														<input type="text" name="nickname" id="nickname" placeholder="昵称">
 														<i class="la la-user"></i>
 													</div>
 												</div>
 												<div class="col-lg-12 no-pdd">
 													<div class="sn-field">
-														<input type="email" name="country" placeholder="邮箱">
+														<input type="email" name="email" id="email" placeholder="邮箱">
 														<i class="la la-globe"></i>
 													</div>
 												</div>
 												<div class="col-lg-12 no-pdd">
 													<div class="sn-field">
-														<input type="number" name="phone" placeholder="电话">
+														<input type="number" name="phone" id="phone" placeholder="电话">
 														<i class="la la-phone"></i>
 													</div>
 												</div>
 												<div class="col-lg-12 no-pdd">
 													<div class="sn-field">
-														<input type="password" name="password" placeholder="密码">
+														<input type="password" name="password" id="pwd" placeholder="密码">
 														<i class="la la-lock"></i>
 													</div>
 												</div>
 												<div class="col-lg-12 no-pdd">
 													<div class="sn-field">
-														<input type="number" name="checkcode" placeholder="验证码">
+														<input type="number" name="checkcode" placeholder="*验证码*">
 														<i class="la la-lock"></i>
 													</div>
 												</div>
 												<div class="col-lg-12 no-pdd">
-													<button type="button" value="checkcode">获取邮箱验证码</button><br>
+													<button type="button" value="checkcode" id="getcode">获取邮箱验证码</button><br>
 													<button type="submit" value="submit">注册</button>
 												</div>
 											</div>
 										</form>
 									</div><!--dff-tab end-->
-									<div class="dff-tab" id="tab-4">
-										<form>
-											<div class="row">
-												<div class="col-lg-12 no-pdd">
-													<div class="sn-field">
-														<input type="text" name="company-name" placeholder="Company Name">
-														<i class="la la-building"></i>
-													</div>
-												</div>
-												<div class="col-lg-12 no-pdd">
-													<div class="sn-field">
-														<input type="text" name="country" placeholder="Country">
-														<i class="la la-globe"></i>
-													</div>
-												</div>
-												<div class="col-lg-12 no-pdd">
-													<div class="sn-field">
-														<input type="password" name="password" placeholder="Password">
-														<i class="la la-lock"></i>
-													</div>
-												</div>
-												<div class="col-lg-12 no-pdd">
-													<div class="sn-field">
-														<input type="password" name="repeat-password" placeholder="Repeat Password">
-														<i class="la la-lock"></i>
-													</div>
-												</div>
-												<div class="col-lg-12 no-pdd">
-													<div class="checky-sec st2">
-														<div class="fgt-sec">
-															<input type="checkbox" name="cc" id="c3">
-															<label for="c3">
-																<span></span>
-															</label>
-															<small>Yes, I understand and agree to the workwise Terms & Conditions.</small>
-														</div><!--fgt-sec end-->
-													</div>
-												</div>
-												<div class="col-lg-12 no-pdd">
-													<button type="submit" value="submit">Get Started</button>
-												</div>
-											</div>
-										</form>
-									</div><!--dff-tab end-->
+
 								</div>		
 							</div><!--login-sec end-->
 						</div>
@@ -184,5 +141,79 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="lib/slick/slick.min.js"></script>
 <script type="text/javascript" src="js/script.js"></script>
+<script type="text/javascript">
+	$("#getcode").click(function (){
+		sendchkcode($("#getcode"));
+	});
+	//用ajax提交到后台的发送短信接口
+	function sendchkcode(obj){
+		setTime(obj);//开始倒计时
+		var email = $("#email").val();
+		var result = isEmail();
+		if(result) {
+			$.ajax({
+				url:"",
+				data:{email:email},
+				dataType:"json",
+				type:"post",
+				async : false,
+				cache : false,
+				success:function(res){
+					debugger;
+					if(res){
+						alert("验证码发送成功");
+					}else{
+
+					}
+				},
+				error:function(){
+					alert("验证码发送失败");
+				}
+			})
+			setTime(obj);//开始倒计时
+		}
+	}
+
+	//60s倒计时实现逻辑
+	var countdown = 30;
+	function setTime(obj) {
+		if (countdown == 0) {
+			obj.prop('disabled', false);
+			obj.text("点击获取验证码");
+			countdown = 30;//30秒过后button上的文字初始化,计时器初始化;
+			return;
+		} else {
+			obj.prop('disabled', true);
+			obj.text("("+countdown+"s)后重新发送") ;
+			countdown--;
+		}
+		setTimeout(function() { setTime(obj) },1000) //每1000毫秒执行一次
+	}
+
+	function isPhone(){
+		var phonenum = $("#phone").val();
+		var reg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+		if(!reg.test(phonenum)){
+			alert('请输入有效的手机号码！');
+			return false;
+		}else{
+			return true;
+		}
+	}
+	function isEmail() {
+		var email = $("#email").val();
+		var reg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+		if(!reg.test(email))
+		{
+			alert('输入正确的邮箱');
+			return false;
+		}else {
+			return true;
+		}
+
+	}
+
+
+</script>
 </body>
 </html>
