@@ -1,0 +1,97 @@
+<!--<!doctype html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+    <!--<meta charset="UTF-8">-->
+    <!--<meta name="viewport"-->
+          <!--content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">-->
+    <!--<meta http-equiv="X-UA-Compatible" content="ie=edge">-->
+    <!--<title>0_0</title>-->
+    <!--<script src="/js/axios.min.js"></script>-->
+    <!--<script src="/js/vue.min.js"></script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<template id="temp">-->
+    <!--<div class="">-->
+        <!--<div v-for="(x,v) in rows"> {{x.content}} </div>-->
+        <!--<div class="">-->
+            <!--<textarea name="name" rows="8" cols="80" v-model="content" @keyup.enter="send"></textarea>-->
+        <!--</div>-->
+        <!--<button type="button" name="button" @click="send">send</button>-->
+
+    <!--</div>-->
+
+
+<!--</template>-->
+<!--<div id="dialog">-->
+    <!--<serv>-->
+
+    <!--</serv>-->
+<!--</div>-->
+
+<!--</body>-->
+<!--<script type="text/javascript" src="./js/utils.js">-->
+<!--</script>-->
+<!--<script type="text/javascript">-->
+    <!--var from = utils.qs("from")-->
+    <!--var to = utils.qs("to")-->
+
+    <!--console.log(to)-->
+    <!--if (from) {-->
+        <!--var ws = new WebSocket(`ws://192.168.43.238:8080/websocket/${from}/${to}`);-->
+        <!--Vue.component('serv', {-->
+            <!--template: '#temp',-->
+
+            <!--data: function () {-->
+                <!--return {-->
+                    <!--content: '请输入',-->
+                    <!--rows: [{-->
+                        <!--content: "a",-->
+                        <!--createAt: "2018-05-05",-->
+                        <!--edit: false-->
+                    <!--}]-->
+                <!--}-->
+            <!--},-->
+            <!--mounted: function () {-->
+                <!--let that = this-->
+                <!--ws.onmessage = function (evt) {-->
+                    <!--console.log(evt.data)-->
+
+                    <!--let data = JSON.parse(evt.data)-->
+                    <!--that.rows.push({-->
+                        <!--content: data.name + ":" + data.message-->
+                    <!--});-->
+
+                <!--};-->
+            <!--},-->
+            <!--methods: {-->
+                <!--send: function () {-->
+                    <!--if (this.content === "") {-->
+                        <!--alert("请输入")-->
+                        <!--return-->
+                    <!--}-->
+
+                    <!--ws.send(this.content)-->
+
+                    <!--this.content = ""-->
+                <!--}-->
+
+            <!--}-->
+        <!--})-->
+
+        <!--new Vue({-->
+            <!--el: '#dialog'-->
+        <!--})-->
+
+
+        <!--ws.onopen = function (evt) {-->
+            <!--console.log('Connection open ...');-->
+        <!--};-->
+
+
+        <!--ws.onclose = function (evt) {-->
+            <!--console.log('Connection closed.');-->
+        <!--};-->
+
+    <!--}-->
+<!--</script>-->
+<!--</html>-->
