@@ -145,7 +145,7 @@
 	$("#getcode").click(function (){
 		sendchkcode($("#getcode"));
 	});
-	//用ajax提交到后台的发送短信接口
+	//用ajax提交到后台的发送接口
 	function sendchkcode(obj){
 		setTime(obj);//开始倒计时
 		var email = $("#email").val();
@@ -174,7 +174,7 @@
 		}
 	}
 
-	//60s倒计时实现逻辑
+	//30s倒计时实现逻辑
 	var countdown = 30;
 	function setTime(obj) {
 		if (countdown == 0) {
