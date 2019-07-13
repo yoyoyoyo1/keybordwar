@@ -1,5 +1,7 @@
 package com.oracle.demo.entity;
 
+import com.alibaba.fastjson.JSON;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -7,22 +9,22 @@ import javax.persistence.Id;
 public class User {
     @Id
     private int id;//用户id
-    private String account;//用户账号
     private String pass;//用户登录密码
+    private String email;
     private String nickname;//用户昵称
     private String phone;//用户的手机号
-    private String haddress;//用户的头像地址
+    private String image;//用户的头像地址
     private String motto;//用户的座右铭
 
     public User(){}
 
-    public User(int id, String account, String pass, String nickname, String phone, String haddress, String motto) {
+    public User(int id, String email,String pass, String nickname, String phone, String image, String motto) {
         this.id = id;
-        this.account = account;
         this.pass = pass;
+        this.email = email;
         this.nickname = nickname;
         this.phone = phone;
-        this.haddress = haddress;
+        this.image = image;
         this.motto = motto;
     }
 
@@ -34,12 +36,20 @@ public class User {
         this.id = id;
     }
 
-    public String getAccount() {
-        return account;
+    public String getEmail() {
+        return email;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getPass() {
@@ -66,14 +76,6 @@ public class User {
         this.phone = phone;
     }
 
-    public String getHaddress() {
-        return haddress;
-    }
-
-    public void setHaddress(String haddress) {
-        this.haddress = haddress;
-    }
-
     public String getMotto() {
         return motto;
     }
@@ -84,14 +86,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", account='" + account + '\'' +
-                ", pass='" + pass + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", phone='" + phone + '\'' +
-                ", haddress='" + haddress + '\'' +
-                ", motto='" + motto + '\'' +
-                '}';
+        return JSON.toJSONString(this);
     }
 }

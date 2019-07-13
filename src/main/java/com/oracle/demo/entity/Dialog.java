@@ -1,5 +1,7 @@
 package com.oracle.demo.entity;
 
+import com.alibaba.fastjson.JSON;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -44,10 +46,6 @@ public class Dialog {
 
     @Override
     public String toString() {
-        return "Dialog{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                '}';
+        return JSON.toJSONString(this);
     }
 }

@@ -1,31 +1,44 @@
 package com.oracle.demo.entity;
 
+import com.alibaba.fastjson.JSON;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Date;
 
 @Entity
-public class Like {
+public class Likes {
     @Id
+    private  int id;
     private int userId;//用户id
     private int shareId;//说说id
-    private Date createAt;//创建时间
+    private Date createdAt;//创建时间
     private int watch;//观看状态
 
 
-    public Like(){
+    public Likes(){
 
     }
 
-    public Like(int userId, int shareId, Date createAt, int watch) {
+    public Likes(int id,int userId, int shareId, Date createdAt, int watch) {
         this.userId = userId;
+        this.id = id;
         this.shareId = shareId;
-        this.createAt = createAt;
+        this.createdAt = createdAt;
         this.watch = watch;
     }
 
     public int getUserId() {
         return userId;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void setUserId(int userId) {
@@ -40,12 +53,12 @@ public class Like {
         this.shareId = shareId;
     }
 
-    public Date getCreateAt() {
-        return createAt;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     public int getWatch() {
@@ -58,11 +71,6 @@ public class Like {
 
     @Override
     public String toString() {
-        return "Like{" +
-                "userId=" + userId +
-                ", shareId=" + shareId +
-                ", createAt=" + createAt +
-                ", watch=" + watch +
-                '}';
+        return JSON.toJSONString(this);
     }
 }

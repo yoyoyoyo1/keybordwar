@@ -1,5 +1,8 @@
 package com.oracle.demo.entity;
 
+import com.alibaba.fastjson.JSON;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Date;
@@ -12,19 +15,19 @@ public class Share {
     private String content;//文章内容
     private int likes;//点赞数
     private int forwards;//转发数
-    private Date createAt;//创建时间
-    private Date updateAt;//修改时间
+    private Date createdAt;//创建时间
+    private Date updatedAt;//修改时间
 
     public Share(){}
 
-    public Share(int id, int userId, String content, int likes, int forwards, Date createAt, Date updateAt) {
+    public Share(int id, int userId, String content, int likes, int forwards, Date createdAt, Date updatedAt) {
         this.id = id;
         this.userId = userId;
         this.content = content;
         this.likes = likes;
         this.forwards = forwards;
-        this.createAt = createAt;
-        this.updateAt = updateAt;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public int getId() {
@@ -67,32 +70,24 @@ public class Share {
         this.forwards = forwards;
     }
 
-    public Date getCreateAt() {
-        return createAt;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
+    public void setCreatedAt(Date createAt) {
+        this.createdAt = createAt;
     }
 
-    public Date getUpdateAt() {
-        return updateAt;
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
+    public void setUpdatedAt(Date updateAt) {
+        this.updatedAt = updateAt;
     }
 
     @Override
     public String toString() {
-        return "Share{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", content='" + content + '\'' +
-                ", likes=" + likes +
-                ", forwards=" + forwards +
-                ", createAt=" + createAt +
-                ", updateAt=" + updateAt +
-                '}';
+        return JSON.toJSONString(this);
     }
 }

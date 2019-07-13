@@ -1,5 +1,7 @@
 package com.oracle.demo.entity;
 
+import com.alibaba.fastjson.JSON;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -7,11 +9,11 @@ import javax.persistence.Id;
 public class Follow {
     @Id
     private int follower;//被关注者
-    private int followering;//关注者
+    private int following;//关注者
     public Follow(){}
     public Follow(int follower, int followering) {
         this.follower = follower;
-        this.followering = followering;
+        this.following = followering;
     }
 
     public int getFollower() {
@@ -23,18 +25,15 @@ public class Follow {
     }
 
     public int getFollowering() {
-        return followering;
+        return following;
     }
 
     public void setFollowering(int followering) {
-        this.followering = followering;
+        this.following = followering;
     }
 
     @Override
     public String toString() {
-        return "Follow{" +
-                "follower=" + follower +
-                ", followering=" + followering +
-                '}';
+        return JSON.toJSONString(this);
     }
 }

@@ -1,5 +1,8 @@
 package com.oracle.demo.entity;
 
+import com.alibaba.fastjson.JSON;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Date;
@@ -7,20 +10,20 @@ import java.util.Date;
 @Entity
 public class Comment {
     @Id
+    private int id;//评论id
     private int userId;//评论人id
     private int shareId;//说说id
     private String content;//评论内容
-    private Date createAt;//创建时间
+    private Date createdAt;//创建时间
     private int watch;//观看状态
-    private int id;//评论id
 
     public Comment(){}
 
-    public Comment(int userId, int shareId, String content, Date createAt, int watch, int id) {
+    public Comment(int userId, int shareId, String content, Date createdAt, int watch, int id) {
         this.userId = userId;
         this.shareId = shareId;
         this.content = content;
-        this.createAt = createAt;
+        this.createdAt = createdAt;
         this.watch = watch;
         this.id = id;
     }
@@ -49,12 +52,12 @@ public class Comment {
         this.content = content;
     }
 
-    public Date getCreateAt() {
-        return createAt;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
     public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
+        this.createdAt = createdAt;
     }
 
     public int getWatch() {
@@ -75,13 +78,6 @@ public class Comment {
 
     @Override
     public String toString() {
-        return "Comment{" +
-                "userId=" + userId +
-                ", shareId=" + shareId +
-                ", content='" + content + '\'' +
-                ", createAt=" + createAt +
-                ", watch=" + watch +
-                ", id=" + id +
-                '}';
+        return JSON.toJSONString(this);
     }
 }

@@ -1,5 +1,8 @@
 package com.oracle.demo.entity;
 
+import com.alibaba.fastjson.JSON;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Date;
@@ -11,17 +14,17 @@ public class Forward {
     private int shareId;//文章id
     private int userId;//用户id
     private String comments;//转发评论
-    private Date createAt;//转发时间
+    private Date createdAt;//转发时间
     private int watch;//观看状态
 
     public Forward(){}
 
-    public Forward(int id, int shareId, int userId, String comments, Date createAt, int watch) {
+    public Forward(int id, int shareId, int userId, String comments, Date createdAt, int watch) {
         this.id = id;
         this.shareId = shareId;
         this.userId = userId;
         this.comments = comments;
-        this.createAt = createAt;
+        this.createdAt = createdAt;
         this.watch = watch;
     }
 
@@ -57,12 +60,12 @@ public class Forward {
         this.comments = comments;
     }
 
-    public Date getCreateAt() {
-        return createAt;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     public int getWatch() {
@@ -75,13 +78,6 @@ public class Forward {
 
     @Override
     public String toString() {
-        return "Forward{" +
-                "id=" + id +
-                ", shareId=" + shareId +
-                ", userId=" + userId +
-                ", comments='" + comments + '\'' +
-                ", createAt=" + createAt +
-                ", watch=" + watch +
-                '}';
+        return JSON.toJSONString(this);
     }
 }

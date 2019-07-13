@@ -1,5 +1,8 @@
 package com.oracle.demo.entity;
 
+import com.alibaba.fastjson.JSON;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Date;
@@ -74,13 +77,6 @@ public class Message {
 
     @Override
     public String toString() {
-        return "Message{" +
-                "id=" + id +
-                ", formId=" + formId +
-                ", toId=" + toId +
-                ", content='" + content + '\'' +
-                ", createAt=" + createAt +
-                ", watch=" + watch +
-                '}';
+        return JSON.toJSONString(this);
     }
 }
