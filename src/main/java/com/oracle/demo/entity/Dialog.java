@@ -2,13 +2,14 @@ package com.oracle.demo.entity;
 
 import com.alibaba.fastjson.JSON;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Dialog {
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Id
     private int id;//圆桌号
+    @Column(length=20)
     private String title;//标题
     private String content;//补充说明
 

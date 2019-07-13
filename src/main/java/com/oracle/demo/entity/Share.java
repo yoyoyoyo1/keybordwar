@@ -2,20 +2,24 @@ package com.oracle.demo.entity;
 
 import com.alibaba.fastjson.JSON;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 public class Share {
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Id
     private int id;//文章id
     private int userId;//用户id
+    @Column(columnDefinition="TEXT")
     private String content;//文章内容
+    @Column(columnDefinition="INT default 0" )
     private int likes;//点赞数
+    @Column(columnDefinition="INT default 0" )
     private int forwards;//转发数
+    @Column(columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP" )
     private Date createdAt;//创建时间
+    @Column(columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" )
     private Date updatedAt;//修改时间
 
     public Share(){}

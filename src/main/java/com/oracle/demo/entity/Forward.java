@@ -2,19 +2,21 @@ package com.oracle.demo.entity;
 
 import com.alibaba.fastjson.JSON;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 public class Forward {
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Id
     private int id;//转发id
     private int shareId;//文章id
     private int userId;//用户id
+    @Column(length=255)
     private String comments;//转发评论
+    @Column(columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP" )
     private Date createdAt;//转发时间
+    @Column(columnDefinition="tinyint default 0")
     private int watch;//观看状态
 
     public Forward(){}

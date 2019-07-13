@@ -2,15 +2,18 @@ package com.oracle.demo.entity;
 
 import com.alibaba.fastjson.JSON;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Admin {
-    @Id
+     @GeneratedValue(strategy= GenerationType.IDENTITY)
+     @javax.persistence.Id
      private int id;//管理员id
+     @Column(length=20)
      private String account;//管理员账号
+     @Column(length=64)
      private String password;//管理员密码
+     @Column(length=20)
      private String name;//管理员姓名
 
     public Admin(){}

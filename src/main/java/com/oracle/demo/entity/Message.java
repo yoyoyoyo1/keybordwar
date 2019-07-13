@@ -2,19 +2,21 @@ package com.oracle.demo.entity;
 
 import com.alibaba.fastjson.JSON;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 public class Message {
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Id
     private int id;//消息id
     private int formId;//消息来源（用户id）
     private int toId;//消息的去向（用户或圆桌id）
+    @Column(columnDefinition="TEXT")
     private String content;//（内容）
+    @Column(columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP" )
     private Date    createAt;//（创建时间）
+    @Column(columnDefinition="tinyint default 0")
     private int watch;//0表示未看，1表示已看，2表示圆桌话题
     public Message(){}
 

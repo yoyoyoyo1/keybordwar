@@ -2,18 +2,23 @@ package com.oracle.demo.entity;
 
 import com.alibaba.fastjson.JSON;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class User {
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Id
     private int id;//用户id
+    @Column(length=64)
     private String pass;//用户登录密码
+    @Column(length=20)
     private String email;
+    @Column(length=20)
     private String nickname;//用户昵称
+    @Column(length=11)
     private String phone;//用户的手机号
     private String image;//用户的头像地址
+    @Column(length=30)
     private String motto;//用户的座右铭
 
     public User(){}

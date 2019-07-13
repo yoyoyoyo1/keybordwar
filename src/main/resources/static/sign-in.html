@@ -114,6 +114,7 @@
 											</div>
 										</form>
 									</div><!--dff-tab end-->
+
 								</div>		
 							</div><!--login-sec end-->
 						</div>
@@ -146,12 +147,12 @@
 	});
 	//用ajax提交到后台的发送接口
 	function sendchkcode(obj){
-		setTime(obj);//开始倒计时
+		//setTime(obj);//开始倒计时
 		var email = $("#email").val();
 		var result = isEmail();
 		if(result) {
 			$.ajax({
-				url:"",
+				url:"/getcheckcode",
 				data:{email:email},
 				dataType:"json",
 				type:"post",

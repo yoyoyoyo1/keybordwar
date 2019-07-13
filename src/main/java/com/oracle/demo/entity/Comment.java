@@ -2,19 +2,21 @@ package com.oracle.demo.entity;
 
 import com.alibaba.fastjson.JSON;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 public class Comment {
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Id
     private int id;//评论id
     private int userId;//评论人id
     private int shareId;//说说id
+    @Column(columnDefinition="TEXT")
     private String content;//评论内容
+    @Column(columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP" )
     private Date createdAt;//创建时间
+    @Column(columnDefinition="tinyint default 0")
     private int watch;//观看状态
 
     public Comment(){}
