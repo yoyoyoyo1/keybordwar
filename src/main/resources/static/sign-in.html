@@ -96,7 +96,7 @@
 												</div>
 												<div class="col-lg-12 no-pdd">
 													<div class="sn-field">
-														<input type="password" name="password" id="pwd" placeholder="密码">
+														<input type="password" name="password" id="pass" placeholder="密码">
 														<i class="la la-lock"></i>
 													</div>
 												</div>
@@ -176,25 +176,36 @@
 		function userreg() {
 		var email = $("#email").val();
 		var ccode=$("#checkcode").val();
+		var nickname=$("#nickname").val();
+		var phone=$("#phone").val();
+		var pass=$("#pass").val();
+		if(isEmail()&&isNick()&&isPass()&&isPhone()) {
 			$.ajax({
-				url:"/userreg",
-				data:{email:email,ccode:ccode},
-				dataType:"text",
-				type:"post",
-				async : false,
-				cache : false,
-				success:function(res){
+				url: "/userreg",
+				data: {
+					email: email,
+					ccode: ccode,
+					nickname: nickname,
+					phone: phone,
+					pass: pass
+				},
+				dataType: "text",
+				type: "post",
+				async: false,
+				cache: false,
+				success: function (res) {
 					debugger;
-					if(res!=""&&res!=null){
-						alert("成功");
-					}else{
+					if (res != "" && res != null) {
+						alert("！-注册成功-！")
+					} else {
 						alert("验证码错误");
 					}
 				},
-				error:function(){
+				error: function () {
 					alert("失败");
 				}
 			})
+		}
 
 	}
 
@@ -234,7 +245,25 @@
 		}else {
 			return true;
 		}
-
+	}
+	function isNick() {
+		var nickname=$("#nickname");
+		if(nickname.)
+		{
+			alert('昵称不能为空')
+			return false;
+		}else {
+		return true;}
+	}
+	function isPass() {
+		var pass=$("#pass");
+		if(pass==null)
+		{
+			alert('密码不能为空')
+			return false;
+		}else
+		{return true;
+		}
 	}
 
 
