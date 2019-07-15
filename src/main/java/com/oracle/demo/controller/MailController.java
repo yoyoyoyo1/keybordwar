@@ -47,4 +47,5 @@ public class MailController {
         System.out.println("验证错误");
         return "";
     }
+
 }
