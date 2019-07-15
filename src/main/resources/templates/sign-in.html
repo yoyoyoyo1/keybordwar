@@ -50,13 +50,13 @@
 										<div class="row">
 											<div class="col-lg-12 no-pdd">
 												<div class="sn-field">
-													<input type="text" name="username" placeholder="邮箱">
+													<input type="text" id="loginemail" placeholder="邮箱">
 													<i class="la la-globe"></i>
 												</div><!--sn-field end-->
 											</div>
 											<div class="col-lg-12 no-pdd">
 												<div class="sn-field">
-													<input type="password" name="password" placeholder="密码">
+													<input type="password" id="loginpwd" placeholder="密码">
 													<i class="la la-lock"></i>
 												</div>
 											</div>
@@ -66,7 +66,7 @@
 												</div>
 											</div>
 											<div class="col-lg-12 no-pdd">
-												<button type="submit" value="submit">登录</button>
+												<button type="button" value="submit" onclick="userlogin()">登录</button>
 											</div>
 										</div>
 									</form>
@@ -108,7 +108,7 @@
 												</div>
 												<div class="col-lg-12 no-pdd">
 													<button type="button" value="checkcode" id="getcode">获取邮箱验证码</button><br>
-													<button type="submit" value="submit" onclick="userreg()">注册</button>
+													<button type="button" value="submit" onclick="userreg()">注册</button>
 												</div>
 											</div>
 										</form>
@@ -172,7 +172,7 @@
 			setTime(obj);//开始倒计时
 		}
 	}
-
+		//用户注册
 		function userreg() {
 		var email = $("#email").val();
 		var ccode=$("#checkcode").val();
@@ -208,6 +208,40 @@
 				}
 			})
 		}
+
+	}
+	//用户登录
+	function userlogin() {
+		var email=$("#loginemail").val();
+		var pass=$("#loginpwd").val();
+		if(isLoginEmail(email)&&isLoginPass(pass))
+		{
+			$.ajax({
+				url: "/userlogin",
+				data: {
+					email: email,
+					pass: pass
+				},
+				dataType: "text",
+				type: "post",
+				async: false,
+				cache: false,
+				success: function (res) {
+					debugger;
+
+					if (res == "ok" && res != null) {
+						alert("登录成功");
+							window.location.href="/toindex";
+					}else {
+						alert("账号密码错误");
+					}
+				},
+				error: function () {
+					alert("哇哦，出错失败了");
+				}
+			})
+		}
+
 
 	}
 
@@ -248,8 +282,19 @@
 			return true;
 		}
 	}
+	function isLoginEmail() {
+		var email = $("#loginemail").val();
+		var reg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+		if(!reg.test(email))
+		{
+			alert('输入正确的邮箱');
+			return false;
+		}else {
+			return true;
+		}
+	}
 	function isNick() {
-		var nickname=$("#nickname");
+		var nickname=$("#nickname").val();
 		if(nickname==null)
 		{
 			alert('昵称不能为空')
@@ -258,7 +303,17 @@
 		return true;}
 	}
 	function isPass() {
-		var pass=$("#pass");
+		var pass=$("#pass").val();
+		if(pass==null)
+		{
+			alert('密码不能为空')
+			return false;
+		}else
+		{return true;
+		}
+	}
+	function isLoginPass() {
+		var pass=$("#loginpwd").val();
 		if(pass==null)
 		{
 			alert('密码不能为空')

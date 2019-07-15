@@ -7,4 +7,6 @@ public interface UserService {
     public User addOne(User user);
     //根据邮箱查询用户(邮箱只能有一个)
     public User findByEmail(String email);
+    //用户登录
+    public User userLogin(String email,String pass);
 }

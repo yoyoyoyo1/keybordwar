@@ -1,5 +1,7 @@
 
 <!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
 <html>
 <head>
 <meta charset="UTF-8">
@@ -239,13 +241,12 @@
 									<div class="user-data full-width">
 										<div class="user-profile">
 											<div class="username-dt">
-												<div class="usr-pic">
-													<img src="images/resources/user-pic.png" alt="">
+												<div class="usr-pic" >
+											<img th:src="'userimage/'+${session.user.image}">
 												</div>
 											</div><!--username-dt end-->
-											<div class="user-specs">
-												<h3>John Doe</h3>
-												<span>Graphic Designer at Self Employed</span>
+											<div class="user-specs" id="userdetail">
+
 											</div>
 										</div><!--user-profile end-->
 										<ul class="user-fw-status">
@@ -1101,6 +1102,27 @@
 <script type="text/javascript" src="lib/slick/slick.min.js"></script>
 <script type="text/javascript" src="js/scrollbar.js"></script>
 <script type="text/javascript" src="js/script.js"></script>
+<script type="text/javascript">
+	/*$(document).ready(function(){
+		$.ajax({
+			url:"/testajax",
+			data:{},
+			dataType:"json",
+			async : false,
+			cache : false,
+			success:function(data){
+				var strimage="";
+				var strmotto="";
+				strimage+="<img src="+"userimage/"+data.image+">";
+				strmotto+="<h3>"+data.nickname+"</h3>"+"<br>"+"<span>"+data.motto+"</span>";
+				document.getElementById("userimage").innerHTML=strimage;
+				document.getElementById("userdetail").innerHTML=strmotto;
+			}
+
+
+		})
+	})*/
+</script>
 
 </body>
 </html>

@@ -5,7 +5,6 @@ import com.oracle.demo.respository.UserDao;
 import com.oracle.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.nio.cs.US_ASCII;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -19,6 +18,10 @@ public class UserServiceImpl implements UserService {
     public User findByEmail(String email)
     {
         return userDao.findByEmail(email);
+    }
+    public User userLogin(String email,String pass)
+    {
+        return userDao.userLogin(email,pass);
     }
 
 }

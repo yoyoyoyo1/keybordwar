@@ -24,6 +24,11 @@ public class MailController {
     private HashMap<String,Object> codeMap = new HashMap<>();
     @Autowired
     private UserService userService;
+    @RequestMapping("user")
+    public String userasd()
+    {
+        return "sign-in";
+    }
     @RequestMapping("getcheckcode")
     @ResponseBody
     public String getchechcode(String email)
@@ -72,6 +77,5 @@ public class MailController {
         System.out.println(email+"验证错误");
         return "";
     }
-    //用户修改密码
 
 }
