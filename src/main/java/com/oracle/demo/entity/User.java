@@ -11,7 +11,7 @@ public class User {
     private int id;//用户id
     @Column(length=64)
     private String pass;//用户登录密码
-    @Column(length=20)
+    @Column(length=30)
     private String email;
     @Column(length=20)
     private String nickname;//用户昵称

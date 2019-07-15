@@ -3,6 +3,7 @@ package com.oracle.demo.controller;
 Created by szg
 */
 import com.oracle.demo.entity.User;
+import com.oracle.demo.respository.UserDao;
 import com.oracle.demo.service.MailService;
 import com.oracle.demo.service.UserService;
 import com.oracle.demo.util.MD5Util;
@@ -21,7 +22,8 @@ public class MailController {
     @Autowired
     private MailService mailService;
     private HashMap<String,Object> codeMap = new HashMap<>();
-    private UserService userService;
+    @Autowired
+    private UserDao userDao;
     @RequestMapping("getcheckcode")
     @ResponseBody
     public String getchechcode(String email)
@@ -49,20 +51,16 @@ public class MailController {
         user.setNickname(nickname);
         user.setPhone(phone);
         user.setPass(MD5Util.encode(pass));
+        System.out.println(user);
         if(ccode.equals(codeMap.get(email)))
         {
-            System.out.println("验证正确");
-            try {
-                userService.addOne(user);
+                System.out.println("验证码验证正确");
+                userDao.save(user);
                 System.out.println(email+"注册成功");
-            }catch (Exception e)
-            {
-                return "404";
-            }
             return "ok";
 
         }
-        System.out.println("验证错误");
+        System.out.println(email+"验证错误");
         return "";
     }
 
