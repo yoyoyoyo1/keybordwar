@@ -12,9 +12,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserDao userDao;
     @Override
-    public int addOne(User user)
+    public User addOne(User user)
     {
-        return userDao.addOne(user.getEmail(),user.getPass(),user.getPhone(),user.getNickname());
+        return userDao.save(user);
+    }
+    public User findByEmail(String email)
+    {
+        return userDao.findByEmail(email);
     }
 
 }

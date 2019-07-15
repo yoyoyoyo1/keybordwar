@@ -23,12 +23,11 @@ public class MailController {
     private MailService mailService;
     private HashMap<String,Object> codeMap = new HashMap<>();
     @Autowired
-    private UserDao userDao;
+    private UserService userService;
     @RequestMapping("getcheckcode")
     @ResponseBody
     public String getchechcode(String email)
     {
-        System.out.println(email+"0000000000000");
         String checkcode=String.valueOf(new Random().nextInt(899999) + 100000);
         String msg="您的注册验证码为 +"+checkcode;
         try {
@@ -40,28 +39,39 @@ public class MailController {
         }
         return checkcode;
     }
+    //用户注册
     @RequestMapping("userreg")
     @ResponseBody
     public String userreg(String email,String ccode,String pass,String nickname,String phone)
     {
-        System.out.println(ccode);
-        System.out.println(codeMap.get(email));
         User user=new User();
         user.setEmail(email);
         user.setNickname(nickname);
         user.setPhone(phone);
         user.setPass(MD5Util.encode(pass));
-        System.out.println(user);
+        //默认头像
+        user.setImage("default.png");
+        //默认签名
+        user.setMotto("在这里记下自己的点点滴滴(点击可修改)");
         if(ccode.equals(codeMap.get(email)))
         {
-                System.out.println("验证码验证正确");
-                userDao.save(user);
-                System.out.println(email+"注册成功");
-            return "ok";
+            try {
+                if(userService.findByEmail(email)==null){
+                System.out.println(email +"验证码验证正确");
+                userService.addOne(user);
+                System.out.println(email + "注册成功");
+                return "ok";} else {
+                    System.out.println(email +"该邮箱已经被注册");
+                    return "bad";
+                }
+            }catch (Exception e){
+                return "error";
+            }
 
         }
         System.out.println(email+"验证错误");
         return "";
     }
+    //用户修改密码
 
 }

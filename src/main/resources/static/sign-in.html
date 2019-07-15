@@ -195,9 +195,11 @@
 				cache: false,
 				success: function (res) {
 					debugger;
-					if (res != "" && res != null) {
+					if (res == "ok" && res != null) {
 						alert("！-注册成功-！")
-					} else {
+					} else if(res == "bad" && res != null){
+						alert("该邮箱已经被注册");
+					}else {
 						alert("验证码错误");
 					}
 				},

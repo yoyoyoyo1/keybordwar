@@ -14,14 +14,5 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     @Autowired
     private UserService userService;
-    @RequestMapping("/addUser")
-    public String addUser(@ModelAttribute User user)
-    {
-        System.out.println(user);
-        //对密码加密
-        String pass=MD5Util.encode(user.getPass());
-        user.setPass(pass);
-        userService.addOne(user);
-        return "sign-in";
-    }
+
 }
