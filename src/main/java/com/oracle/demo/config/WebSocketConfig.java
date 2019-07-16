@@ -17,4 +17,11 @@ public class WebSocketConfig {
         return new ServerEndpointExporter();
     }
 
+    /**
+     * 支持注入其他类
+     */
+    @Bean
+    public MyEndpointConfigure  newMyEndpointConfigure (){
+        return new MyEndpointConfigure ();
+    }
 }

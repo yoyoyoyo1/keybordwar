@@ -3,7 +3,7 @@
 
 
 /*===================== TABLE OF CONTENT =======================
-×îÐÂ×îÈ«×îºÃµÄBootstrapÄ£°å£ºhttp://www.bootstrapmb.com
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½Ãµï¿½BootstrapÄ£ï¿½å£ºhttp://www.bootstrapmb.com
 1.	3 Homepages
 2.  Fonts 
 3.  Reset Css
@@ -2481,7 +2481,7 @@ select {
 }
 .footy-sec p img {
 	padding-right: 5px;
-	float: auto;
+	float: none;
 	position: relative;
 	top: 6px;
 }
@@ -4637,6 +4637,7 @@ a:hover {
 .messages-list {
 	float: left;
 	width: 100%;
+	overflow:auto;
 }
 .messages-list ul {
 	float: left;
@@ -4860,12 +4861,27 @@ a:hover {
 .main-message-box.st3 .messg-usr-img {
 	bottom: 13px;
 }
+
 .messages-line {
 	float: left;
 	width: 100%;
 	height: 604px;
+	padding: 10px 20px;
+	overflow:auto;
 }
 
+.hz-message-list{
+	min-height: 30px;
+	margin: 10px 0;
+}
+
+.hz-message-list-text{
+	padding: 7px 13px;
+	border-radius: 15px;
+	width: auto;
+	max-width: 85%;
+	display: inline-block;
+}
 /* ============== message-send-area ============ */
 
 .message-send-area {
@@ -4917,6 +4933,16 @@ a:hover {
 .message-send-area form > ul li a {
 	color: #b2b2b2;
 	font-size: 18px;
+}
+.left{
+	float: left;
+	color: #595a5a;
+	background-color: #ebebeb;
+}
+.right{
+	float: right;
+	color: #f7f8f8;
+	background-color: #919292;
 }
 
 

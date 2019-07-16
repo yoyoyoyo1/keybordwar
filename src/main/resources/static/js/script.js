@@ -3,8 +3,9 @@ $(window).on("load", function() {
 
     
 
-    //������ȫ��õ�Bootstrapģ�壺http://www.bootstrapmb.com
+    //������ȫ��õ�Bootstrapģ�壺http://www.bootstrapmb.com
     //============= POST PROJECT POPUP FUNCTION =========
+    //项目后弹出功能
 
     $(".post_project").on("click", function(){
         $(".post-popup.pst-pj").addClass("active");
@@ -18,6 +19,7 @@ $(window).on("load", function() {
     });
 
     //  ============= POST JOB POPUP FUNCTION =========
+    //岗位弹出功能
 
     $(".post-jb").on("click", function(){
         $(".post-popup.job_post").addClass("active");
@@ -31,6 +33,7 @@ $(window).on("load", function() {
     });
 
     //  ============= SIGNIN CONTROL FUNCTION =========
+    //登录控制
 
     $('.sign-control li').on("click", function(){
         var tab_id = $(this).attr('data-tab');
@@ -42,6 +45,7 @@ $(window).on("load", function() {
     });
 
     //  ============= SIGNIN TAB FUNCTIONALITY =========
+    //登录标签
 
     $('.signup-tab ul li').on("click", function(){
         var tab_id = $(this).attr('data-tab');
@@ -64,6 +68,7 @@ $(window).on("load", function() {
     });
 
     //  ============= COVER GAP FUNCTION =========
+    //覆盖缺口
 
     var gap = $(".container").offset().left;
     $(".cover-sec > a, .chatbox-list").css({
@@ -71,6 +76,7 @@ $(window).on("load", function() {
     });
 
     //  ============= OVERVIEW EDIT FUNCTION =========
+    //编辑功能
 
     $(".overview-open").on("click", function(){
         $("#overview-box").addClass("open");
@@ -188,7 +194,8 @@ $(window).on("load", function() {
     });
 
 
-    //  ============== ChatBox ============== 
+    //  ============== ChatBox ==============
+    //对话栏
 
 
     $(".chat-mg").on("click", function(){

@@ -1,11 +1,13 @@
 package com.oracle.demo.websocket;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oracle.demo.bean.Message;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,7 +17,7 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-
+@RestController
 @ServerEndpoint("/websocket/{from}/{to}")
 @Component
 public class WebSocketServer {
@@ -70,6 +72,30 @@ public class WebSocketServer {
             webSocketMap.get(to).sendMessage(mess);
         }
         webSocketMap.get(from).sendMessage(mess);
+
+        /*try {//私聊消息
+            HashMap hashMap = new ObjectMapper().readValue(message, HashMap.class);
+
+            //消息类型
+            String type = (String) hashMap.get("type");
+
+            //来源用户
+            Map srcUser = (Map) hashMap.get("from");
+
+            //目标用户
+            Map tarUser = (Map) hashMap.get("to");
+
+            //如果点击的是自己，那就是群聊
+            if (srcUser.get("nickname").equals(tarUser.get("nickname"))) {
+                //群聊
+                groupChat(session, hashMap);
+            } else {
+                //私聊
+                privateChat(session, tarUser, hashMap);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
     }
 
     /**
@@ -95,5 +121,6 @@ public class WebSocketServer {
      * */
     public static void sendInfo(String message,@PathParam("sid") String sid) throws IOException {
     }
+
 
 }
