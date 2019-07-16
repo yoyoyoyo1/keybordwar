@@ -1,7 +1,11 @@
 package com.oracle.demo.controller;
 
+import com.oracle.demo.entity.Follow;
+import com.oracle.demo.entity.Share;
 import com.oracle.demo.entity.User;
 import com.oracle.demo.respository.UserDao;
+import com.oracle.demo.service.FollowService;
+import com.oracle.demo.service.ShareService;
 import com.oracle.demo.service.UserService;
 import com.oracle.demo.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,10 @@ public class UserController {
     private UserService userService;
     //用户注册及密码找回在MailController(暂定)日后修改
     //用户登录
+    @Autowired
+    private FollowService followService;
+    @Autowired
+    private ShareService shareService;
     @RequestMapping("userlogin")
     @ResponseBody
     public String userlogin(String email, String pass, HttpSession httpSession)
@@ -34,17 +42,29 @@ public class UserController {
     }
     //登录后跳转主页
     @RequestMapping("toindex")
-    public String toindex()
+    public String toindex(String email,HttpSession session)
     {
-        return "index";
+        Follow follow=new Follow();
+        int id=userService.findIdByEmail(email);
+        follow.setFollowering(followService.showFollowing(id));
+        follow.setFollower(followService.showFollower(id));
+        session.setAttribute("follow",follow);
+        return "index";//需要跳转至动态主页的控制器
     }
-    @RequestMapping("testajax")
+    /*@RequestMapping("testajax")
     @ResponseBody
+    //ajax的测试
     public User testajax()
     {
         User user=userService.findByEmail("shenzhigao1998@163.com");
         System.out.println(user);
         return user;
+    }*/
+    @RequestMapping("sendshare")
+    public String sendshar(@ModelAttribute Share share)
+    {
+        shareService.sendShare(share);
+        return "redirect:toindex";
     }
 
 }

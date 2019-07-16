@@ -23,5 +23,9 @@ public class UserServiceImpl implements UserService {
     {
         return userDao.userLogin(email,pass);
     }
+    public int findIdByEmail(String email)
+    {
+        return userDao.findIdByEmail(email);
+    }
 
 }

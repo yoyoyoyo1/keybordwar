@@ -57,7 +57,7 @@ public class MailController {
         //默认头像
         user.setImage("default.png");
         //默认签名
-        user.setMotto("在这里记下自己的点点滴滴(点击可修改)");
+        user.setMotto("编辑自己的个性签名吧");
         if(ccode.equals(codeMap.get(email)))
         {
             try {

@@ -9,4 +9,6 @@ public interface UserService {
     public User findByEmail(String email);
     //用户登录
     public User userLogin(String email,String pass);
+    //用邮箱查找id(用于follow)
+    public int findIdByEmail(String email);
 }
