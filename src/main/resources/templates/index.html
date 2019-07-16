@@ -260,7 +260,7 @@
 												<span th:text="${session.follow.follower}"></span>
 											</li>
 											<li>
-												<a th:href="@{/touserprofile}" title="">查看个人主页</a>
+												<a th:href="@{/touserprofile(userId=${session.user.id})}" title="">查看个人主页</a>
 											</li>
 										</ul>
 									</div><!--user-data end-->

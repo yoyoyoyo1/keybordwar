@@ -10,6 +10,7 @@ import com.oracle.demo.service.UserService;
 import com.oracle.demo.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -70,8 +71,8 @@ public class UserController {
         return "index";//需要跳转至动态首页控制器
     }
     @RequestMapping("touserprofile")
-    public String touserprofile()
-    {
+    public String touserprofile(int userId,Model model)
+    {   model.addAttribute("share",shareService.findShareByIdOrderByTime(userId));
         return "my-profile-feed";
     }
 
