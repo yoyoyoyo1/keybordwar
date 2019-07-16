@@ -26,4 +26,8 @@ public class ShareServiceImpl implements ShareService {
     public List<Share> getAll() {
         return shareDao.findAll();
     }
+    @Override
+    public void save(Share share){
+        shareDao.save(share);
+    }
 }

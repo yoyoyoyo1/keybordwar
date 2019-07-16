@@ -10,4 +10,5 @@ public interface ShareService {
     //发送一条
     public Share sendShare(Share share, HttpServletResponse response) throws IOException;
     List<Share> getAll();
+    void save(Share share);
 }

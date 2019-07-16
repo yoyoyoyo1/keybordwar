@@ -15,7 +15,6 @@ public class ShareController {
     private ShareServiceImpl shareService;
 
 
-
     @RequestMapping("/index")
     public String toIndex(Model model){
         List<Share> shareList=shareService.getAll();
@@ -23,5 +22,18 @@ public class ShareController {
         return "index";
     }
 
-
+    @RequestMapping("/save")
+    public String save(String content){
+        Share share = new Share();
+        share.setContent(content);
+        share.setId(5);
+        Date date=new Date();
+        share.setCreatedAt(date);
+        share.setForwards(5);
+        share.setLikes(5);
+        share.setUserId(5);
+        share.setUpdatedAt(date);
+        shareService.save(share);
+        return "save successfully!";
     }
+}
