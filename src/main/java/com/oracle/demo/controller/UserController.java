@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @Controller
 public class UserController {
@@ -61,11 +63,16 @@ public class UserController {
         return user;
     }*/
     @RequestMapping("sendshare")
-    public String sendshar(@ModelAttribute Share share)
+    public String sendshar(@ModelAttribute Share share, HttpServletResponse response) throws IOException
     {
-        shareService.sendShare(share);
+        shareService.sendShare(share,response);
         System.out.println("用户id为："+share.getUserId()+"发布了一条动态,内容是："+share.getContent());
         return "index";//需要跳转至动态首页控制器
+    }
+    @RequestMapping("touserprofile")
+    public String touserprofile()
+    {
+        return "my-profile-feed";
     }
 
 }
