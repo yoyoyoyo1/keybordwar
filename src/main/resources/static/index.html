@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:border="http://www.w3.org/1999/xhtml">
 <head>
 <meta charset="UTF-8">
 <title>WorkWise Html Template</title>
@@ -369,22 +369,33 @@
 										</div>
 										<input id='info1' type='hidden' />
 										-->
-
-										<div id="div2"  class="text" style="height: 100px" aria-placeholder="请输入内容..."> <!--可使用 min-height 实现编辑区域自动增加高度-->
-
+										<div>
+											<h1 style="font-size:150%">动态发布</h1>
 										</div>
-										<div id="div1" class="toolbar">
+											<br/>
+									<form th:action="#">
+										<div id="div2" class="text" style="height: 100px"> <!--可使用 min-height 实现编辑区域自动增加高度-->
+											<p>请输入内容</p>
+										</div>
+										<div id="div1" class="toolbar" >
 										</div>
 										<div class="post-st">
 											<ul>
-												<li><a id="btn2" href="#" title="">发布</a></li>
+											<!--	<li><a id="btn3" href="#" title="">发布</a></li> -->
+												<li><button id="btn2" class="active" type="submit" value="post" ><a>发送</a></button></li>
 											</ul>
 										</div>
+
+									</form>
 										<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 										<script type="text/javascript" src="editor/wangEditor.min.js"></script>
 										<script type="text/javascript">
                                             var E = window.wangEditor
                                             var editor = new E('#div1', '#div2')
+                                            editor.customConfig.uploadImgShowBase64 = true   // 使用 base64 保存图片
+                                            editor.customConfig.uploadImgMaxLength=50
+                                            // 隐藏“网络图片”tab
+                                            editor.customConfig.showLinkImg = false
                                             document.getElementById('btn2').addEventListener('click', function () {
                                                 // 读取 text
                                                 alert(editor.txt.text())
@@ -670,7 +681,9 @@
 
 										</script>
 
+
 									</div><!--post-topbar end-->
+
 									<div class="posts-section">
 										<div class="post-bar">
 											<div class="post_topbar">
