@@ -1,6 +1,5 @@
-
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>WorkWise Html Template</title>
@@ -44,25 +43,19 @@
 							<li>
 								<a href="index.html" title="">
 									<span><img src="images/icon1.png" alt=""></span>
-									Home
+									首页
 								</a>
 							</li>
 							<li>
 								<a href="dialoging.html" title="">
 									<span><img src="images/icon2.png" alt=""></span>
-									Companies
-								</a>
-							</li>
-							<li>
-								<a href="projects.html" title="">
-									<span><img src="images/icon3.png" alt=""></span>
-									Projects
+									圆桌话题
 								</a>
 							</li>
 							<li>
 								<a href="profiles.html" title="">
 									<span><img src="images/icon4.png" alt=""></span>
-									Profiles
+									关注的人
 								</a>
 								<ul>
 									<li><a href="user-profile.html" title="">User Profile</a></li>
@@ -70,15 +63,9 @@
 								</ul>
 							</li>
 							<li>
-								<a href="jobs.html" title="">
-									<span><img src="images/icon5.png" alt=""></span>
-									Jobs
-								</a>
-							</li>
-							<li>
 								<a href="#" title="" class="not-box-open">
 									<span><img src="images/icon6.png" alt=""></span>
-									Messages
+									私信
 								</a>
 								<div class="notification-box msg">
 									<div class="nt-title">
@@ -93,26 +80,6 @@
 							  				<div class="notification-info">
 							  					<h3><a href="messages.html" title="">Jassica William</a> </h3>
 							  					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do.</p>
-							  					<span>2 min ago</span>
-							  				</div><!--notification-info -->
-						  				</div>
-						  				<div class="notfication-details">
-							  				<div class="noty-user-img">
-							  					<img src="images/resources/ny-img2.png" alt="">
-							  				</div>
-							  				<div class="notification-info">
-							  					<h3><a href="messages.html" title="">Jassica William</a></h3>
-							  					<p>Lorem ipsum dolor sit amet.</p>
-							  					<span>2 min ago</span>
-							  				</div><!--notification-info -->
-						  				</div>
-						  				<div class="notfication-details">
-							  				<div class="noty-user-img">
-							  					<img src="images/resources/ny-img3.png" alt="">
-							  				</div>
-							  				<div class="notification-info">
-							  					<h3><a href="messages.html" title="">Jassica William</a></h3>
-							  					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempo incididunt ut labore et dolore magna aliqua.</p>
 							  					<span>2 min ago</span>
 							  				</div><!--notification-info -->
 						  				</div>
@@ -238,102 +205,37 @@
 						<div class="col-lg-4 col-md-12 no-pdd">
 							<div class="msgs-list">
 								<div class="msg-title">
-									<h3>Messages</h3>
-									<ul>
-										<li><a href="#" title=""><i class="fa fa-cog"></i></a></li>
-										<li><a href="#" title=""><i class="fa fa-ellipsis-v"></i></a></li>
-									</ul>
+									<h3>私聊列表</h3>
 								</div><!--msg-title end-->
 								<div class="messages-list">
 									<ul>
-										<li class="active">
-											<div class="usr-msg-details">
-												<div class="usr-ms-img">
-													<img src="images/resources/m-img1.png" alt="">
-													<span class="msg-status"></span>
-												</div>
-												<div class="usr-mg-info">
-													<h3>John Doe</h3>
-													<p>Lorem ipsum dolor <img src="images/smley.png" alt=""></p>
-												</div><!--usr-mg-info end-->
-												<span class="posted_time">1:55 PM</span>
-												<span class="msg-notifc">1</span>
-											</div><!--usr-msg-details end-->
-										</li>
-										<li>
-											<div class="usr-msg-details">
-												<div class="usr-ms-img">
-													<img src="images/resources/m-img2.png" alt="">
-												</div>
-												<div class="usr-mg-info">
-													<h3>David Vane</h3>
-													<p>Vestibulum ac diam..</p>
-												</div><!--usr-mg-info end-->
-												<span class="posted_time">1:55 PM</span>
-											</div><!--usr-msg-details end-->
-										</li>
-										<li>
-											<div class="usr-msg-details">
-												<div class="usr-ms-img">
-													<img src="images/resources/m-img3.png" alt="">
-												</div>
-												<div class="usr-mg-info">
-													<h3>Nancy Dilan</h3>
-													<p>Quam vehicula.</p>
-												</div><!--usr-mg-info end-->
-												<span class="posted_time">1:55 PM</span>
-											</div><!--usr-msg-details end-->
-										</li>
-										<li>
-											<div class="usr-msg-details">
-												<div class="usr-ms-img">
-													<img src="images/resources/m-img4.png" alt="">
-													<span class="msg-status"></span>
-												</div>
-												<div class="usr-mg-info">
-													<h3>Norman Kenney</h3>
-													<p>Nulla quis lorem ut..</p>
-												</div><!--usr-mg-info end-->
-												<span class="posted_time">1:55 PM</span>
-											</div><!--usr-msg-details end-->
-										</li>
-										<li>
-											<div class="usr-msg-details">
-												<div class="usr-ms-img">
-													<img src="images/resources/m-img5.png" alt="">
-													<span class="msg-status"></span>
-												</div>
-												<div class="usr-mg-info">
-													<h3>James Dilan</h3>
-													<p>Vivamus magna just..</p>
-												</div><!--usr-mg-info end-->
-												<span class="posted_time">1:55 PM</span>
-											</div><!--usr-msg-details end-->
-										</li>
-										<li>
-											<div class="usr-msg-details">
-												<div class="usr-ms-img">
-													<img src="images/resources/m-img6.png" alt="">
-												</div>
-												<div class="usr-mg-info">
-													<h3>Mike Dorn</h3>
-													<p>Praesent sapien massa.</p>
-												</div><!--usr-mg-info end-->
-												<span class="posted_time">1:55 PM</span>
-											</div><!--usr-msg-details end-->
-										</li>
-										<li>
-											<div class="usr-msg-details">
-												<div class="usr-ms-img">
-													<img src="images/resources/m-img7.png" alt="">
-												</div>
-												<div class="usr-mg-info">
-													<h3>Patrick Morison</h3>
-													<p>Convallis a pellente...</p>
-												</div><!--usr-mg-info end-->
-												<span class="posted_time">1:55 PM</span>
-											</div><!--usr-msg-details end-->
-										</li>
+									<li class="active">
+										<div class="usr-msg-details">
+											<div class="usr-ms-img">
+												<img src="images/resources/m-img1.png" alt="">
+												<span class="msg-status"></span>
+											</div>
+											<div class="usr-mg-info">
+												<h3>John Doe</h3>
+												<p>Lorem ipsum dolor <img src="images/smley.png" alt=""></p>
+											</div><!--usr-mg-info end-->
+											<span class="posted_time">1:55 PM</span>
+											<span class="msg-notifc">1</span>
+										</div><!--usr-msg-details end-->
+									</li>
+									<li>
+										<div class="usr-msg-details">
+											<div class="usr-ms-img">
+												<img src="images/resources/m-img1.png" alt="">
+
+											</div>
+											<div class="usr-mg-info">
+												<h3>John Doe</h3>
+												<p>Lorem ipsum dolor</p>
+											</div><!--usr-mg-info end-->
+											<span class="posted_time">1:55 PM</span>
+										</div><!--usr-msg-details end-->
+									</li>
 									</ul>
 								</div><!--messages-list end-->
 							</div><!--msgs-list end-->
@@ -346,8 +248,7 @@
 											<img src="images/resources/m-img1.png" alt="">
 										</div>
 										<div class="usr-mg-info">
-											<h3>John Doe</h3>
-											<p>Online</p>
+											<h3><span id="toId"></span></h3>
 										</div><!--usr-mg-info end-->
 									</div>
 									<a href="#" title=""><i class="fa fa-ellipsis-v"></i></a>
@@ -440,9 +341,9 @@
 											<button type="submit">Send</button>
 										</div>
 										<ul>
-											<li><a href="#" title=""><i class="fa fa-smile-o"></i></a></li>
-											<li><a href="#" title=""><i class="fa fa-camera"></i></a></li>
-											<li><a href="#" title=""><i class="fa fa-paperclip"></i></a></li>
+											<li><button><i class="fa fa-smile-o"></i></button></li>
+											<li><button><i class="fa fa-camera"></i></button></li>
+											<li><button onclick="send()"><i class="fa fa-paperclip"></i></button></li>
 										</ul>
 									</form>
 								</div><!--message-send-area end-->
@@ -465,7 +366,7 @@
 						<li><a href="#" title="">Cookies Policy</a></li>
 						<li><a href="#" title="">Career</a></li>
 						<li><a href="#" title="">Forum</a></li>
-						<li><a href="#" title="">Language</a></li>
+						<li><a href="#" title="">language</a></li>
 						<li><a href="#" title="">Copyright Policy</a></li>
 					</ul>
 					<p><img src="images/copy-icon2.png" alt="">Copyright 2017</p>
@@ -485,6 +386,10 @@
 <script type="text/javascript" src="lib/slick/slick.min.js"></script>
 <script type="text/javascript" src="js/scrollbar.js"></script>
 <script type="text/javascript" src="js/script.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    var ctx = [[${#request.getContextPath()}]];
+</script>
+<script th:src="@{js/socketChart.js}"></script>
 
 </body>
 </html>

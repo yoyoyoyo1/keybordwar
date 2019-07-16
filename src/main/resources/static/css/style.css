@@ -4861,12 +4861,25 @@ a:hover {
 .main-message-box.st3 .messg-usr-img {
     bottom: 13px;
 }
+
 .messages-line {
     float: left;
     width: 100%;
     height: 604px;
 }
 
+.hz-message-list{
+	min-height: 30px;
+	margin: 10px 0;
+}
+
+.hz-message-list-text{
+	padding: 7px 13px;
+	border-radius: 15px;
+	width: auto;
+	max-width: 85%;
+	display: inline-block;
+}
 /* ============== message-send-area ============ */
 
 .message-send-area {
@@ -4918,6 +4931,16 @@ a:hover {
 .message-send-area form > ul li a {
     color: #b2b2b2;
     font-size: 18px;
+}
+.left{
+	float: left;
+	color: #595a5a;
+	background-color: #ebebeb;
+}
+.right{
+	float: right;
+	color: #f7f8f8;
+	background-color: #919292;
 }
 
 
