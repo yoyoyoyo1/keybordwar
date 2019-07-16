@@ -34,6 +34,9 @@ public class Share {
         this.updatedAt = updatedAt;
     }
 
+    public Share(String content2){
+        this.content = content2;
+    }
     public int getId() {
         return id;
     }
