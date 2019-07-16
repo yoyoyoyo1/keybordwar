@@ -1,11 +1,15 @@
 package com.oracle.demo.entity;
 
 import com.alibaba.fastjson.JSON;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@DynamicInsert
+@DynamicUpdate
 public class Share {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Id

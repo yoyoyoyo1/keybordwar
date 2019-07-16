@@ -7,3 +7,4 @@ public interface MailService {
     public void sendCheckCodeMail(String to, String title, String content);
     //发送重置密码验证码
 }
+
