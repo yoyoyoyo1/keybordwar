@@ -64,7 +64,8 @@ public class UserController {
     public String sendshar(@ModelAttribute Share share)
     {
         shareService.sendShare(share);
-        return "redirect:toindex";
+        System.out.println("用户id为："+share.getUserId()+"发布了一条动态,内容是："+share.getContent());
+        return "index";//需要跳转至动态首页控制器
     }
 
 }
