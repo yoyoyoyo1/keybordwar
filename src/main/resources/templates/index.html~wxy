@@ -1,8 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:th="http://www.thymeleaf.org">
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
 <meta charset="UTF-8">
 <title>WorkWise Html Template</title>
@@ -50,7 +48,7 @@
 								</a>
 							</li>
 							<li>
-								<a href="dialoging.html" title="">
+								<a href="companies.html" title="">
 									<span><img src="images/icon2.png" alt=""></span>
 									圆桌话题
 								</a>
@@ -241,26 +239,26 @@
 									<div class="user-data full-width">
 										<div class="user-profile">
 											<div class="username-dt">
-												<div class="usr-pic" >
-											<img th:src="'userimage/'+${session.user.image}">
+												<div class="usr-pic">
+													<img src="images/resources/user-pic.png" alt="">
 												</div>
 											</div><!--username-dt end-->
-											<div class="user-specs" id="userdetail">
-												<h4 th:text="${session.user.nickname}"/><br>
-												<span th:text="${session.user.motto}" />
+											<div class="user-specs">
+												<h3>John Doe</h3>
+												<span>Graphic Designer at Self Employed</span>
 											</div>
 										</div><!--user-profile end-->
 										<ul class="user-fw-status">
 											<li>
-												<h3>关注的人</h3>
-												<span th:text="${session.follow.followering}"></span>
+												<h4>Following</h4>
+												<span>34</span>
 											</li>
 											<li>
-												<h3>关注者</h3>
-												<span th:text="${session.follow.follower}"></span>
+												<h4>Followers</h4>
+												<span>155</span>
 											</li>
 											<li>
-												<a th:href="@{/touserprofile}" title="">查看个人主页</a>
+												<a href="#" title="">View Profile</a>
 											</li>
 										</ul>
 									</div><!--user-data end-->
@@ -319,7 +317,7 @@
 												<span><i class="la la-plus"></i></span>
 											</div>
 											<div class="view-more">
-												<a href="#" title="">View More</a>
+												<a href="#" title="">查看更多</a>
 											</div>
 										</div><!--suggestions-list end-->
 									</div><!--suggestions end-->
@@ -345,11 +343,12 @@
 								<div class="main-ws-sec">
 									<div class="post-topbar">
 										<div class="user-picy">
-											<img th:src="'userimage/'+${session.user.image}">
+											<img src="images/resources/user-pic.png" alt="">
 										</div>
 										<div class="post-st">
 											<ul>
-												<li><a class="post-jb active" href="#" title="">发一条动态</a></li>
+												<li><a class="post_project" href="#" title="">Post a Project</a></li>
+												<li><a class="post-jb active" href="#" title="">Post a Job</a></li>
 											</ul>
 										</div><!--post-st end-->
 									</div><!--post-topbar end-->
@@ -359,35 +358,23 @@
 												<div class="usy-dt">
 													<img src="images/resources/us-pic.png" alt="">
 													<div class="usy-name">
-														<h3>这里显示姓名</h3>
-														<span><img src="images/clock.png" alt="">这里显示时间</span>
+														<h3>John Doe</h3>
+														<span th:text="${share.createdAt}"><img src="images/clock.png" alt=""></span>
 													</div>
 												</div>
-												<div class="ed-opts">
-													<a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
-													<ul class="ed-options">
-														<li><a href="#" title="">编辑</a></li>
-														<li><a href="#" title="">删除</a></li>
-													</ul>
-												</div>
-											</div>
-											<div class="epi-sec">
-												<ul class="bk-links">
-													<li><a href="#" title=""><i class="la la-bookmark"></i></a></li>
-												</ul>
 											</div>
 											<div class="job_descp">
-												<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit metus, ut ullamcorper quam finibus at. Etiam id magna sit amet... </p>
+												<p th:text="${share.content}"> </p>
+												<a href="#" title="">查看更多</a>
 											</div>
 											<div class="job-status-bar">
 												<ul class="like-com">
 													<li>
-														<a href="#"><i class="la la-heart"></i> Like</a>
-														<img src="images/liked-img.png" alt="">
-														<span>22222222222222222</span>
+														<a href="#"><i th:text="${share.likes}" class="la la-heart"></i></a>
 													</li> 
 
 												</ul>
+												<a><i th:text="${share.comments}"></i>评论</a>
 											</div>
 										</div><!--post-bar end-->
 										<div class="top-profiles">
@@ -464,46 +451,7 @@
 												</div><!--user-profy end-->
 											</div><!--profiles-slider end-->
 										</div><!--top-profiles end-->
-										<div class="post-bar">
-											<div class="post_topbar">
-												<div class="usy-dt">
-													<img src="images/resources/us-pic.png" alt="">
-													<div class="usy-name">
-														<h3>John Doe</h3>
-														<span><img src="images/clock.png" alt="">3 min ago</span>
-													</div>
-												</div>
-												<div class="ed-opts">
-													<a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
-													<ul class="ed-options">
-														<li><a href="#" title="">Edit Post</a></li>
-														<li><a href="#" title="">Unsaved</a></li>
-														<li><a href="#" title="">Unbid</a></li>
-														<li><a href="#" title="">Close</a></li>
-														<li><a href="#" title="">Hide</a></li>
-													</ul>
-												</div>
-											</div>
-											<div class="epi-sec">
 
-											</div>
-											<div class="job_descp">
-												<h3>Senior Wordpress Developer</h3>
-
-												<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit metus, ut ullamcorper quam finibus at. Etiam id magna sit amet... <a href="#" title="">view more</a></p>
-
-											</div>
-											<div class="job-status-bar">
-												<ul class="like-com">
-													<li>
-														<a href="#"><i class="la la-heart"></i> Like</a>
-														<img src="images/liked-img.png" alt="">
-														<span>25</span>
-													</li> 
-													<li><a href="#" title="" class="com"><img src="images/com.png" alt=""> Comment 15</a></li>
-												</ul>
-											</div>
-										</div><!--post-bar end-->
 										<div class="posty">
 											<div class="post-bar no-margin">
 												<div class="post_topbar">
@@ -541,7 +489,7 @@
 														<li><a href="#" title="">Full Time</a></li>
 														<li><span>$30 / hr</span></li>
 													</ul>
-													<p>iquam luctus hendrerit metus, ut ullamcorper quam finibus at. Etiam id magna sit amet... <a href="#" title="">view more</a></p>
+													<p>iquam luctus hendrerit metus, ut ullamcorper quam finibus at. Etiam id magna sit amet... <a href="#" title="">查看更多</a></p>
 													<ul class="skill-tags">
 														<li><a href="#" title="">HTML</a></li>
 														<li><a href="#" title="">PHP</a></li>
@@ -784,7 +732,7 @@
 												<span><i class="la la-plus"></i></span>
 											</div>
 											<div class="view-more">
-												<a href="#" title="">View More</a>
+												<a href="#" title="">查看更多</a>
 											</div>
 										</div><!--suggestions-list end-->
 									</div>
@@ -852,16 +800,47 @@
 
 		<div class="post-popup job_post">
 			<div class="post-project">
-				<h3>发一条动态</h3>
+				<h3>Post a job</h3>
 				<div class="post-project-fields">
-					<form th:action="@{/sendshare(userId=${session.user.id})}"  method="post">
+					<form>
 						<div class="row">
 							<div class="col-lg-12">
-								<textarea name="content" placeholder="记录自己的生活点滴吧!"></textarea>
+								<input type="text" name="title" placeholder="Title">
+							</div>
+							<div class="col-lg-12">
+								<div class="inp-field">
+									<select>
+										<option>Category</option>
+										<option>Category 1</option>
+										<option>Category 2</option>
+										<option>Category 3</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-12">
+								<input type="text" name="skills" placeholder="Skills">
+							</div>
+							<div class="col-lg-6">
+								<div class="price-br">
+									<input type="text" name="price1" placeholder="Price">
+									<i class="la la-dollar"></i>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="inp-field">
+									<select>
+										<option>Full Time</option>
+										<option>Half time</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-12">
+								<textarea name="description" placeholder="Description"></textarea>
 							</div>
 							<div class="col-lg-12">
 								<ul>
-									<li><button class="active" type="submit" value="post" >发送</button></li>
+									<li><button class="active" type="submit" value="post">Post</button></li>
+									<li><a href="#" title="">Cancel</a></li>
 								</ul>
 							</div>
 						</div>
@@ -880,44 +859,44 @@
 					<span>2</span>
 				</div>
 				<div class="conversation-box">
-						<div class="con-title mg-3">
-							<div class="chat-user-info">
-								<img src="images/resources/us-img1.png" alt="">
-								<h3>John Doe <span class="status-info"></span></h3>
-							</div>
-							<div class="st-icons">
-								<a href="#" title=""><i class="la la-cog"></i></a>
-								<a href="#" title="" class="close-chat"><i class="la la-minus-square"></i></a>
-								<a href="#" title="" class="close-chat"><i class="la la-close"></i></a>
-							</div>
+					<div class="con-title mg-3">
+						<div class="chat-user-info">
+							<img src="images/resources/us-img1.png" alt="">
+							<h3>John Doe <span class="status-info"></span></h3>
 						</div>
-						<div class="chat-hist mCustomScrollbar" data-mcs-theme="dark">
-							<div class="chat-msg">
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rutrum congue leo eget malesuada. Vivamus suscipit tortor eget felis porttitor.</p>
-								<span>Sat, Aug 23, 1:10 PM</span>
-							</div>
-							<div class="date-nd">
-								<span>Sunday, August 24</span>
-							</div>
-							<div class="chat-msg st2">
-								<p>Cras ultricies ligula.</p>
-								<span>5 minutes ago</span>
-							</div>
-							<div class="chat-msg">
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rutrum congue leo eget malesuada. Vivamus suscipit tortor eget felis porttitor.</p>
-								<span>Sat, Aug 23, 1:10 PM</span>
-							</div>
-						</div><!--chat-list end-->
-						<div class="typing-msg">
-							<form>
-								<textarea placeholder="Type a message here"></textarea>
-								<button type="submit"><i class="fa fa-send"></i></button>
-							</form>
-							<ul class="ft-options">
-								<li><a href="#" title=""><i class="la la-smile-o"></i></a></li>
-								<li><a href="#" title=""><i class="la la-camera"></i></a></li>
-								<li><a href="#" title=""><i class="fa fa-paperclip"></i></a></li>
-							</ul>
+						<div class="st-icons">
+							<a href="#" title=""><i class="la la-cog"></i></a>
+							<a href="#" title="" class="close-chat"><i class="la la-minus-square"></i></a>
+							<a href="#" title="" class="close-chat"><i class="la la-close"></i></a>
+						</div>
+					</div>
+					<div class="chat-hist mCustomScrollbar" data-mcs-theme="dark">
+						<div class="chat-msg">
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rutrum congue leo eget malesuada. Vivamus suscipit tortor eget felis porttitor.</p>
+							<span>Sat, Aug 23, 1:10 PM</span>
+						</div>
+						<div class="date-nd">
+							<span>Sunday, August 24</span>
+						</div>
+						<div class="chat-msg st2">
+							<p>Cras ultricies ligula.</p>
+							<span>5 minutes ago</span>
+						</div>
+						<div class="chat-msg">
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rutrum congue leo eget malesuada. Vivamus suscipit tortor eget felis porttitor.</p>
+							<span>Sat, Aug 23, 1:10 PM</span>
+						</div>
+					</div><!--chat-list end-->
+					<div class="typing-msg">
+						<form>
+							<textarea placeholder="Type a message here"></textarea>
+							<button type="submit"><i class="fa fa-send"></i></button>
+						</form>
+						<ul class="ft-options">
+							<li><a href="#" title=""><i class="la la-smile-o"></i></a></li>
+							<li><a href="#" title=""><i class="la la-camera"></i></a></li>
+							<li><a href="#" title=""><i class="fa fa-paperclip"></i></a></li>
+						</ul>
 					</div><!--typing-msg end-->
 				</div><!--chat-history end-->
 			</div>
@@ -1032,27 +1011,6 @@
 <script type="text/javascript" src="lib/slick/slick.min.js"></script>
 <script type="text/javascript" src="js/scrollbar.js"></script>
 <script type="text/javascript" src="js/script.js"></script>
-<script type="text/javascript">
-	/*$(document).ready(function(){
-		$.ajax({
-			url:"/testajax",
-			data:{},
-			dataType:"json",
-			async : false,
-			cache : false,
-			success:function(data){
-				var strimage="";
-				var strmotto="";
-				strimage+="<img src="+"userimage/"+data.image+">";
-				strmotto+="<h3>"+data.nickname+"</h3>"+"<br>"+"<span>"+data.motto+"</span>";
-				document.getElementById("userimage").innerHTML=strimage;
-				document.getElementById("userdetail").innerHTML=strmotto;
-			}
-
-
-		})
-	})*/
-</script>
 
 </body>
 </html>

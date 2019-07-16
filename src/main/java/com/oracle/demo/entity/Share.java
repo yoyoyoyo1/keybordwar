@@ -20,6 +20,8 @@ public class Share {
     @Column(columnDefinition="INT default 0" )
     private int likes;//点赞数
     @Column(columnDefinition="INT default 0" )
+    private int comments;//评论数
+    @Column(columnDefinition="INT default 0" )
     private int forwards;//转发数
     @Column(columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP" )
     private Date createdAt;//创建时间
@@ -28,11 +30,12 @@ public class Share {
 
     public Share(){}
 
-    public Share(int id, int userId, String content, int likes, int forwards, Date createdAt, Date updatedAt) {
+    public Share(int id, int userId, String content, int likes,int comments, int forwards, Date createdAt, Date updatedAt) {
         this.id = id;
         this.userId = userId;
         this.content = content;
         this.likes = likes;
+        this.comments = likes;
         this.forwards = forwards;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -68,6 +71,14 @@ public class Share {
 
     public void setLikes(int likes) {
         this.likes = likes;
+    }
+
+    public int getComments() {
+        return comments;
+    }
+
+    public void setComments(int comments) {
+        this.comments = comments;
     }
 
     public int getForwards() {

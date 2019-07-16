@@ -22,4 +22,8 @@ public class ShareServiceImpl implements ShareService {
         out.close();*/
         return shareDao.save(share);
     }
+    @Override
+    public List<Share> getAll() {
+        return shareDao.findAll();
+    }
 }
