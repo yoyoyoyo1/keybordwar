@@ -51,7 +51,7 @@ public class UserController {
         follow.setFollowering(followService.showFollowing(id));
         follow.setFollower(followService.showFollower(id));
         session.setAttribute("follow",follow);
-        return "index";//需要跳转至动态主页的控制器
+        return "redirect:index";//需要跳转至动态主页的控制器
     }
     /*@RequestMapping("testajax")
     @ResponseBody
@@ -67,7 +67,7 @@ public class UserController {
     {
         shareService.sendShare(share,response);
         System.out.println("用户id为："+share.getUserId()+"发布了一条动态,内容是："+share.getContent());
-        return "index";//需要跳转至动态首页控制器
+        return "redirect:index";//需要跳转至动态首页控制器
     }
     @RequestMapping("touserprofile")
     public String touserprofile()
