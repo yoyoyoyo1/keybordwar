@@ -9,10 +9,10 @@
 <meta name="keywords" content="" />
 <link rel="stylesheet" type="text/css" href="css/animate.css">
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/flatpickr.min.css">
 <link rel="stylesheet" type="text/css" href="css/line-awesome.css">
 <link rel="stylesheet" type="text/css" href="css/line-awesome-font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.min.css">
 <link rel="stylesheet" type="text/css" href="lib/slick/slick.css">
 <link rel="stylesheet" type="text/css" href="lib/slick/slick-theme.css">
 <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -20,13 +20,9 @@
 </head>
 
 
-<body>
-	
+<body >
 
-	<div class="wrapper">
-		
-
-
+	<div id="app" class="wrapper">
 		<header>
 			<div class="container">
 				<div class="header-data">
@@ -48,7 +44,7 @@
 								</a>
 							</li>
 							<li>
-								<a href="dialoging.html" title="">
+								<a href="dialoged.html" title="">
 									<span><img src="images/icon2.png" alt=""></span>
 									Companies
 								</a>
@@ -93,7 +89,7 @@
 							  				<div class="notification-info">
 							  					<h3><a href="messages.html" title="">Jassica William</a> </h3>
 							  					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do.</p>
-							  					<span>2 分钟前</span>
+							  					<span>2 min ago</span>
 							  				</div><!--notification-info -->
 						  				</div>
 						  				<div class="notfication-details">
@@ -103,7 +99,7 @@
 							  				<div class="notification-info">
 							  					<h3><a href="messages.html" title="">Jassica William</a></h3>
 							  					<p>Lorem ipsum dolor sit amet.</p>
-							  					<span>2 分钟前</span>
+							  					<span>2 min ago</span>
 							  				</div><!--notification-info -->
 						  				</div>
 						  				<div class="notfication-details">
@@ -113,7 +109,7 @@
 							  				<div class="notification-info">
 							  					<h3><a href="messages.html" title="">Jassica William</a></h3>
 							  					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempo incididunt ut labore et dolore magna aliqua.</p>
-							  					<span>2 分钟前</span>
+							  					<span>2 min ago</span>
 							  				</div><!--notification-info -->
 						  				</div>
 						  				<div class="view-all-nots">
@@ -138,8 +134,8 @@
 							  					<img src="images/resources/ny-img1.png" alt="">
 							  				</div>
 							  				<div class="notification-info">
-							  					<h3><a href="#" title="">Jassica William</a> 评论了你的动态.</h3>
-							  					<span>2 分钟前</span>
+							  					<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
+							  					<span>2 min ago</span>
 							  				</div><!--notification-info -->
 						  				</div>
 						  				<div class="notfication-details">
@@ -147,8 +143,8 @@
 							  					<img src="images/resources/ny-img2.png" alt="">
 							  				</div>
 							  				<div class="notification-info">
-							  					<h3><a href="#" title="">Jassica William</a> 评论了你的动态.</h3>
-							  					<span>2 分钟前</span>
+							  					<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
+							  					<span>2 min ago</span>
 							  				</div><!--notification-info -->
 						  				</div>
 						  				<div class="notfication-details">
@@ -156,8 +152,8 @@
 							  					<img src="images/resources/ny-img3.png" alt="">
 							  				</div>
 							  				<div class="notification-info">
-							  					<h3><a href="#" title="">Jassica William</a> 评论了你的动态.</h3>
-							  					<span>2 分钟前</span>
+							  					<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
+							  					<span>2 min ago</span>
 							  				</div><!--notification-info -->
 						  				</div>
 						  				<div class="notfication-details">
@@ -165,8 +161,8 @@
 							  					<img src="images/resources/ny-img2.png" alt="">
 							  				</div>
 							  				<div class="notification-info">
-							  					<h3><a href="#" title="">Jassica William</a> 评论了你的动态.</h3>
-							  					<span>2 分钟前</span>
+							  					<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
+							  					<span>2 min ago</span>
 							  				</div><!--notification-info -->
 						  				</div>
 						  				<div class="view-all-nots">
@@ -230,164 +226,21 @@
 		</header><!--header end-->	
 
 
-		<section class="profile-account-setting">
+		<section class="companies-info">
 			<div class="container">
-				<div class="account-tabs-setting">
+				<div class="company-title">
+					<h3><a href="dialoging.html">正在讨论圆桌</a>  / 已完成圆桌</h3>
+				</div><!--company-title end-->
+				<div class="companies-list">
 					<div class="row">
-						<div class="col-lg-3">
-							<div class="acc-leftbar">
-								<div class="nav nav-tabs" id="nav-tab" role="tablist">
-									<a class="nav-item nav-link active" id="nav-acc-tab" data-toggle="tab" href="#nav-acc" role="tab" aria-controls="nav-acc" aria-selected="true"><i class="la la-cogs"></i>修改密码</a>
-								    <a class="nav-item nav-link" id="nav-notification-tab" data-toggle="tab" href="#nav-notification" role="tab" aria-controls="nav-notification" aria-selected="false"><i class="fa fa-flash"></i>通知</a>
-								  </div>
-							</div><!--acc-leftbar end-->
-						</div>
-						<div class="col-lg-9">
-							<div class="tab-content" id="nav-tabContent">
-								<div class="tab-pane fade show active" id="nav-acc" role="tabpanel" aria-labelledby="nav-acc-tab">
-									<div class="acc-setting">
-										<h3>修改密码</h3>
-										<form>
-											<div class="cp-field">
-												<h5>旧密码</h5>
-												<div class="cpp-fiel">
-													<input type="text" name="old-password" placeholder="旧密码">
-													<i class="fa fa-lock"></i>
-												</div>
-											</div>
-											<div class="cp-field">
-												<h5>新密码</h5>
-												<div class="cpp-fiel">
-													<input type="text" name="new-password" placeholder="新密码">
-													<i class="fa fa-lock"></i>
-												</div>
-											</div>
-											<div class="cp-field">
-												<h5>确认密码</h5>
-												<div class="cpp-fiel">
-													<input type="text" name="repeat-password" placeholder="确认密码">
-													<i class="fa fa-lock"></i>
-												</div>
-											</div>
-											<div class="cp-field">
-												<h5><a href="#" title="">忘记密码?</a></h5>
-											</div>
-											<div class="save-stngs pd2">
-												<ul>
-													<li><button type="submit">确认</button></li>
-												</ul>
-											</div><!--save-stngs end-->
-										</form>
-									</div><!--acc-setting end-->
-								</div>
-
-
-							  	<div class="tab-pane fade" id="nav-notification" role="tabpanel" aria-labelledby="nav-notification-tab">
-							  		<div class="acc-setting">
-							  			<h3>通知</h3>
-							  			<div class="notifications-list">
-							  				<div class="notfication-details">
-								  				<div class="noty-user-img">
-								  					<img src="images/resources/ny-img1.png" alt="">
-								  				</div>
-								  				<div class="notification-info">
-								  					<h3><a href="#" title="">Jassica William</a> 评论了你的动态.</h3>
-								  					<span>2 分钟前</span>
-								  				</div><!--notification-info -->
-							  				</div><!--notfication-details end-->
-							  				<div class="notfication-details">
-								  				<div class="noty-user-img">
-								  					<img src="images/resources/ny-img2.png" alt="">
-								  				</div>
-								  				<div class="notification-info">
-								  					<h3><a href="#" title="">Poonam Verma</a> 点赞了你的动态.</h3>
-								  					<span>2 分钟前</span>
-								  				</div><!--notification-info -->
-							  				</div><!--notfication-details end-->
-							  				<div class="notfication-details">
-								  				<div class="noty-user-img">
-								  					<img src="images/resources/ny-img3.png" alt="">
-								  				</div>
-								  				<div class="notification-info">
-								  					<h3><a href="#" title="">Tonney Dhman</a> 评论了你的动态.</h3>
-								  					<span>2 分钟前</span>
-								  				</div><!--notification-info -->
-							  				</div><!--notfication-details end-->
-							  				<div class="notfication-details">
-								  				<div class="noty-user-img">
-								  					<img src="images/resources/ny-img1.png" alt="">
-								  				</div>
-								  				<div class="notification-info">
-								  					<h3><a href="#" title="">Jassica William</a> 评论了你的动态.</h3>
-								  					<span>2 分钟前</span>
-								  				</div><!--notification-info -->
-							  				</div><!--notfication-details end-->
-							  				<div class="notfication-details">
-								  				<div class="noty-user-img">
-								  					<img src="images/resources/ny-img1.png" alt="">
-								  				</div>
-								  				<div class="notification-info">
-								  					<h3><a href="#" title="">Jassica William</a> 评论了你的动态.</h3>
-								  					<span>2 分钟前</span>
-								  				</div><!--notification-info -->
-							  				</div><!--notfication-details end-->
-							  				<div class="notfication-details">
-								  				<div class="noty-user-img">
-								  					<img src="images/resources/ny-img2.png" alt="">
-								  				</div>
-								  				<div class="notification-info">
-								  					<h3><a href="#" title="">Poonam Verma </a> 点赞了你的动态.</h3>
-								  					<span>2 分钟前</span>
-								  				</div><!--notification-info -->
-							  				</div><!--notfication-details end-->
-							  				<div class="notfication-details">
-								  				<div class="noty-user-img">
-								  					<img src="images/resources/ny-img3.png" alt="">
-								  				</div>
-								  				<div class="notification-info">
-								  					<h3><a href="#" title="">Tonney Dhman</a> 评论了你的动态</h3>
-								  					<span>2 分钟前</span>
-								  				</div><!--notification-info -->
-							  				</div><!--notfication-details end-->
-							  				<div class="notfication-details">
-								  				<div class="noty-user-img">
-								  					<img src="images/resources/ny-img1.png" alt="">
-								  				</div>
-								  				<div class="notification-info">
-								  					<h3><a href="#" title="">Jassica William</a> 评论了你的动态.</h3>
-								  					<span>2 分钟前</span>
-								  				</div><!--notification-info -->
-							  				</div><!--notfication-details end-->
-							  			</div><!--notifications-list end-->
-							  		</div><!--acc-setting end-->
-							  	</div>
-							</div>
-						</div>
+                        <desktop :dialog="dialog" v-for="(dialog,index) in dialogs"></desktop>
 					</div>
-				</div><!--account-tabs-setting end-->
-			</div>
-		</section>
-
-
-
-		<footer>
-			<div class="footy-sec mn no-margin">
-				<div class="container">
-					<ul>
-						<li><a href="#" title="">Help Center</a></li>
-						<li><a href="#" title="">Privacy Policy</a></li>
-						<li><a href="#" title="">Community Guidelines</a></li>
-						<li><a href="#" title="">Cookies Policy</a></li>
-						<li><a href="#" title="">Career</a></li>
-						<li><a href="#" title="">Forum</a></li>
-						<li><a href="#" title="">Language</a></li>
-						<li><a href="#" title="">Copyright Policy</a></li>
-					</ul>
-					<p><img src="images/copy-icon2.png" alt="">Copyright 2017</p>
-					<img class="fl-rgt" src="images/logo2.png" alt="">
+				</div><!--companies-list end-->
+				<div class="process-comm">
+					<a  @click="more" href="javascript:void(0)" title=""><img src="images/process-icon.png" alt=""></a>
 				</div>
 			</div>
-		</footer>
+		</section><!--companies-info end-->
 
 	</div><!--theme-layout end-->
 
@@ -396,10 +249,62 @@
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/popper.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/jquery.mCustomScrollbar.js"></script>
+<script type="text/javascript" src="js/flatpickr.min.js"></script>
 <script type="text/javascript" src="lib/slick/slick.min.js"></script>
 <script type="text/javascript" src="js/script.js"></script>
+    <script type="x-template" id="desktop">
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="company_profile_info">
+                <div class="company-up-info">
+                    <img src="images/resources/cmp-icon12.png" alt="">
+                    <h3>{{dialog.title}}</h3>
+                    <ul>
+                        <li><a href="" title="" class="follow">查看</a></li>
+                    </ul>
+                </div>
+                <a  href="javascript:void(0)" @mouseover="showContent" class="view-more-pro">详细信息</a>
+            </div><!--company_profile_info end-->
+        </div>
+    </script>
+    <script src="js/vue.min.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script>
+        //定义desktop组件
+        Vue.component('desktop',{
+            //定义数据
+            props:['dialog'],
+            //定义方法
+            methods:{
+                showContent(){
+                    alert(this.dialog.content)
+                },
+            },
+            template:'#desktop'
 
+        })
+        new Vue({
+            el: '#app',
+            data: {
+                dialogs: [],
+                page:0,
+            },
+            methods:{
+                more(){
+                    axios.get(`json/a.json?page=${this.page}`).then( (res) =>{
+                        if(res.data.length != 0 ){
+                            this.dialogs = this.dialogs.concat(res.data)
+                            this.page += 1
+                            return
+                        }
+                        alert("没有更多")
+                    })
+                }
+            },
+            created(){
+               this.more()
+            }
+        })
 
+    </script>
 </body>
 </html>

@@ -12,13 +12,27 @@ public class Dialog {
     @Column(length=20)
     private String title;//标题
     private String content;//补充说明
+    private String image;//用户的头像地址
+    @Column(columnDefinition="int default 0")
+    private int likes;
+    @Column(columnDefinition="tinyint default 1")
+    private int active;
 
     public Dialog(){}
 
-    public Dialog(int id, String title, String content) {
+    public Dialog(int id, String title, String content,String image) {
         this.id = id;
         this.title = title;
         this.content = content;
+        this.image = image;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public int getId() {
