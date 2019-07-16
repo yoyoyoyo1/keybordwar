@@ -3,6 +3,7 @@ package com.oracle.demo.service.impl;
 import com.oracle.demo.entity.Admin;
 import com.oracle.demo.entity.User;
 import com.oracle.demo.respository.AdminDao;
+import com.oracle.demo.respository.UserDao;
 import com.oracle.demo.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
