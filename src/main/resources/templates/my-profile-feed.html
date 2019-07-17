@@ -183,8 +183,8 @@
                 </div><!--menu-btn end-->
                 <div class="user-account">
                     <div class="user-info">
-                        <img src="images/resources/user.png" alt="">
-                        <a href="#" title="">John</a>
+                        <img th:src="'userimage/'+${session.user.image}" alt="" width="25px" height="25px">
+                        <a href="#" title=""><span th:text="${session.user.nickname}"/> </a>
                         <i class="la la-sort-down"></i>
                     </div>
                     <div class="user-account-settingss">
@@ -360,12 +360,11 @@
                                                 <div class="job_descp">
                                                     <p th:text="${share.content}"></p>
                                                     <div class="job-status-bar">
-                                                        <ul >
+                                                        <ul class="like-com">
                                                             <li>
-                                                                <i class="la la-heart"><span th:text="${share.likes}"></span></i>
-                                                            </li>
-                                                            <li><a href="#" title="" class="com"><img src="images/com.png" alt=""></a></li>
+                                                                <a href="#"><i th:text="${share.likes}" class="la la-heart"></i></a>
                                                         </ul>
+                                                        <a href="#">评论<span th:text="${share.comments}"/></a>
                                                     </div>
                                                 </div>
 

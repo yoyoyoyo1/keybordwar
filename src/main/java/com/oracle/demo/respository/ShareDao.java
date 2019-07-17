@@ -13,4 +13,6 @@ import java.util.List;
 public interface ShareDao extends JpaRepository<Share,String> {
     @Query(value = "select * from Share where userId=?1 order by updatedAt DESC ",nativeQuery = true)
     public List<Share> findShareByIdOrderByTime(int userId);
+    @Query(value = "select * from Share ORDER  BY createdAt DESC",nativeQuery = true)
+    public List<Share> findtime();
 }

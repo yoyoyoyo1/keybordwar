@@ -1,6 +1,9 @@
 package com.oracle.demo.service;
 
+import com.oracle.demo.entity.Share;
 import com.oracle.demo.entity.User;
+
+import java.util.List;
 
 public interface UserService {
     //插入一个用户
@@ -11,4 +14,5 @@ public interface UserService {
     public User userLogin(String email,String pass);
     //用邮箱查找id(用于follow)
     public int findIdByEmail(String email);
+
 }
