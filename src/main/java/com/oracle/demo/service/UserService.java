@@ -14,5 +14,10 @@ public interface UserService {
     public User userLogin(String email,String pass);
     //用邮箱查找id(用于follow)
     public int findIdByEmail(String email);
-
+    //用户的关注着列表
+    public List<User> followMeList(List<Integer> followme);
+    //更换头像
+    public int changeImg(String name,int id);
+    //根据id查找
+    public User findById(int id);
 }

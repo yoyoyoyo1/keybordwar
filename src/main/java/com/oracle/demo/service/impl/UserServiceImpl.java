@@ -6,6 +6,8 @@ import com.oracle.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -26,6 +28,18 @@ public class UserServiceImpl implements UserService {
     public int findIdByEmail(String email)
     {
         return userDao.findIdByEmail(email);
+    }
+    public List<User> followMeList(List<Integer> followme)
+    {
+        return userDao.followMe(followme);
+    }
+    public int changeImg(String name,int id)
+    {
+        return userDao.changeImg(name,id);
+    }
+    public User findById(int id)
+    {
+        return userDao.findById(id);
     }
 
 }

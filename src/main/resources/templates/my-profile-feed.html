@@ -188,42 +188,12 @@
                         <i class="la la-sort-down"></i>
                     </div>
                     <div class="user-account-settingss">
-                        <h3>Online Status</h3>
-                        <ul class="on-off-status">
-                            <li>
-                                <div class="fgt-sec">
-                                    <input type="radio" name="cc" id="c5">
-                                    <label for="c5">
-                                        <span></span>
-                                    </label>
-                                    <small>Online</small>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="fgt-sec">
-                                    <input type="radio" name="cc" id="c6">
-                                    <label for="c6">
-                                        <span></span>
-                                    </label>
-                                    <small>Offline</small>
-                                </div>
-                            </li>
-                        </ul>
-                        <h3>Custom Status</h3>
-                        <div class="search_form">
-                            <form>
-                                <input type="text" name="search">
-                                <button type="submit">Ok</button>
-                            </form>
-                        </div><!--search_form end-->
                         <h3>Setting</h3>
                         <ul class="us-links">
-                            <li><a href="profile-account-setting.html" title="">Account Setting</a></li>
-                            <li><a href="#" title="">Privacy</a></li>
-                            <li><a href="#" title="">Faqs</a></li>
-                            <li><a href="#" title="">Terms & Conditions</a></li>
+                            <li><a th:href="@{/tousersetting}" title="">修改个人信息</a></li>
+                            <li><a href="profile-account-setting.html" title="">修改密码</a></li>
                         </ul>
-                        <h3 class="tc"><a href="#" title="">Logout</a></h3>
+                        <h3 class="tc"><a href="#" title="">注销</a></h3>
                     </div><!--user-account-settingss end-->
                 </div>
             </div><!--header-data end-->
@@ -244,10 +214,14 @@
                         <div class="col-lg-3">
                             <div class="main-left-sidebar">
                                 <div class="user_profile">
+                                    <form th:action="@{/userupdateimg(id=${session.user.id})}" method="post" enctype="multipart/form-data">
                                     <div class="user-pro-img">
                                         <img th:src="'userimage/'+${session.user.image}" height="200" width="200">
-                                        <a href="#" title=""><i class="fa fa-camera"></i></a>
+                                        <a href="#" title="" onclick="updateUserImage()"><i class="fa fa-camera"></i></a>
+                                        <input type="file" id="userimage" name="userimage" style="display: none">
+                                            <input type="submit"  style="display: none" id="updateimg" value="上传头像">
                                     </div><!--user-pro-img end-->
+                                    </form>
                                     <div class="user_pro_status">
                                         <ul class="flw-status">
                                             <li>
@@ -267,46 +241,15 @@
                                         <i class="la la-ellipsis-v"></i>
                                     </div><!--sd-title end-->
                                     <div class="suggestions-list">
+                                        <tr th:each="er:${followme}">
                                         <div class="suggestion-usd">
-                                            <img src="images/resources/s2.png" alt="">
+                                            <img th:src="'userimage/'+${er.image}" alt="" height="35px" width="35px">
                                             <div class="sgt-text">
-                                                <h4>John Doe</h4>
-                                                <span>PHP Developer</span>
+                                                <h4 th:text="${er.nickname}"></h4>
                                             </div>
                                             <span><i class="la la-plus"></i></span>
                                         </div>
-                                        <div class="suggestion-usd">
-                                            <img src="images/resources/s3.png" alt="">
-                                            <div class="sgt-text">
-                                                <h4>Poonam</h4>
-                                                <span>Wordpress Developer</span>
-                                            </div>
-                                            <span><i class="la la-plus"></i></span>
-                                        </div>
-                                        <div class="suggestion-usd">
-                                            <img src="images/resources/s4.png" alt="">
-                                            <div class="sgt-text">
-                                                <h4>Bill Gates</h4>
-                                                <span>C & C++ Developer</span>
-                                            </div>
-                                            <span><i class="la la-plus"></i></span>
-                                        </div>
-                                        <div class="suggestion-usd">
-                                            <img src="images/resources/s5.png" alt="">
-                                            <div class="sgt-text">
-                                                <h4>Jessica William</h4>
-                                                <span>Graphic Designer</span>
-                                            </div>
-                                            <span><i class="la la-plus"></i></span>
-                                        </div>
-                                        <div class="suggestion-usd">
-                                            <img src="images/resources/s6.png" alt="">
-                                            <div class="sgt-text">
-                                                <h4>John Doe</h4>
-                                                <span>PHP Developer</span>
-                                            </div>
-                                            <span><i class="la la-plus"></i></span>
-                                        </div>
+                                        </tr>
                                     </div><!--suggestions-list end-->
                                 </div><!--suggestions end-->
                             </div><!--main-left-sidebar end-->
@@ -483,46 +426,15 @@
                                         <i class="la la-ellipsis-v"></i>
                                     </div><!--sd-title end-->
                                     <div class="suggestions-list">
+                                        <tr th:each="ing:${following}">
                                         <div class="suggestion-usd">
-                                            <img src="images/resources/s2.png" alt="">
+                                            <img th:src="'userimage/'+${ing.image}" alt="" width="35px" height="35px">
                                             <div class="sgt-text">
-                                                <h4>John Doe</h4>
-                                                <span>PHP Developer</span>
+                                                <h4 th:text="${ing.nickname}"></h4>
                                             </div>
-                                            <span><i class="la la-plus"></i></span>
+                                            <span><i class="la la-minus"></i></span>
                                         </div>
-                                        <div class="suggestion-usd">
-                                            <img src="images/resources/s3.png" alt="">
-                                            <div class="sgt-text">
-                                                <h4>Poonam</h4>
-                                                <span>Wordpress Developer</span>
-                                            </div>
-                                            <span><i class="la la-plus"></i></span>
-                                        </div>
-                                        <div class="suggestion-usd">
-                                            <img src="images/resources/s4.png" alt="">
-                                            <div class="sgt-text">
-                                                <h4>Bill Gates</h4>
-                                                <span>C & C++ Developer</span>
-                                            </div>
-                                            <span><i class="la la-plus"></i></span>
-                                        </div>
-                                        <div class="suggestion-usd">
-                                            <img src="images/resources/s5.png" alt="">
-                                            <div class="sgt-text">
-                                                <h4>Jessica William</h4>
-                                                <span>Graphic Designer</span>
-                                            </div>
-                                            <span><i class="la la-plus"></i></span>
-                                        </div>
-                                        <div class="suggestion-usd">
-                                            <img src="images/resources/s6.png" alt="">
-                                            <div class="sgt-text">
-                                                <h4>John Doe</h4>
-                                                <span>PHP Developer</span>
-                                            </div>
-                                            <span><i class="la la-plus"></i></span>
-                                        </div>
+                                        </tr>
                                     </div><!--suggestions-list end-->
                                 </div><!--suggestions end-->
                             </div><!--right-sidebar end-->
@@ -689,5 +601,13 @@
 <script type="text/javascript" src="js/flatpickr.min.js"></script>
 <script type="text/javascript" src="lib/slick/slick.min.js"></script>
 <script type="text/javascript" src="js/script.js"></script>
+<script type="text/javascript">
+    function updateUserImage() {
+        var imgBtn=document.getElementById("updateimg");
+        document.getElementById("userimage").click();
+        imgBtn.style.display="block";
+        
+    }
+</script>
 </body>
 </html>

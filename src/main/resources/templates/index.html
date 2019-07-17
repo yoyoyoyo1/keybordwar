@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
 <html>
 <head>
 	<meta charset="UTF-8">
@@ -183,8 +184,8 @@
 				</div><!--menu-btn end-->
 				<div class="user-account">
 					<div class="user-info">
-						<img src="images/resources/user.png" alt="">
-						<a href="#" title="">John</a>
+						<img th:src="'userimage/'+${session.user.image}" alt="" width="25px" height="25px">
+						<a href="#" title=""><span th:text="${session.user.nickname}"/> </a>
 						<i class="la la-sort-down"></i>
 					</div>
 					<div class="user-account-settingss">
@@ -241,7 +242,7 @@
 									<div class="user-profile">
 										<div class="username-dt">
 											<div class="usr-pic" >
-												<img th:src="'userimage/'+${session.user.image}">
+												<img th:src="'userimage/'+${session.user.image}" width="120px" height="120px">
 											</div>
 										</div><!--username-dt end-->
 										<div class="user-specs" id="userdetail">
@@ -259,7 +260,7 @@
 											<span th:text="${session.follow.follower}"></span>
 										</li>
 										<li>
-											<a th:href="@{/touserprofile}" title="">查看个人主页</a>
+											<a th:href="@{/touserprofile(userId=${session.user.id})}" title="">查看个人主页</a>
 										</li>
 									</ul>
 								</div><!--user-data end-->
