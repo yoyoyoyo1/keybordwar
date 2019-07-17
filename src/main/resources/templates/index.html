@@ -22,8 +22,6 @@
 
 
 <body>
-	
-
 	<div class="wrapper">
 		
 
@@ -356,9 +354,9 @@
 										<div th:each="share : ${shareList}" class="post-bar">
 											<div class="post_topbar">
 												<div class="usy-dt">
-													<img src="images/resources/us-pic.png" alt="">
+													<img th:src="'userimage/'+${share.image}" alt="" height="50px" width="50px">
 													<div class="usy-name">
-														<h3>John Doe</h3>
+														<h3 th:text="${share.nickname}"></h3>
 														<span th:text="${share.createdAt}"><img src="images/clock.png" alt=""></span>
 													</div>
 												</div>
@@ -374,7 +372,7 @@
 													</li>
 
 												</ul>
-												<a><i th:text="${share.comments}"></i>评论</a>
+												<a href="#">评论&nbsp<span th:text="${share.comments}"/></a>
 											</div>
 										</div><!--post-bar end-->
 										<div class="top-profiles">
