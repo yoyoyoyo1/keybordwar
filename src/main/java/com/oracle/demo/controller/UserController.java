@@ -10,15 +10,18 @@ import com.oracle.demo.service.UserService;
 import com.oracle.demo.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.util.ClassUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -70,9 +73,48 @@ public class UserController {
         return "redirect:index";//需要跳转至动态首页控制器
     }
     @RequestMapping("touserprofile")
-    public String touserprofile()
-    {
+    public String touserprofile(int userId,Model model)
+    {   model.addAttribute("share",shareService.findShareByIdOrderByTime(userId));
+        List<Integer> followme=followService.followMeList(userId);
+        if(followme.size()!=0)
+        {
+            model.addAttribute("followme",userService.followMeList(followme));
+        }else {
+        model.addAttribute("followme",null);}
+        List<Integer> following=followService.followingList(userId);
+        if(following.size()!=0)
+        {
+            model.addAttribute("following",userService.followMeList(following));
+        }else {
+        model.addAttribute("following",null);}
         return "my-profile-feed";
+    }
+    @RequestMapping("userupdateimg")
+    public String userupdateimg(@RequestParam("userimage") MultipartFile file,@ModelAttribute User user,HttpSession session)
+    {   System.out.println("-------------------------"+user.getId());
+        if(file.isEmpty())
+        {
+            return "redirect:touserprofile?userId="+user.getId();
+        }
+        String fileName=user.getId()+file.getOriginalFilename();
+        //相对地址
+        String filePath= ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/userimage/";
+        File dest=new File(filePath + fileName);
+        try {
+            file.transferTo(dest);
+            userService.changeImg(fileName,user.getId());
+            session.setAttribute("user",userService.findById(user.getId()));
+            System.out.println("此用户"+user.getId()+"更新了自己的头像 。");
+            return "redirect:touserprofile?userId="+user.getId();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "redirect:touserprofile?userId="+user.getId();
+    }
+    @RequestMapping("tousersetting")
+    public String tousersetting()
+    {
+        return "profile-account-setting";
     }
 
 }

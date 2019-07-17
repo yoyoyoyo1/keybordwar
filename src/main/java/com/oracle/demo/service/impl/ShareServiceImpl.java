@@ -35,5 +35,8 @@ public class ShareServiceImpl implements ShareService {
     public void save(Share share){
         shareDao.save(share);
     }
-
+    public List<Share> findShareByIdOrderByTime(int userId)
+    {
+        return shareDao.findShareByIdOrderByTime(userId);
+    }
 }
