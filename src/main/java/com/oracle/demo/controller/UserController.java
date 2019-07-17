@@ -96,7 +96,7 @@ public class UserController {
         {
             return "redirect:touserprofile?userId="+user.getId();
         }
-        String fileName=user.getId()+file.getOriginalFilename();
+        String fileName=MD5Util.encode(user.getId()+"")+file.getOriginalFilename();
         //相对地址
         String filePath= ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/userimage/";
         File dest=new File(filePath + fileName);
@@ -111,10 +111,19 @@ public class UserController {
         }
         return "redirect:touserprofile?userId="+user.getId();
     }
+    //跳转到修改个人信息页面 发送model
     @RequestMapping("tousersetting")
-    public String tousersetting()
+    public String tousersetting(int id,Model model)
     {
+        model.addAttribute("userinfo",userService.findById(id));
         return "profile-account-setting";
+    }
+    @RequestMapping("updateuserinfo")
+    public String updateuserinfo(@ModelAttribute User user,HttpSession session)
+    {
+        userService.updateInfo(user.getNickname(),user.getMotto(),user.getId());
+        session.setAttribute("user",userService.findById(user.getId()));
+        return "redirect:touserprofile?userId="+user.getId();
     }
 
 }

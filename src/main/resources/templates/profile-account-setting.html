@@ -288,31 +288,35 @@
 							  	<div class="tab-pane fade" id="nav-notification" role="tabpanel" aria-labelledby="nav-notification-tab">
 									<div class="acc-setting">
 										<h3>修改签名昵称</h3>
-										<form>
+										<form th:action="@{/updateuserinfo(id=${session.user.id})}" th:object="${userinfo}" th:method="post">
 											<div class="cp-field">
 												<h5>昵称</h5>
 												<div class="cpp-fiel">
-													<input type="text" name="old-password" >
+													<input type="text" th:value="*{nickname}" id="upnickname" name="nickname">
 												</div>
 											</div>
 											<div class="cp-field">
 												<h5>签名</h5>
 												<div class="cpp-fiel">
-													<input type="text" name="new-password" >
+													<input type="text" th:value="*{motto}" id="upmotto" name="motto">
 												</div>
 											</div>
 											<div class="save-stngs pd2">
 												<ul>
-													<li><button type="submit">确认</button></li>
+													<li><input type="submit" id="updateBtn" style="display: none"/></li>
+													<li><button type="button" value="submit" onclick="changeInfo()">确认</button></li>
 												</ul>
 											</div><!--acc-setting end-->
-							  	</div>
+										</form>
+									</div>
 							</div>
 						</div>
 					</div>
 				</div><!--account-tabs-setting end-->
 			</div>
+			</div>
 		</section>
+
 
 
 
@@ -345,6 +349,25 @@
 <script type="text/javascript" src="js/jquery.mCustomScrollbar.js"></script>
 <script type="text/javascript" src="lib/slick/slick.min.js"></script>
 <script type="text/javascript" src="js/script.js"></script>
+	<script type="text/javascript">
+		function changeInfo(){
+			if(isNull())
+			{
+				document.getElementById("updateBtn").click();
+			}else {
+			alert("昵称不能为空");}
+
+		}
+		function isNull() {
+			var nickname=$("#upnickname").val();
+			if(nickname==null)
+			{
+				return false;
+			}
+			return true;
+
+		}
+	</script>
 
 
 </body>
