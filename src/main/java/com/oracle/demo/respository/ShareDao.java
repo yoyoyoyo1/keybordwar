@@ -1,6 +1,7 @@
 package com.oracle.demo.respository;
 
 import com.oracle.demo.entity.Share;
+import com.oracle.demo.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

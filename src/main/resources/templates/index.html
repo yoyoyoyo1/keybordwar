@@ -1,7 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <html>
 <head>
 	<meta charset="UTF-8">
@@ -230,7 +229,9 @@
 			</div><!--header-data end-->
 		</div>
 	</header><!--header end-->
-
+				</div><!--header-data end-->
+			</div>
+		</header><!--header end-->
 	<main>
 		<div class="main-section">
 			<div class="container">
@@ -543,6 +544,128 @@
 																	</div>
 																</div><!--comment-list end-->
 															</li>
+=======
+										</div><!--post-st end-->
+									</div><!--post-topbar end-->
+									<div class="posts-section">
+										<div th:each="share : ${shareList}" class="post-bar">
+											<div class="post_topbar">
+												<div class="usy-dt">
+													<img src="images/resources/us-pic.png" alt="">
+													<div class="usy-name">
+														<h3>John Doe</h3>
+														<span th:text="${share.createdAt}"><img src="images/clock.png" alt=""></span>
+													</div>
+												</div>
+											</div>
+											<div class="job_descp">
+												<p th:text="${share.content}"> </p>
+												<a href="#" title="">查看更多</a>
+											</div>
+											<div class="job-status-bar">
+												<ul class="like-com">
+													<li>
+														<a href="#"><i th:text="${share.likes}" class="la la-heart"></i></a>
+													</li>
+
+												</ul>
+												<a><i th:text="${share.comments}"></i>评论</a>
+											</div>
+										</div><!--post-bar end-->
+										<div class="top-profiles">
+											<div class="pf-hd">
+												<h3>Top Profiles</h3>
+												<i class="la la-ellipsis-v"></i>
+											</div>
+											<div class="profiles-slider">
+												<div class="user-profy">
+													<img src="images/resources/user1.png" alt="">
+													<h3>John Doe</h3>
+													<span>Graphic Designer</span>
+													<ul>
+														<li><a href="#" title="" class="followw">Follow</a></li>
+														<li><a href="#" title="" class="envlp"><img src="images/envelop.png" alt=""></a></li>
+														<li><a href="#" title="" class="hire">hire</a></li>
+													</ul>
+													<a href="#" title="">View Profile</a>
+												</div><!--user-profy end-->
+												<div class="user-profy">
+													<img src="images/resources/user2.png" alt="">
+													<h3>John Doe</h3>
+													<span>Graphic Designer</span>
+													<ul>
+														<li><a href="#" title="" class="followw">Follow</a></li>
+														<li><a href="#" title="" class="envlp"><img src="images/envelop.png" alt=""></a></li>
+														<li><a href="#" title="" class="hire">hire</a></li>
+													</ul>
+													<a href="#" title="">View Profile</a>
+												</div><!--user-profy end-->
+												<div class="user-profy">
+													<img src="images/resources/user3.png" alt="">
+													<h3>John Doe</h3>
+													<span>Graphic Designer</span>
+													<ul>
+														<li><a href="#" title="" class="followw">Follow</a></li>
+														<li><a href="#" title="" class="envlp"><img src="images/envelop.png" alt=""></a></li>
+														<li><a href="#" title="" class="hire">hire</a></li>
+													</ul>
+													<a href="#" title="">View Profile</a>
+												</div><!--user-profy end-->
+												<div class="user-profy">
+													<img src="images/resources/user1.png" alt="">
+													<h3>John Doe</h3>
+													<span>Graphic Designer</span>
+													<ul>
+														<li><a href="#" title="" class="followw">Follow</a></li>
+														<li><a href="#" title="" class="envlp"><img src="images/envelop.png" alt=""></a></li>
+														<li><a href="#" title="" class="hire">hire</a></li>
+													</ul>
+													<a href="#" title="">View Profile</a>
+												</div><!--user-profy end-->
+												<div class="user-profy">
+													<img src="images/resources/user2.png" alt="">
+													<h3>John Doe</h3>
+													<span>Graphic Designer</span>
+													<ul>
+														<li><a href="#" title="" class="followw">Follow</a></li>
+														<li><a href="#" title="" class="envlp"><img src="images/envelop.png" alt=""></a></li>
+														<li><a href="#" title="" class="hire">hire</a></li>
+													</ul>
+													<a href="#" title="">View Profile</a>
+												</div><!--user-profy end-->
+												<div class="user-profy">
+													<img src="images/resources/user3.png" alt="">
+													<h3>John Doe</h3>
+													<span>Graphic Designer</span>
+													<ul>
+														<li><a href="#" title="" class="followw">Follow</a></li>
+														<li><a href="#" title="" class="envlp"><img src="images/envelop.png" alt=""></a></li>
+														<li><a href="#" title="" class="hire">hire</a></li>
+													</ul>
+													<a href="#" title="">View Profile</a>
+												</div><!--user-profy end-->
+											</div><!--profiles-slider end-->
+										</div><!--top-profiles end-->
+
+										<div class="posty">
+											<div class="post-bar no-margin">
+												<div class="post_topbar">
+													<div class="usy-dt">
+														<img src="images/resources/us-pc2.png" alt="">
+														<div class="usy-name">
+															<h3>John Doe</h3>
+															<span><img src="images/clock.png" alt="">3 min ago</span>
+														</div>
+													</div>
+													<div class="ed-opts">
+														<a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
+														<ul class="ed-options">
+															<li><a href="#" title="">Edit Post</a></li>
+															<li><a href="#" title="">Unsaved</a></li>
+															<li><a href="#" title="">Unbid</a></li>
+															<li><a href="#" title="">Close</a></li>
+															<li><a href="#" title="">Hide</a></li>
+>>>>>>> 14665c76e33cc05ff3b3c4bf8b2733fd94b0bf73
 														</ul>
 													</li>
 													<li>
