@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="css/line-awesome.css">
     <link rel="stylesheet" type="text/css" href="css/line-awesome-font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.min.css">
+    <!--<link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.min.css">-->
     <link rel="stylesheet" type="text/css" href="lib/slick/slick.css">
     <link rel="stylesheet" type="text/css" href="lib/slick/slick-theme.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -341,47 +341,19 @@
                     <div class="col-lg-8 col-md-12 pd-right-none pd-left-none">
                         <div class="main-conversation-box">
 
-                            <div class="messages-line">
-                                <div class="main-message-box">
-                                    <div class="messg-usr-img">
-                                        <img src="images/resources/m-img1.png" alt="">
-                                    </div><!--messg-usr-img end-->
-                                    <div class="message-dt">
-                                        <div class="message-inner-dt img-bx">
-                                            <img src="images/resources/mt-img1.png" alt="">
-                                            <img src="images/resources/mt-img2.png" alt="">
-                                            <img src="images/resources/mt-img3.png" alt="">
-                                        </div><!--message-inner-dt end-->
-                                        <span>Sat, Aug 23, 1:08 PM</span>
-                                    </div><!--message-dt end-->
-                                </div><!--main-message-box end-->
-                                <me-message :message="message"></me-message>
-                                <me-message :message="message"></me-message>
-                                <me-message :message="message"></me-message>
-                                <me-message :message="message"></me-message>
-                                <me-message :message="message"></me-message>
-                                <me-message :message="message"></me-message>
-                                <me-message :message="message"></me-message>
-                                <me-message :message="message"></me-message>
-                                <me-message :message="message"></me-message>
-                                <me-message :message="message"></me-message>
-                                <me-message :message="message"></me-message>
-                                <me-message :message="message"></me-message>
-                                <me-message :message="message"></me-message>
-                                <me-message :message="message"></me-message>
-                                <me-message :message="message"></me-message>
-                                <me-message :message="message"></me-message>
-                                <me-message :message="message"></me-message>
-                                <me-message :message="message"></me-message>
-                                <me-message :message="message"></me-message>
-                                <me-message :message="message"></me-message>
-                                <other-message :message="message"></other-message>
+                            <div style="overflow:auto" class="messages-line">
+
+                                <!--<me-message :message="message"></me-message>-->
+
+                                <room-message :message="message" v-for="(message,index) in roomMessage.message">
+                                </room-message>
+
                             </div><!--messages-line end-->
                             <div class="message-send-area">
                                 <form>
                                     <div class="mf-field">
                                         <input id="message" type="text" name="message" placeholder="Type a message here">
-                                        <button type="submit">Send</button>
+                                        <button @click="send" type="button">Send</button>
                                     </div>
                                     <ul  id="emoji" style="display: none; position: absolute; bottom:50px; background-color:#fff; padding: 10px">
                                         <li @click="checkEmoji(item)" style=" margin: 5px;" v-for="(item,index) in emoji">
@@ -430,9 +402,9 @@
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/popper.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/jquery.mCustomScrollbar.js"></script>
+<!--<script type="text/javascript" src="js/jquery.mCustomScrollbar.js"></script>-->
 <script type="text/javascript" src="lib/slick/slick.min.js"></script>
-<script type="text/javascript" src="js/scrollbar.js"></script>
+<!--<script type="text/javascript" src="js/scrollbar.js"></script>-->
 <script type="text/javascript" src="js/script.js"></script>
 
 </body>
@@ -456,7 +428,8 @@
 </script>
 
 <script type="x-template" id="room-message">
-    <other-message v-if="own.id != message.form" :message="message"></other-message>
+    {{own.id}}
+    <other-message v-if="own.id != message.formId" :message="message"></other-message>
     <me-message v-else :message="message"></me-message>
 </script>
 
@@ -469,7 +442,7 @@
             <span>{{message.createAt}}</span>
         </div><!--message-dt end-->
         <div class="messg-usr-img">
-            <img :src="people[message.form].image" alt="">
+            <img :src="people[message.formId].image" alt="">
         </div><!--messg-usr-img end-->
     </div><!--main-message-box end-->
 
@@ -483,11 +456,14 @@
             <span>{{message.createAt}}</span>
         </div><!--message-dt end-->
         <div class="messg-usr-img">
-            <img :src="people[message.form].image" alt="">
+            <img :src="people[message.formId].image" alt="">
         </div><!--messg-usr-img end-->
     </div><!--main-message-box end-->
-</script>
 
+</script>
+<script src="./js/ws.js">
+
+</script>
 <script>
     let emoji = ["😀","😁","😂","😃","😄","😅","😆","😉","😊","😋","😎","😍","😘",
         "😗","😙","😚","😇","😐","😑","😶","😏","😣","😥","😮","😯","😪","😫","😴",
@@ -496,9 +472,10 @@
         ,"📱","🌙","🍁","🍂","🍃","🌷","💎","🔪","🔫","🏀","⚽","⚡","👄","👍","🔥"]
     let people = {1:{image:"https://c-ssl.duitang.com/uploads/item/201510/08/20151008192345_uPC5U.thumb.700_0.jpeg"}}
     let roomPeople = []
-    let message = {content:"123",createAt:new Date(),form:1}
-    let roomMessage = {time:null,message:[{content:"123",createAt:new Date(),form:1}]}
+    let message = {content:"123",createAt:new Date(),formId:1}
+    let roomMessage = {time:0,message:[]}
     let own = {}
+    let dialogId = 1;
     Vue.component('room-people',{
         //定义数据
         props:['user'],
@@ -568,7 +545,8 @@
             roomPeople,
             message,
             roomMessage,
-            emoji
+            emoji,
+            ws:"",
         },
         methods:{
             checkEmoji(item){
@@ -578,32 +556,41 @@
             showEmoji(){
                 document.getElementById('emoji').style.display = 'block'
             },
+            send(){
+                let str = document.getElementById("message").value
+                document.getElementById("message").value = ""
+                this.ws.ws.send(str)
+            }
 
         },
-        created(){
-            let dialogId = localStorage.getItem("dialogId")
-            if(JSON.parse(localStorage.getItem(`roomMessage${dialogId}`))){
-                roomMessage = JSON.parse(localStorage.getItem(`roomMessage${dialogId}`))
-            }
-            axios.get(`/dialog/message?dialogId=${dialogId}&time=${roomMessage.time}`).then((res)=>{
-                for(item of res.date){
-                    roomMessage.message.push(item)
-                }
-            })
+        mounted(){
+
+            dialogId = localStorage.getItem("dialogId")
+            dialogId = 1;
+            let time = new Date().getTime();
+
             //得到people
 
             if(JSON.parse(localStorage.getItem("people"))){
                 people = JSON.parse(localStorage.getItem("people"))
             }
             //得到自己
-            if(JSON.parse(localStorage.getItem("own"))){
-                own = JSON.parse(localStorage.getItem("own"))
-            }else{
-                axios.get("/user/self").then((res)=>{
-                    own = res.data
-                    JSON.parse(localStorage.setItem("own",JSON.stringify(own)))
+            axios.get("/user/self").then((res)=>{
+                own = res.data
+                this.ws = new WS(`ws://127.0.0.1:8080/dialog/${own.id}/${dialogId}`)
+                //获取历史信息
+                axios.get(`/dialog/message?dialogId=${dialogId}&time=${time}`).then((res)=>{
+                    if(!res.data){
+                        console.log(res.data)
+                        alert("错误")
+                        return
+                    }
+                    for(item of res.data){
+                        roomMessage.message.push(item)
+                    }
                 })
-            }
+            })
+
             axios.get("/dialog/user").then((res)=>{
                 roomPeople = res.data
                 for (people_item of roomPeople){
@@ -611,7 +598,6 @@
                 }
                 localStorage.setItem("people", JSON.stringify(people));
             })
-
         }
     })
 

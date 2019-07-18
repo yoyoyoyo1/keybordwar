@@ -45,5 +45,9 @@ public class UserServiceImpl implements UserService {
     {
         return userDao.updateinfo(nickname,motto,id);
     }
+    public int updatePwd(String pass,int id)
+    {
+        return userDao.updatepwd(pass,id);
+    }
 
 }

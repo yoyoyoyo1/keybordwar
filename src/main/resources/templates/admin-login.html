@@ -29,25 +29,30 @@
             <input value="登录"  style="width:100%;"  lay-submit lay-filter="login" type="submit">
             <hr class="hr20" >
         </form>
-        <input type="hidden" value="${msg}" id="msg">
+        <!--<input type="hidden" value="${msg}" id="msg">
         <p th:if="${msg} != null">
         <p th:text="${msg}"></p>
             <script>
                 var msg=$('#msg').value;
                 layer.alert("msg");
             </script>
-        </p>
+        </p>-->
 
     </div>
 
 
-        <script>
+        <script th:inline="javascript">
+
         $(function  () {
             layui.use('form', function(){
                 var form = layui.form;
                 // layer.msg('玩命卖萌中', function(){
                 //   //关闭后的操作
                 //   });
+                var msg=[[${msg}]]
+                if(msg != null) {
+                    layer.alert(msg);
+                }
                 //监听提交
                 form.on('submit(login)', function(data){
 

@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 @Controller
@@ -65,13 +66,14 @@ public class UserController {
         System.out.println(user);
         return user;
     }*/
-    @RequestMapping("sendshare")
-    public String sendshar(@ModelAttribute Share share, HttpServletResponse response) throws IOException
-    {
-        shareService.sendShare(share,response);
-        System.out.println("用户id为："+share.getUserId()+"发布了一条动态,内容是："+share.getContent());
-        return "redirect:index";//需要跳转至动态首页控制器
-    }
+//    @RequestMapping("sendshare")
+//    public String sendshar(@ModelAttribute Share share, HttpServletResponse response) throws IOException
+//    {
+//        shareService.sendShare(share,response);
+//        System.out.println("用户id为："+share.getUserId()+"发布了一条动态,内容是："+share.getContent());
+//        return "redirect:index";//需要跳转至动态首页控制器
+//    }
+
     @RequestMapping("touserprofile")
     public String touserprofile(int userId,Model model)
     {   model.addAttribute("share",shareService.findShareByIdOrderByTime(userId));
@@ -118,6 +120,7 @@ public class UserController {
         model.addAttribute("userinfo",userService.findById(id));
         return "profile-account-setting";
     }
+    //更新用户签名昵称
     @RequestMapping("updateuserinfo")
     public String updateuserinfo(@ModelAttribute User user,HttpSession session)
     {
@@ -126,4 +129,24 @@ public class UserController {
         return "redirect:touserprofile?userId="+user.getId();
     }
 
+    @GetMapping("/user/self")
+    @ResponseBody
+    public Object self(HttpSession session){
+        return session.getAttribute("user");
+    }
+    //更新用户密码
+    @RequestMapping("/userupdatepwd")
+    public void userupdatepwd(@ModelAttribute User user,HttpSession session,HttpServletResponse response) throws IOException
+    {
+        String pass=MD5Util.encode(user.getPass());
+        userService.updatePwd(pass,user.getId());
+        response.setCharacterEncoding("utf-8");
+        PrintWriter out = response.getWriter();
+        out.print("<html><head><meta charset='UTF-8'></head>");
+        out.print("<script>alert('修改成功，需要重新登录');window.location='/user'</script>");
+        out.flush();
+        out.close();
+        session.getAttribute("user");
+        session.invalidate();
+    }
 }

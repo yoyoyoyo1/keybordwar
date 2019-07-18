@@ -2,15 +2,26 @@ package com.oracle.demo.bean;
 import com.alibaba.fastjson.JSON;
 
 public class Message {
-    private String name;
+    private String userId;
     private String message;
-    public String getName(){
-        return name;
+    private String type;
+
+    public String getUserId() {
+        return userId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
 
     public String getMessage() {
         return message;
