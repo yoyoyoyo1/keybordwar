@@ -2,6 +2,7 @@ package com.oracle.demo.controller;
 
 
 import com.oracle.demo.entity.Share;
+import com.oracle.demo.entity.ShareInfo;
 import com.oracle.demo.service.impl.ShareServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+
 @Controller
 public class ShareController {
     @Autowired
@@ -21,7 +23,7 @@ public class ShareController {
 
     @RequestMapping("/index")
     public String toIndex(Model model){
-        List<Share> shareList=shareService.getAll();
+        List<ShareInfo> shareList=shareService.getAll();
         model.addAttribute("shareList",shareList);
         return "index";
     }
