@@ -72,6 +72,7 @@ public class UserController {
         System.out.println("用户id为："+share.getUserId()+"发布了一条动态,内容是："+share.getContent());
         return "redirect:index";//需要跳转至动态首页控制器
     }
+
     @RequestMapping("touserprofile")
     public String touserprofile(int userId,Model model)
     {   model.addAttribute("share",shareService.findShareByIdOrderByTime(userId));

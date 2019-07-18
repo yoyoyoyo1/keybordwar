@@ -8,4 +8,5 @@ import java.util.Date;
 public interface MessageService {
     public Object getDialogMessageByIdAndTime(Integer dialogId,Long time);
     public Object save(Message message);
+    public Message sendMessage(Message message, HttpServletResponse response) throws IOException;
 }

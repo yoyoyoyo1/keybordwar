@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Optional;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Service
 public class MessageServiceImpl implements MessageService {
@@ -21,5 +23,14 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Object save(Message message) {
         return messageDao.save(message);
+    }
+    
+    public Message sendMessage(Message message, HttpServletResponse response) throws IOException {
+        /*PrintWriter out=response.getWriter();
+        out.print("<html><head><meta charset='UTF-8'></head>");
+        out.print("<script>alert('发布成功');</script>");
+        out.flush();
+        out.close();*/
+        
     }
 }
