@@ -3,6 +3,8 @@ package com.oracle.demo.service;
 
 import com.oracle.demo.entity.Message;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 
 public interface MessageService {

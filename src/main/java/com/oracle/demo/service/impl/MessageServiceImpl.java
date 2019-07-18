@@ -31,6 +31,6 @@ public class MessageServiceImpl implements MessageService {
         out.print("<script>alert('发布成功');</script>");
         out.flush();
         out.close();*/
-        
+        return null;
     }
 }
