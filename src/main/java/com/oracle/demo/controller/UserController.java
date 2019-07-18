@@ -10,10 +10,7 @@ import com.oracle.demo.service.UserService;
 import com.oracle.demo.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -75,4 +72,9 @@ public class UserController {
         return "my-profile-feed";
     }
 
+    @GetMapping("/user/self")
+    @ResponseBody
+    public Object self(HttpSession session){
+        return session.getAttribute("user");
+    }
 }

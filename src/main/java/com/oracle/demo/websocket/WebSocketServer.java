@@ -17,7 +17,7 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-@RestController
+
 @ServerEndpoint("/websocket/{from}/{to}")
 @Component
 public class WebSocketServer {
@@ -42,7 +42,7 @@ public class WebSocketServer {
         this.from=from;
         this.to = to;
         Message message =  new Message();
-        message.setName(from);
+        message.setUserId(from);
         message.setMessage("hello");
         try {
             sendMessage(message);
@@ -66,7 +66,7 @@ public class WebSocketServer {
     public void onMessage(String message, Session session) throws IOException {
         //群发消息
         Message mess =  new Message();
-        mess.setName(from);
+        mess.setUserId(from);
         mess.setMessage(message);
         if(webSocketMap.get(to)!=null){
             webSocketMap.get(to).sendMessage(mess);
