@@ -8,6 +8,8 @@ import com.oracle.demo.service.FollowService;
 import com.oracle.demo.service.ShareService;
 import com.oracle.demo.service.UserService;
 import com.oracle.demo.util.MD5Util;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+import org.hibernate.validator.constraints.pl.REGON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,7 +50,7 @@ public class UserController {
     }
     //登录后跳转主页
     @RequestMapping("toindex")
-    public String toindex(String email,HttpSession session)
+    public String toindex(String email,HttpSession session,Model model)
     {
         Follow follow=new Follow();
         int id=userService.findIdByEmail(email);
@@ -75,7 +77,7 @@ public class UserController {
 //    }
 
     @RequestMapping("touserprofile")
-    public String touserprofile(int userId,Model model)
+    public String touserprofile(int userId,Model model,HttpSession session)
     {   model.addAttribute("share",shareService.findShareByIdOrderByTime(userId));
         List<Integer> followme=followService.followMeList(userId);
         if(followme.size()!=0)
@@ -89,6 +91,11 @@ public class UserController {
             model.addAttribute("following",userService.followMeList(following));
         }else {
         model.addAttribute("following",null);}
+        Follow follow=new Follow();
+        follow.setFollowering(followService.showFollowing(userId));
+        follow.setFollower(followService.showFollower(userId));
+        session.getAttribute("follow");
+        session.setAttribute("follow",follow);
         return "my-profile-feed";
     }
     @RequestMapping("userupdateimg")
@@ -148,5 +155,56 @@ public class UserController {
         out.close();
         session.getAttribute("user");
         session.invalidate();
+    }
+    //用户注销
+    @RequestMapping("/userlogout")
+    public void logout(HttpSession session,HttpServletResponse response) throws IOException
+    {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter out = response.getWriter();
+        out.print("<html><head><meta charset='UTF-8'></head>");
+        out.print("<script>alert('注销成功!');window.location='/user'</script>");
+        out.flush();
+        out.close();
+        /*User user=(User)session.getAttribute("user");
+        System.out.println(user+"===========================");*/
+        session.invalidate();
+    }
+    //用户关注他人
+    @RequestMapping("/userdofollow")
+    public void userpofollow(int toid,HttpSession session,HttpServletResponse response) throws IOException
+    {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter out = response.getWriter();
+        User user=(User)session.getAttribute("user");
+        if(followService.isFollow(user.getId(),toid)==null)
+        {
+            Follow follow=new Follow();
+            follow.setFollower(user.getId());
+            follow.setFollowering(toid);
+            followService.doFollow(follow);
+            out.print("<html><head><meta charset='UTF-8'></head>");
+            out.print("<script>alert('关注成功!');window.location='/touserprofile?userId="+user.getId()+"'</script>");
+            out.flush();
+            out.close();
+        }else {
+            out.print("<html><head><meta charset='UTF-8'></head>");
+            out.print("<script>alert('你关注过他了!');window.location='/touserprofile?userId="+user.getId()+"'</script>");
+            out.flush();
+            out.close();
+        }
+    }
+    //用户取关某人
+    @RequestMapping("userundofollow")
+    public void userundofollow(int toid,HttpSession session,HttpServletResponse response) throws  IOException
+    {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter out = response.getWriter();
+        User user=(User)session.getAttribute("user");
+        followService.undoFollow(user.getId(),toid);
+        out.print("<html><head><meta charset='UTF-8'></head>");
+        out.print("<script>alert('你已经不再关注他惹!');window.location='/touserprofile?userId="+user.getId()+"'</script>");
+        out.flush();
+        out.close();
     }
 }
