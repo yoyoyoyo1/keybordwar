@@ -41,5 +41,9 @@ public class UserServiceImpl implements UserService {
     {
         return userDao.findById(id);
     }
+    public int updateInfo(String nickname,String motto,int id)
+    {
+        return userDao.updateinfo(nickname,motto,id);
+    }
 
 }
