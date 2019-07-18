@@ -62,13 +62,7 @@ public class UserController {
         System.out.println(user);
         return user;
     }*/
-    @RequestMapping("sendshare")
-    public String sendshar(@ModelAttribute Share share, HttpServletResponse response) throws IOException
-    {
-        shareService.sendShare(share,response);
-        System.out.println("用户id为："+share.getUserId()+"发布了一条动态,内容是："+share.getContent());
-        return "index";//需要跳转至动态首页控制器
-    }
+
     @RequestMapping("touserprofile")
     public String touserprofile()
     {
