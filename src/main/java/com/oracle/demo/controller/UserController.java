@@ -203,8 +203,39 @@ public class UserController {
         User user=(User)session.getAttribute("user");
         followService.undoFollow(user.getId(),toid);
         out.print("<html><head><meta charset='UTF-8'></head>");
-        out.print("<script>alert('你已经不再关注他惹!');window.location='/touserprofile?userId="+user.getId()+"'</script>");
+        out.print("<script>alert('你已经不再关注TA惹!');window.location='/touserprofile?userId="+user.getId()+"'</script>");
         out.flush();
         out.close();
+    }
+    @RequestMapping("othersprofile")
+    public String othersprofile(int id,Model model,HttpSession session)
+    {
+        model.addAttribute("otheruser",userService.findById(id));
+        User user=(User)session.getAttribute("user");
+        Follow follow=new Follow();
+        follow.setFollower(followService.showFollower(id));
+        follow.setFollowering(followService.showFollowing(id));
+        model.addAttribute("follownum",follow);
+        List<Integer> followta=followService.followMeList(id);
+        if(followta.size()!=0)
+        {
+            model.addAttribute("followta",userService.followMeList(followta));
+        }else {
+            model.addAttribute("followta",null);}
+        List<Integer> tafollowing=followService.followingList(id);
+        if(tafollowing.size()!=0)
+        {
+            model.addAttribute("tafollowing",userService.followMeList(tafollowing));
+        }else {
+            model.addAttribute("tafollowing",null);}
+        model.addAttribute("tashare",shareService.findShareByIdOrderByTime(id));
+        if(followService.isFollowta(user.getId(),id)==null)
+        {
+            model.addAttribute("isfollow",false);
+        }else {
+            model.addAttribute("isfollow",true);
+        }
+        return "user-profile";
+
     }
 }

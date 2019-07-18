@@ -42,4 +42,8 @@ public class FollowServiceImpl implements FollowService {
     public int undoFollow(int follower, int following) {
         return followDao.undoFollow(follower,following);
     }
+    public Follow isFollowta(int follower,int following)
+    {
+        return followDao.isFollwta(follower,following);
+    }
 }

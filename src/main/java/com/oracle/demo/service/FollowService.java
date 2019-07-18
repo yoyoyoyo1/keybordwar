@@ -19,4 +19,6 @@ public interface FollowService {
     public Follow doFollow(Follow follow);
     //取关某人
     public int undoFollow(int follower,int following);
+    //查看是否关注他
+    public Follow isFollowta(int follower,int following);
 }

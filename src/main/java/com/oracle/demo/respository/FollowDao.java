@@ -23,4 +23,6 @@ public interface FollowDao extends JpaRepository<Follow,Integer> {
     @org.springframework.transaction.annotation.Transactional
     @Query(value = "delete from Follow where follower=?1 and following=?2",nativeQuery = true)
     public int undoFollow(int follower,int following);
+    @Query(value = "select * from Follow where follower=?1 and following=?2",nativeQuery = true)
+    public Follow isFollwta(int follower,int following);
 }

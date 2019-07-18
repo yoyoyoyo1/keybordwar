@@ -242,7 +242,7 @@
                                     <div class="suggestions-list">
                                         <tr th:each="er:${followme}">
                                         <div class="suggestion-usd">
-                                            <img th:src="'userimage/'+${er.image}" alt="" height="35px" width="35px">
+                                            <a th:href="@{/othersprofile(id=${er.id})}"><img th:src="'userimage/'+${er.image}" alt="" height="35px" width="35px"></a>
                                             <div class="sgt-text">
                                                 <span th:value="${er.id}" id="erid" diplay="none"/>
                                                 <h4 th:text="${er.nickname}"></h4>
@@ -428,7 +428,7 @@
                                     <div class="suggestions-list">
                                         <tr th:each="ing:${following}">
                                         <div class="suggestion-usd">
-                                            <img th:src="'userimage/'+${ing.image}" alt="" width="35px" height="35px">
+                                            <a th:href="@{/othersprofile(id=${ing.id})}"><img th:src="'userimage/'+${ing.image}" alt="" width="35px" height="35px"></a>
                                             <div class="sgt-text">
                                                 <span th:value="${ing.id}" display="none" id="ingid"/>
                                                 <h4 th:text="${ing.nickname}"></h4>
