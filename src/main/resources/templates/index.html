@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
 <html>
 <head>
 	<meta charset="UTF-8">
@@ -43,7 +43,7 @@
 				<nav>
 					<ul>
 						<li>
-							<a href="index.html" title="">
+							<a th:href="@{/index}" title="">
 								<span><img src="images/icon1.png" alt=""></span>
 								主页
 							</a>

@@ -250,34 +250,25 @@
 								<div class="tab-pane fade show active" id="nav-acc" role="tabpanel" aria-labelledby="nav-acc-tab">
 									<div class="acc-setting">
 										<h3>修改密码</h3>
-										<form>
-											<div class="cp-field">
-												<h5>旧密码</h5>
-												<div class="cpp-fiel">
-													<input type="text" name="old-password" placeholder="旧密码">
-													<i class="fa fa-lock"></i>
-												</div>
-											</div>
+										<form  th:action="@{/userupdatepwd(id=${session.user.id})}" th:method="post">
 											<div class="cp-field">
 												<h5>新密码</h5>
 												<div class="cpp-fiel">
-													<input type="text" name="new-password" placeholder="新密码">
+													<input type="text" name="pass" id="newpwd1" placeholder="新密码">
 													<i class="fa fa-lock"></i>
 												</div>
 											</div>
 											<div class="cp-field">
 												<h5>确认密码</h5>
 												<div class="cpp-fiel">
-													<input type="text" name="repeat-password" placeholder="确认密码">
+													<input type="text"  placeholder="确认密码" id="newpwd2" >
 													<i class="fa fa-lock"></i>
 												</div>
 											</div>
-											<div class="cp-field">
-												<h5><a href="#" title="">忘记密码?</a></h5>
-											</div>
 											<div class="save-stngs pd2">
 												<ul>
-													<li><button type="submit">确认</button></li>
+													<input type="submit" id="updatepwdBtn" style="display: none"/>
+													<li><button type="submit" onclick="updatePwd()">确认</button></li>
 												</ul>
 											</div><!--save-stngs end-->
 										</form>
@@ -358,6 +349,19 @@
 			alert("昵称不能为空");}
 
 		}
+		function updatePwd() {
+			if(isNullPwd())
+			{
+				alert("密码不能为空");
+			}else if(isSame())
+			{
+				alert("两次密码输入不一致");
+			}
+			else {
+				document.getElementById("updatepwdBtn").click();
+			}
+
+		}
 		function isNull() {
 			var nickname=$("#upnickname").val();
 			if(nickname==null)
@@ -365,6 +369,24 @@
 				return false;
 			}
 			return true;
+
+		}
+		function isNullPwd() {
+			var pwd=$("#newpwd1").val();
+			if(pwd==null)
+			{
+				return false;
+			}
+			return true;
+		}
+		function isSame() {
+			var pwd1=$("#newpwd1").val();
+			var pwd2=$("#newpwd2").val();
+			if(pwd1.equal(pwd2))
+			{
+				return true;
+			}
+			return false;
 
 		}
 	</script>
