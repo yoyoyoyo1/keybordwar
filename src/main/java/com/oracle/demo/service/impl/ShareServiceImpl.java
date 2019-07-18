@@ -25,10 +25,14 @@ public class ShareServiceImpl implements ShareService {
     }
     @Override
     public List<Share> getAll() {
-        return shareDao.findAll();
+        return shareDao.findtime();
     }
     @Override
     public void save(Share share){
         shareDao.save(share);
+    }
+    public List<Share> findShareByIdOrderByTime(int userId)
+    {
+        return shareDao.findShareByIdOrderByTime(userId);
     }
 }

@@ -6,8 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 public interface UserDao extends JpaRepository<User,Integer> {
@@ -26,11 +26,23 @@ public interface UserDao extends JpaRepository<User,Integer> {
     //模糊查询手机
     public List<User> findAllByPhoneLike(String pkey);
     //批量删除
-    @Transactional
+    @org.springframework.transaction.annotation.Transactional
     public void deleteUserByIdIn(List<Integer> id);
     //查询批量删除是否成功
-    @Transactional
+    @org.springframework.transaction.annotation.Transactional
     public List<User> findAllByIdIn(List<Integer> id);
     //分页查询用户(未实现)
     //blic Page<User> getUserListByIdContaining(String mohu, Pageable pageable);
+    @Query(value = "select * from User where id in ?1",nativeQuery = true)
+    public List<User> followMe(List<Integer> followme);
+    @Query(value = "select * from User where id = ?1",nativeQuery = true)
+    public User findById(int id);
+    @Modifying
+    @org.springframework.transaction.annotation.Transactional
+    @Query(value = "update User set image = ?1 where id = ?2",nativeQuery = true)
+    public int changeImg(String name,int id);
+    @Modifying
+    @org.springframework.transaction.annotation.Transactional
+    @Query(value = "update User set nickname = ?1,motto =?2 where id = ?3",nativeQuery = true)
+    public int updateinfo(String nickname,String motto,int id);
 }

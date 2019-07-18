@@ -1,5 +1,8 @@
 
 <!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -182,8 +185,8 @@
 					</div><!--menu-btn end-->
 					<div class="user-account">
 						<div class="user-info">
-							<img src="images/resources/user.png" alt="">
-							<a href="#" title="">John</a>
+							<img th:src="'userimage/'+${session.user.image}" alt="" width="25px" height="25px">
+							<a href="#" title=""><span th:text="${session.user.nickname}"/> </a>
 							<i class="la la-sort-down"></i>
 						</div>
 						<div class="user-account-settingss">
@@ -238,7 +241,7 @@
 							<div class="acc-leftbar">
 								<div class="nav nav-tabs" id="nav-tab" role="tablist">
 									<a class="nav-item nav-link active" id="nav-acc-tab" data-toggle="tab" href="#nav-acc" role="tab" aria-controls="nav-acc" aria-selected="true"><i class="la la-cogs"></i>修改密码</a>
-								    <a class="nav-item nav-link" id="nav-notification-tab" data-toggle="tab" href="#nav-notification" role="tab" aria-controls="nav-notification" aria-selected="false"><i class="fa fa-flash"></i>通知</a>
+								    <a class="nav-item nav-link" id="nav-notification-tab" data-toggle="tab" href="#nav-notification" role="tab" aria-controls="nav-notification" aria-selected="false"><i class="la la-cogs"></i>修改签名昵称</a>
 								  </div>
 							</div><!--acc-leftbar end-->
 						</div>
@@ -283,90 +286,37 @@
 
 
 							  	<div class="tab-pane fade" id="nav-notification" role="tabpanel" aria-labelledby="nav-notification-tab">
-							  		<div class="acc-setting">
-							  			<h3>通知</h3>
-							  			<div class="notifications-list">
-							  				<div class="notfication-details">
-								  				<div class="noty-user-img">
-								  					<img src="images/resources/ny-img1.png" alt="">
-								  				</div>
-								  				<div class="notification-info">
-								  					<h3><a href="#" title="">Jassica William</a> 评论了你的动态.</h3>
-								  					<span>2 分钟前</span>
-								  				</div><!--notification-info -->
-							  				</div><!--notfication-details end-->
-							  				<div class="notfication-details">
-								  				<div class="noty-user-img">
-								  					<img src="images/resources/ny-img2.png" alt="">
-								  				</div>
-								  				<div class="notification-info">
-								  					<h3><a href="#" title="">Poonam Verma</a> 点赞了你的动态.</h3>
-								  					<span>2 分钟前</span>
-								  				</div><!--notification-info -->
-							  				</div><!--notfication-details end-->
-							  				<div class="notfication-details">
-								  				<div class="noty-user-img">
-								  					<img src="images/resources/ny-img3.png" alt="">
-								  				</div>
-								  				<div class="notification-info">
-								  					<h3><a href="#" title="">Tonney Dhman</a> 评论了你的动态.</h3>
-								  					<span>2 分钟前</span>
-								  				</div><!--notification-info -->
-							  				</div><!--notfication-details end-->
-							  				<div class="notfication-details">
-								  				<div class="noty-user-img">
-								  					<img src="images/resources/ny-img1.png" alt="">
-								  				</div>
-								  				<div class="notification-info">
-								  					<h3><a href="#" title="">Jassica William</a> 评论了你的动态.</h3>
-								  					<span>2 分钟前</span>
-								  				</div><!--notification-info -->
-							  				</div><!--notfication-details end-->
-							  				<div class="notfication-details">
-								  				<div class="noty-user-img">
-								  					<img src="images/resources/ny-img1.png" alt="">
-								  				</div>
-								  				<div class="notification-info">
-								  					<h3><a href="#" title="">Jassica William</a> 评论了你的动态.</h3>
-								  					<span>2 分钟前</span>
-								  				</div><!--notification-info -->
-							  				</div><!--notfication-details end-->
-							  				<div class="notfication-details">
-								  				<div class="noty-user-img">
-								  					<img src="images/resources/ny-img2.png" alt="">
-								  				</div>
-								  				<div class="notification-info">
-								  					<h3><a href="#" title="">Poonam Verma </a> 点赞了你的动态.</h3>
-								  					<span>2 分钟前</span>
-								  				</div><!--notification-info -->
-							  				</div><!--notfication-details end-->
-							  				<div class="notfication-details">
-								  				<div class="noty-user-img">
-								  					<img src="images/resources/ny-img3.png" alt="">
-								  				</div>
-								  				<div class="notification-info">
-								  					<h3><a href="#" title="">Tonney Dhman</a> 评论了你的动态</h3>
-								  					<span>2 分钟前</span>
-								  				</div><!--notification-info -->
-							  				</div><!--notfication-details end-->
-							  				<div class="notfication-details">
-								  				<div class="noty-user-img">
-								  					<img src="images/resources/ny-img1.png" alt="">
-								  				</div>
-								  				<div class="notification-info">
-								  					<h3><a href="#" title="">Jassica William</a> 评论了你的动态.</h3>
-								  					<span>2 分钟前</span>
-								  				</div><!--notification-info -->
-							  				</div><!--notfication-details end-->
-							  			</div><!--notifications-list end-->
-							  		</div><!--acc-setting end-->
-							  	</div>
+									<div class="acc-setting">
+										<h3>修改签名昵称</h3>
+										<form th:action="@{/updateuserinfo(id=${session.user.id})}" th:object="${userinfo}" th:method="post">
+											<div class="cp-field">
+												<h5>昵称</h5>
+												<div class="cpp-fiel">
+													<input type="text" th:value="*{nickname}" id="upnickname" name="nickname">
+												</div>
+											</div>
+											<div class="cp-field">
+												<h5>签名</h5>
+												<div class="cpp-fiel">
+													<input type="text" th:value="*{motto}" id="upmotto" name="motto">
+												</div>
+											</div>
+											<div class="save-stngs pd2">
+												<ul>
+													<li><input type="submit" id="updateBtn" style="display: none"/></li>
+													<li><button type="button" value="submit" onclick="changeInfo()">确认</button></li>
+												</ul>
+											</div><!--acc-setting end-->
+										</form>
+									</div>
 							</div>
 						</div>
 					</div>
 				</div><!--account-tabs-setting end-->
 			</div>
+			</div>
 		</section>
+
 
 
 
@@ -399,6 +349,25 @@
 <script type="text/javascript" src="js/jquery.mCustomScrollbar.js"></script>
 <script type="text/javascript" src="lib/slick/slick.min.js"></script>
 <script type="text/javascript" src="js/script.js"></script>
+	<script type="text/javascript">
+		function changeInfo(){
+			if(isNull())
+			{
+				document.getElementById("updateBtn").click();
+			}else {
+			alert("昵称不能为空");}
+
+		}
+		function isNull() {
+			var nickname=$("#upnickname").val();
+			if(nickname==null)
+			{
+				return false;
+			}
+			return true;
+
+		}
+	</script>
 
 
 </body>
