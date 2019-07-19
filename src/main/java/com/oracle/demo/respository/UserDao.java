@@ -50,4 +50,8 @@ public interface UserDao extends JpaRepository<User,Integer> {
     @Transactional
     @Query(value = "update User set nickname = ?1,motto =?2 where id = ?3",nativeQuery = true)
     public int updateinfo(String nickname,String motto,int id);
+    @Modifying
+    @org.springframework.transaction.annotation.Transactional
+    @Query(value = "update User set pass = ?1 where id = ?2",nativeQuery = true)
+    public int updatepwd(String pass,int id);
 }

@@ -15,28 +15,85 @@
             height: 400px;
             width: 800px;
         }
+        .wrap{
+            width:150px;
+            position:relative;
+            overflow:hidden;
+            margin-right:4px;
+            display:inline-block;
+            padding:4px 10px;
+            line-height:18px;
+            text-align:center;
+            vertical-align:middle;
+            cursor:pointer;
+            background:rgb(217,237,247);
+            border-radius:4px;
+            -webkit-border-radius:4px;
+            -moz-border-radius:4px;
+            margin-top: 10px;
+            float:left;
+        }
+        .wrap span{
+            color:black;
+            font-size: 16px;
+        }
+        #fileupload{
+            height: 20px;
+        }
+        .wrap .file{
+
+            position:absolute;
+            top:0;
+            right:0;
+            margin:0;
+            border:solid transparent;
+            opacity:0;
+            filter:alpha(opacity=0);
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
-<div id="div1">
-    <p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>
-    <img src="https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top_ca79a146.png" style="max-width:100%;"/>
+<div class="wrap">
+    <span>正面图</span>
+    <input id="fileupload" class="file" type="file" name="pic1" onChange="preview(this)"/>
 </div>
-<button id="btn1">getJSON</button>
+<div id="preview"></div>
+
+
+<div class="wrap">
+    <span>侧面图</span>
+    <input id="fileupload" class="file" type="file" name="pic2" onChange="preview(this)"/>
+</div>
+<div id="preview1"></div>
+
+<div class="wrap">
+    <span>背面图</span>
+    <input id="fileupload" class="file" type="file" name="pic3" onChange="preview(this)"/>
+</div>
+
+<div id="preview2"></div>
 
 <script type="text/javascript" src="editor/wangEditor.js"></script>
 <script type="text/javascript">
-    var E = window.wangEditor
-    var editor = new E('#div1')
-    editor.create()
+    function preview(file){
+        var div = $(file).parent().next();
+        if(file.files&&file.files[0]){
+            var reader=new FileReader();
 
-    document.getElementById('btn1').addEventListener('click', function () {
-        var json = editor.txt.getJSON()  // 获取 JSON 格式的内容
-        var jsonStr = JSON.stringify(json)
-        console.log(json)
-        console.log(jsonStr)
-    })
+            reader.οnlοad=function(evt){
+
+                div.html('<img  src="'+evt.target.result+'"/>');
+            }
+            reader.readAsDataURL(file.files[0]);
+
+        }else{
+            prevDiv.innerHTML='<div class="img" style="filter:progid:DXImageTransform.Microsoft.AlphaImageLoader">';
+        }
+
+
+    }
 </script>
 </body>
 

@@ -1,11 +1,13 @@
 package com.oracle.demo.service.impl;
 
+import com.oracle.demo.entity.Follow;
 import com.oracle.demo.respository.FollowDao;
 import com.oracle.demo.service.FollowService;
 import org.omg.CORBA.INTERNAL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.List;
 
 @Service
@@ -29,5 +31,19 @@ public class FollowServiceImpl implements FollowService {
     {
         return followDao.followingList(id);
     }
-
+    public Follow isFollow(int follower,int following)
+    {
+        return followDao.isFollow(follower,following);
+    }
+    public Follow doFollow(Follow follow)
+    {
+        return followDao.save(follow);
+    }
+    public int undoFollow(int follower, int following) {
+        return followDao.undoFollow(follower,following);
+    }
+    public Follow isFollowta(int follower,int following)
+    {
+        return followDao.isFollwta(follower,following);
+    }
 }

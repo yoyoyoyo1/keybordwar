@@ -43,9 +43,9 @@
                 <nav>
                     <ul>
                         <li>
-                            <a href="index.html" title="">
+                            <a th:href="@{/index}" title="">
                                 <span><img src="images/icon1.png" alt=""></span>
-                                Home
+                                主页
                             </a>
                         </li>
                         <li>
@@ -191,9 +191,8 @@
                         <h3>Setting</h3>
                         <ul class="us-links">
                             <li><a th:href="@{/tousersetting(id=${session.user.id})}" title="">修改个人信息</a></li>
-                            <li><a href="profile-account-setting.html" title="">修改密码</a></li>
                         </ul>
-                        <h3 class="tc"><a href="#" title="">注销</a></h3>
+                        <h3 class="tc"><a th:href="@{/userlogout}" title="">注销</a></h3>
                     </div><!--user-account-settingss end-->
                 </div>
             </div><!--header-data end-->
@@ -243,11 +242,12 @@
                                     <div class="suggestions-list">
                                         <tr th:each="er:${followme}">
                                         <div class="suggestion-usd">
-                                            <img th:src="'userimage/'+${er.image}" alt="" height="35px" width="35px">
+                                            <a th:href="@{/othersprofile(id=${er.id})}"><img th:src="'userimage/'+${er.image}" alt="" height="35px" width="35px"></a>
                                             <div class="sgt-text">
+                                                <span th:value="${er.id}" id="erid" diplay="none"/>
                                                 <h4 th:text="${er.nickname}"></h4>
                                             </div>
-                                            <span><i class="la la-plus"></i></span>
+                                            <a th:href="@{/userdofollow(toid=${er.id})}"><i class="la la-chain"></i></a>
                                         </div>
                                         </tr>
                                     </div><!--suggestions-list end-->
@@ -428,11 +428,12 @@
                                     <div class="suggestions-list">
                                         <tr th:each="ing:${following}">
                                         <div class="suggestion-usd">
-                                            <img th:src="'userimage/'+${ing.image}" alt="" width="35px" height="35px">
+                                            <a th:href="@{/othersprofile(id=${ing.id})}"><img th:src="'userimage/'+${ing.image}" alt="" width="35px" height="35px"></a>
                                             <div class="sgt-text">
+                                                <span th:value="${ing.id}" display="none" id="ingid"/>
                                                 <h4 th:text="${ing.nickname}"></h4>
                                             </div>
-                                            <span><i class="la la-minus"></i></span>
+                                            <a th:href="@{/userundofollow(toid=${ing.id})}"><i class="la la-chain-broken"></i></a>
                                         </div>
                                         </tr>
                                     </div><!--suggestions-list end-->
@@ -607,6 +608,32 @@
         document.getElementById("userimage").click();
         imgBtn.style.display="block";
         
+    }
+    function dofollow()
+    {   var id=$("#erid").val();
+        $.ajax({
+            url: "/userdofollow",
+            data: {
+                id:id
+            },
+            dataType: "text",
+            type: "post",
+            async: false,
+            cache: false,
+            success: function (res) {
+                debugger;
+
+                if (res == "ok" && res != null) {
+                    alert("关注成功);
+                    window.location.reload();
+                }else {
+                    alert("你已经关注了这个人了");
+                }
+            },
+            error: function () {
+                alert("哇哦，出错失败了");
+            }
+        })
     }
 </script>
 </body>

@@ -22,4 +22,6 @@ public interface UserService {
     public User findById(int id);
     //修改签名和昵称
     public int updateInfo(String nickname,String motto,int id);
+    //修改用户密码
+    public int updatePwd(String pass,int id);
 }

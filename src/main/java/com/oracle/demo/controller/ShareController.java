@@ -2,14 +2,19 @@ package com.oracle.demo.controller;
 
 
 import com.oracle.demo.entity.Share;
+import com.oracle.demo.entity.ShareInfo;
 import com.oracle.demo.service.impl.ShareServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+
 @Controller
 public class ShareController {
     @Autowired
@@ -18,23 +23,17 @@ public class ShareController {
 
     @RequestMapping("/index")
     public String toIndex(Model model){
-        List<Share> shareList=shareService.getAll();
+        List<ShareInfo> shareList=shareService.getAll();
         model.addAttribute("shareList",shareList);
         return "index";
     }
 
-    @RequestMapping("/save")
-    public String save(String content){
-        Share share = new Share();
-        share.setContent(content);
-        share.setId(5);
-        Date date=new Date();
-        share.setCreatedAt(date);
-        share.setForwards(5);
-        share.setLikes(5);
-        share.setUserId(5);
-        share.setUpdatedAt(date);
-        shareService.save(share);
-        return "save successfully!";
+    @RequestMapping("sendshare")
+    public String sendshare(@ModelAttribute Share share, HttpServletResponse response) throws IOException
+    {
+        shareService.sendShare(share,response);
+        System.out.println("用户id为："+share.getUserId()+"发布了一条动态,内容是："+share.getContent());
+        return "redirect:index";//需要跳转至动态首页控制器
     }
+
 }
