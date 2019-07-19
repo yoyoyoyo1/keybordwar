@@ -5,6 +5,7 @@ import com.oracle.demo.entity.User;
 import com.oracle.demo.respository.AdminDao;
 import com.oracle.demo.respository.UserDao;
 import com.oracle.demo.service.AdminService;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,8 @@ public class AdminServiceImpl implements AdminService{
         List<User> users=userDao.findAllBy();
             System.out.println("查询用户全部列表："+users.toString());
             model.addAttribute("Userlist",users);
+            JSONArray json=JSONArray.fromObject(users);
+            model.addAttribute("userjson",json);
         return "admin-userlist";
     }
 
@@ -81,6 +84,7 @@ public class AdminServiceImpl implements AdminService{
     }
 
     @Override
+    //批量删除用户
     public String admindelbnuser(List<Integer> id) {
         userDao.deleteUserByIdIn(id);
         if (userDao.findAllByIdIn(id).isEmpty()||userDao.findAllByIdIn(id).size()==0){
@@ -90,5 +94,19 @@ public class AdminServiceImpl implements AdminService{
         System.out.println("批量删除失败");
         return "bad";
     }
+
+    @Override
+    //通过修改用户id跳转
+    public String toadminedituser(int id, Model model) {
+        User user1=userDao.findById(id);
+        model.addAttribute("adeduser",user1);
+        return "adminedituser";
+    }
+
+    @Override
+    public String adminedituser(User user, Model model) {
+        return null;
+    }
+
 
 }

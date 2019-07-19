@@ -2,13 +2,18 @@ package com.oracle.demo.controller;
 
 import com.oracle.demo.entity.Admin;
 import com.oracle.demo.entity.User;
+import com.oracle.demo.respository.AdminDao;
+import com.oracle.demo.respository.UserDao;
 import com.oracle.demo.service.AdminService;
+import com.oracle.demo.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.transform.Result;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,6 +22,10 @@ import java.util.List;
 public class AdminController {
   @Autowired
     private AdminService adminService;
+  @Autowired
+  private UserDao userDao;
+  @Autowired
+  private AdminDao adminDao;
   //管理员登录
   @RequestMapping(value = "/adminlogin" ,method = RequestMethod.POST)
     public String adminlogin(@ModelAttribute Admin admin,Model model,HttpSession session){
@@ -24,9 +33,14 @@ public class AdminController {
     return adminService.adminlogin(admin,model,session);
   }
 
-  @GetMapping("gethello")
-  public String xxx(){
-      return "hello";
+  @RequestMapping("gethello")
+  public String xxx(String xx){
+    System.out.println(xx);
+      return "";
+  }
+  @GetMapping("/gethello1")
+  public String zz(){
+    return "hello";
   }
 
   @GetMapping("/toadminlogin")
@@ -66,6 +80,9 @@ public class AdminController {
     {
       user.setMotto("编辑自己的个性签名吧");
     }
+    String passmd5= MD5Util.encode(user.getPass());
+    user.setPass(passmd5);
+    System.out.println("添加用户的密码通过md5加密为："+passmd5);
     adminService.adminadduser(user);
     return "admin-index";
   }
@@ -134,4 +151,28 @@ public class AdminController {
     return flag;
   }
 
+  //返回用户的昵称
+  @RequestMapping("/getnkname")
+  @ResponseBody
+  public List<String> getnkname(String nkey){
+     List<User> users=userDao.findAllByNicknameLike(nkey+"%");
+     List<String> nk=new ArrayList<>();
+     for (User user:users){
+       nk.add(user.getNickname());
+     }
+    System.out.println("补全用户昵称的查询:"+nk.toString());
+    return nk;
+  }
+
+  //通过修改修改用户id的跳转
+  @RequestMapping("/toamdinedituser")
+  public String toadminedituser(int id,Model model){
+     return adminService.toadminedituser(id,model);
+  }
+
+  //修改用户
+  @RequestMapping("/adminedituser")
+  public String adminedituser(@ModelAttribute User user,Model model){
+    return "";
+  }
 }
