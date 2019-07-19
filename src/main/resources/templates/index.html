@@ -20,7 +20,7 @@
 </head>
 <style>
 	.like{ font-size:20px;  color:#ccc; cursor:pointer;border:none;background: none;outline: 0!important}
-	.cs{color:#f00;}
+	.unLike{font-size:20px;  color:#f00; cursor:pointer;border:none;background: none;outline: 0!important}
 </style>
 
 <body>
@@ -369,13 +369,16 @@
 											<a href="#" title="">查看更多</a>
 										</div>
 										<div class="job-status-bar">
-											<ul class="like-com">
-												<li th:id="${share.id}">
-													<a href="#"><i th:text="${share.likes}" class="la la-heart"></i></a>
-												</li>
+											<ul th:id="${share.id}" class="like-com">
+												<li th:text="${share.likes}"></li>
 											</ul>
 											<form th:action="@{/addLike(userId=${session.user.id},shareId=${share.id})}"  method="post" target="nm_iframe">
-											<button class="like" type="submit" th:onclick="add([[${share.id}]]);" value="post">&#10084;</button>
+										<div th:if="${share.likeInfo} eq 0">
+											<button class="like" type="submit" th:onclick="like(this,[[${share.id}]]);" value="post">&#10084;</button>
+										</div>
+										<div th:if="${share.likeInfo} eq 1">
+											<button class="unLike" type="submit" th:onclick="like(this,[[${share.id}]]);" value="post">&#10084;</button>
+										</div>
 											</form>
 											<iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
 											<a href="#">评论&nbsp<span th:text="${share.comments}"/></a>
@@ -1003,18 +1006,22 @@
         })
     })*/
 </script>
-<script typet="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+
 <script>
-    $(function () {
-        $(".like").click(function () {
-            $(this).toggleClass('cs');
-        })
-    })
-</script>
-<script>
-	function add(shareid) {
-	    document.getElementById(shareid).innerHTML="Hello World";
-		
+    function like(button,shareid,i) {
+        var likenum=document.getElementById(shareid).getElementsByTagName('li')[0];
+        console.log("取消点赞");
+        console.log(likenum);
+        if(button.className == "like"){
+            button.className = "unLike"
+            likenum.innerHTML=parseInt(likenum.innerText)+1+"&nbsp&nbsp";
+        }else {
+            button.className = "like"
+            console.log(likenum)
+			console.log(likenum.innerText)
+            likenum.innerHTML=parseInt(likenum.innerText)-1+"&nbsp&nbsp";
+
+        }
     }
 </script>
 </body>

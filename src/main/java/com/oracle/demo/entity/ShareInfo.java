@@ -29,6 +29,17 @@ public class ShareInfo {
     private String nickname;
     private String image;
 
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    @Column(length=100)
+    private String img;
+
     public int getId() {
         return id;
     }

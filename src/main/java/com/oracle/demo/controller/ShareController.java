@@ -38,9 +38,10 @@ public class ShareController {
             if(likeDao.findLike(shareList.get(i).getId(),userid)==null)
             {
                 shareList.get(i).setLikeInfo(0);
-                System.out.println(shareList.get(i).getLikeInfo()+"pjj没jj测试成功");
+                System.out.println(shareList.get(i).getId()+"pjj没jj没点赞");
             }else {
                 shareList.get(i).setLikeInfo(1);
+                System.out.println(shareList.get(i).getId()+"pjj有jj点了赞");
             }
 
         }
