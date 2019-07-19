@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table class="table table-bordered table-hover">
+    <tr>
+        <th>序号</th>
+        <th>图片</th>
+        <th>删除</th>
+
+    </tr>
+    <c:forEach items="${pictureList}" var="picture" >
+        <tr>
+            <th>${picture.id}</th>
+            <th><c:if test="${picture.img !=null }">
+                <img id="images" alt="" src="/image/${picture.img }">
+            </c:if> </th>
+            <th><a href="javascript:del('${picture.id}')">删除</a> </th>
+        </tr>
+
+    </c:forEach>
+</table>
+
+
+</body>
+</html>
