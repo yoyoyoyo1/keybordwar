@@ -294,20 +294,19 @@
                                                         <a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
                                                         <ul class="ed-options">
                                                             <li><a href="#" title="">编辑</a></li>
-                                                            <li><a href="#" title="">删除</a></li>
+                                                            <li><a th:href="@{/userdeleteshare(id=${share.id})}" title="">删除</a></li>
                                                         </ul>
                                                     </div>
-                                                </div>
-                                                <div class="epi-sec">
                                                 </div>
                                                 <div class="job_descp">
                                                     <p th:text="${share.content}"></p>
                                                     <div class="job-status-bar">
                                                         <ul class="like-com">
                                                             <li>
-                                                                <a href="#"><i th:text="${share.likes}" class="la la-heart"></i></a>
+                                                                <a href="###" th:onclick="'javascript:dolike(\''+${share.id}+'\')'" th:id="do+${share.id}"><i th:text="${share.likes}" class="la la-heart" th:id="donum+${share.id}"></i></a>
+                                                                <a href="###" th:onclick="'javascript:undolike(\''+${share.id}+'\')'" th:id="undo+${share.id}"><i th:text="${share.likes}" class="la la-heart" th:id="undonum+${share.id}"></i></a>
                                                         </ul>
-                                                        <a href="#">评论<span th:text="${share.comments}"/></a>
+                                                        <a href="###" th:onclick="'javascript:(\''+${share.id}+'\')'">评论<span th:text="${share.comments}"/></a>
                                                     </div>
                                                 </div>
 
@@ -607,33 +606,31 @@
         var imgBtn=document.getElementById("updateimg");
         document.getElementById("userimage").click();
         imgBtn.style.display="block";
-        
     }
-    function dofollow()
-    {   var id=$("#erid").val();
+    function dolike(shareid) {
+    var likenum=$("#donum"+shareid).val();
         $.ajax({
-            url: "/userdofollow",
-            data: {
-                id:id
-            },
+            type : "get",
+            url : "/userdolike",
+            data :{id:shareid},
             dataType: "text",
-            type: "post",
             async: false,
             cache: false,
-            success: function (res) {
-                debugger;
+            success:function(res) {
+                if (res !=null && res == "ok") {
+                    document.getElementById("donum"+shareid).innerHTML=likenum+1;
 
-                if (res == "ok" && res != null) {
-                    alert("关注成功);
-                    window.location.reload();
                 }else {
-                    alert("你已经关注了这个人了");
+                    alert("asd");
+
                 }
             },
-            error: function () {
-                alert("哇哦，出错失败了");
+            error:function() {// 失败的时候要执行的函数
+                alert("失败");
             }
-        })
+
+        });
+
     }
 </script>
 </body>

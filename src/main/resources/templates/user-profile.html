@@ -220,8 +220,8 @@
 									</form>
 									<div class="user_pro_status">
 										<ul class="flw-hr">
-											<li><a href="#" title="" class="flww" th:if="not ${isfollow}"><i class="la la-plus"></i>关注TA</a></li>
-											<li><a href="#" title="" class="flww" th:if="${isfollow}"><i ></i>已经关注了</a></li>
+											<li><a th:href="@{/userdofollowpage(toid=${otheruser.id})}" title="" class="flww" th:if="not ${isfollow}"><i class="la la-plus"></i>关注TA</a></li>
+											<li><a th:href="@{/userundofollowpage(toid=${otheruser.id})}" title="" class="flww" th:if="${isfollow}"><i ></i>取消关注</a></li>
 
 										</ul>
 										<ul class="flw-status">
@@ -268,12 +268,6 @@
 												<a href="#" title="">
 													<img src="images/ic1.png" alt="">
 													<span>TA的动态</span>
-												</a>
-											</li>
-											<li data-tab="saved-jobs">
-												<a href="#" title="">
-													<img src="images/ic4.png" alt="">
-													<span>TA关注的</span>
 												</a>
 											</li>
 										</ul>

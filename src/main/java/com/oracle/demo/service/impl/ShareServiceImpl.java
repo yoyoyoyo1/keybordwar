@@ -39,4 +39,8 @@ public class ShareServiceImpl implements ShareService {
     {
         return shareDao.findShareByIdOrderByTime(userId);
     }
+    public int deleteshare(int id)
+    {
+        return shareDao.deleteshare(id);
+    }
 }

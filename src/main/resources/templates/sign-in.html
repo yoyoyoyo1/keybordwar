@@ -62,7 +62,7 @@
 											</div>
 											<div class="col-lg-12 no-pdd">
 												<div class="checky-sec">
-													<a href="#" title="">忘记密码</a>
+													<li><a class="post-jb active" href="#" title="">忘记密码</a></li>
 												</div>
 											</div>
 											<div class="col-lg-12 no-pdd">
@@ -129,6 +129,26 @@
 				</div>
 			</div><!--footy-sec end-->
 		</div><!--sign-in-page end-->
+		<div class="post-popup job_post">
+			<div class="post-project">
+				<h3>找回密码</h3>
+				<div class="post-project-fields">
+					<form   method="post">
+						<div class="row">
+							<div class="col-lg-12">
+								<input type="email" placeholder="输入你的邮箱" id="reemail">
+							</div>
+								<input type="number" placeholder="验证码" id="recode">
+								<input type="password" placeholder="输入新密码" id="repass">
+							<div class="col-lg-12">
+								<ul>
+									<li><button class="active" type="button" id="getrecode">获取验证码</button></li>
+									<li><button class="active" type="button" value="post" onclick="userepwd()">修改密码</button></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+				</div><!--post-project-fields end-->
 
 
 	</div><!--theme-layout end-->
@@ -143,6 +163,9 @@
 <script type="text/javascript">
 	$("#getcode").click(function (){
 		sendchkcode($("#getcode"));
+	});
+	$("#getrecode").click(function (){
+		sendrechkcode($("#getrecode"));
 	});
 	//用ajax提交到后台的发送接口
 	function sendchkcode(obj){
@@ -163,6 +186,32 @@
 						alert("验证码发送成功");
 					}else{
 
+					}
+				},
+				error:function(){
+					alert("验证码发送失败");
+				}
+			})
+			setTime(obj);//开始倒计时
+		}
+	}
+	//忘记密码
+	function sendrechkcode(obj){
+		var email = $("#reemail").val();
+		if(isreEmail()) {
+			$.ajax({
+				url:"/getrecode",
+				data:{email:email},
+				dataType:"text",
+				type:"post",
+				async : false,
+				cache : false,
+				success:function(res){
+					debugger;
+					if(res!=null && res=="ok"){
+						alert("验证码发送成功");
+					}else{
+						alert("不存在此邮箱的账户");
 					}
 				},
 				error:function(){
@@ -207,6 +256,43 @@
 					alert("失败");
 				}
 			})
+		}
+
+	}
+	//用户修改密码
+	function userepwd() {
+		var email = $("#reemail").val();
+		var ccode=$("#recode").val();
+		var pass=$("#repass").val();
+		if(pass.length!=0) {
+			$.ajax({
+				url: "/userchangepwd",
+				data: {
+					email: email,
+					ccode: ccode,
+					pass: pass
+				},
+				dataType: "text",
+				type: "post",
+				async: false,
+				cache: false,
+				success: function (res) {
+					debugger;
+					if (res == "ok" && res != null) {
+						alert("修改成功")
+						window.location.href="/user";
+					} else if(res == "bad" && res != null){
+						alert("验证码错误");
+					}else {
+						alert("验证码错误");
+					}
+				},
+				error: function () {
+					alert("失败");
+				}
+			})
+		}else {
+			alert("密码不能为空");
 		}
 
 	}
@@ -281,6 +367,18 @@
 		}else {
 			return true;
 		}
+	}
+	function isreEmail() {
+		var email = $("#reemail").val();
+		var reg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+		if(!reg.test(email))
+		{
+			alert('输入正确的邮箱');
+			return false;
+		}else {
+			return true;
+		}
+
 	}
 	function isLoginEmail() {
 		var email = $("#loginemail").val();

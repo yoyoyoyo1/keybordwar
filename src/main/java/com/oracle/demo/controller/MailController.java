@@ -22,6 +22,7 @@ public class MailController {
     @Autowired
     private MailService mailService;
     private HashMap<String,Object> codeMap = new HashMap<>();
+    private HashMap<String,Object> recodeMap=new HashMap<>();
     @Autowired
     private UserService userService;
     @RequestMapping("user")
@@ -77,5 +78,36 @@ public class MailController {
         System.out.println(email+"验证错误");
         return "";
     }
-
+    @RequestMapping("getrecode")
+    @ResponseBody
+    public String getrecode(String email)
+    {
+        if(userService.findByEmail(email)==null)
+        {
+            return "bad";
+        }else {
+            String checkcode=String.valueOf(new Random().nextInt(899999) + 100000);
+            String msg="您的找回密码验证码为 +"+checkcode;
+            try {
+                mailService.sendCheckCodeMail(email,"找回密码验证码",msg);
+                recodeMap.put(email,checkcode);
+            }catch (Exception e)
+            {   //404页面
+                return "404";
+            }
+            return "ok";
+        }
+    }
+    @RequestMapping("userchangepwd")
+    @ResponseBody
+    public String userchangepwd(String email,String ccode,String pass)
+    {
+        if(ccode.equals(recodeMap.get(email)))
+        {
+            userService.changePwd(MD5Util.encode(pass),email);
+            return "ok";
+        }else {
+            return "bad";
+        }
+    }
 }

@@ -14,4 +14,6 @@ public interface ShareService {
     void save(Share share);
     //查询用户的动态信息--szg
     public List<Share> findShareByIdOrderByTime(int userId);
+    //用户删除动态
+    public int deleteshare(int id);
 }

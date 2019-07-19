@@ -24,7 +24,9 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class UserController {
@@ -237,5 +239,52 @@ public class UserController {
         }
         return "user-profile";
 
+    }
+    //用户在别人主页关注他人
+    @RequestMapping("/userdofollowpage")
+    public void userpofollowpage(int toid,HttpSession session,HttpServletResponse response) throws IOException
+    {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter out = response.getWriter();
+        User user=(User)session.getAttribute("user");
+            Follow follow=new Follow();
+            follow.setFollower(user.getId());
+            follow.setFollowering(toid);
+            followService.doFollow(follow);
+            out.print("<html><head><meta charset='UTF-8'></head>");
+            out.print("<script>alert('关注成功!');window.location='/othersprofile?id="+toid+"'</script>");
+            out.flush();
+            out.close();
+    }
+    //用户取关某人
+    @RequestMapping("userundofollowpage")
+    public void userundofollowpage(int toid,HttpSession session,HttpServletResponse response) throws  IOException
+    {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter out = response.getWriter();
+        User user=(User)session.getAttribute("user");
+        followService.undoFollow(user.getId(),toid);
+        out.print("<html><head><meta charset='UTF-8'></head>");
+        out.print("<script>alert('你已经不再关注TA惹!');window.location='/othersprofile?id="+toid+"'</script>");
+        out.flush();
+        out.close();
+    }
+    //用户点赞
+    @RequestMapping("userdolike")
+    @ResponseBody
+    public String userdolike(int id)
+    {
+        Map<String,Object> map=new HashMap<String ,Object>();
+        map.put("status",1);
+        map.put("success",true);
+       return "ok";
+    }
+    //用户删除动态
+    @RequestMapping("userdeleteshare")
+    public String deleteshare(int id,HttpSession session)
+    {
+        shareService.deleteshare(id);
+        User user=(User)session.getAttribute("user");
+        return "redirect:touserprofile?userId="+user.getId();
     }
 }

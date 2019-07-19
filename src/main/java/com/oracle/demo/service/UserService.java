@@ -24,4 +24,6 @@ public interface UserService {
     public int updateInfo(String nickname,String motto,int id);
     //修改用户密码
     public int updatePwd(String pass,int id);
+    //忘记用户密码
+    public int changePwd(String pass,String email);
 }
