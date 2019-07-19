@@ -238,7 +238,7 @@
                     <div class="col-lg-4 col-md-12 no-pdd">
                         <div class="msgs-list">
                             <div class="msg-title">
-                                <h3>Messages</h3>
+                                <h3>房间里的人</h3>
                                 <ul>
                                     <li><a href="#" title=""><i class="fa fa-cog"></i></a></li>
                                     <li><a href="#" title=""><i class="fa fa-ellipsis-v"></i></a></li>
@@ -246,93 +246,8 @@
                             </div><!--msg-title end-->
                             <div class="messages-list">
                                 <ul>
-                                    <li class="active">
-                                        <div class="usr-msg-details">
-                                            <div class="usr-ms-img">
-                                                <img src="images/resources/m-img1.png" alt="">
-                                                <span class="msg-status"></span>
-                                            </div>
-                                            <div class="usr-mg-info">
-                                                <h3>John Doe</h3>
-                                                <p>Lorem ipsum dolor <img src="images/smley.png" alt=""></p>
-                                            </div><!--usr-mg-info end-->
-                                            <span class="posted_time">1:55 PM</span>
-                                            <span class="msg-notifc">1</span>
-                                        </div><!--usr-msg-details end-->
-                                    </li>
-                                    <li>
-                                        <div class="usr-msg-details">
-                                            <div class="usr-ms-img">
-                                                <img src="images/resources/m-img2.png" alt="">
-                                            </div>
-                                            <div class="usr-mg-info">
-                                                <h3>David Vane</h3>
-                                                <p>Vestibulum ac diam..</p>
-                                            </div><!--usr-mg-info end-->
-                                            <span class="posted_time">1:55 PM</span>
-                                        </div><!--usr-msg-details end-->
-                                    </li>
-                                    <li>
-                                        <div class="usr-msg-details">
-                                            <div class="usr-ms-img">
-                                                <img src="images/resources/m-img3.png" alt="">
-                                            </div>
-                                            <div class="usr-mg-info">
-                                                <h3>Nancy Dilan</h3>
-                                                <p>Quam vehicula.</p>
-                                            </div><!--usr-mg-info end-->
-                                            <span class="posted_time">1:55 PM</span>
-                                        </div><!--usr-msg-details end-->
-                                    </li>
-                                    <li>
-                                        <div class="usr-msg-details">
-                                            <div class="usr-ms-img">
-                                                <img src="images/resources/m-img4.png" alt="">
-                                                <span class="msg-status"></span>
-                                            </div>
-                                            <div class="usr-mg-info">
-                                                <h3>Norman Kenney</h3>
-                                                <p>Nulla quis lorem ut..</p>
-                                            </div><!--usr-mg-info end-->
-                                            <span class="posted_time">1:55 PM</span>
-                                        </div><!--usr-msg-details end-->
-                                    </li>
-                                    <li>
-                                        <div class="usr-msg-details">
-                                            <div class="usr-ms-img">
-                                                <img src="images/resources/m-img5.png" alt="">
-                                                <span class="msg-status"></span>
-                                            </div>
-                                            <div class="usr-mg-info">
-                                                <h3>James Dilan</h3>
-                                                <p>Vivamus magna just..</p>
-                                            </div><!--usr-mg-info end-->
-                                            <span class="posted_time">1:55 PM</span>
-                                        </div><!--usr-msg-details end-->
-                                    </li>
-                                    <li>
-                                        <div class="usr-msg-details">
-                                            <div class="usr-ms-img">
-                                                <img src="images/resources/m-img6.png" alt="">
-                                            </div>
-                                            <div class="usr-mg-info">
-                                                <h3>Mike Dorn</h3>
-                                                <p>Praesent sapien massa.</p>
-                                            </div><!--usr-mg-info end-->
-                                            <span class="posted_time">1:55 PM</span>
-                                        </div><!--usr-msg-details end-->
-                                    </li>
-                                    <li>
-                                        <div class="usr-msg-details">
-                                            <div class="usr-ms-img">
-                                                <img src="images/resources/m-img7.png" alt="">
-                                            </div>
-                                            <div class="usr-mg-info">
-                                                <h3>Patrick Morison</h3>
-                                                <p>Convallis a pellente...</p>
-                                            </div><!--usr-mg-info end-->
-                                            <span class="posted_time">1:55 PM</span>
-                                        </div><!--usr-msg-details end-->
+                                    <li v-for="(people,index) in roomPeople">
+                                        <room-people :user="people"></room-people>
                                     </li>
                                 </ul>
                             </div><!--messages-list end-->
@@ -416,7 +331,7 @@
 <script type="x-template" id="room-people">
     <div class="usr-msg-details">
         <div class="usr-ms-img">
-            <img src="images/resources/m-img1.png" alt="">
+            <img :src="'userimage/' + user.image" alt="">
             <span class="msg-status"></span>
         </div>
         <div class="usr-mg-info">
@@ -442,7 +357,7 @@
             <span>{{message.createAt}}</span>
         </div><!--message-dt end-->
         <div class="messg-usr-img">
-            <img :src="people[message.formId].image" alt="">
+            <img :src="'userimage/' + people[message.formId].image" alt="">
         </div><!--messg-usr-img end-->
     </div><!--main-message-box end-->
 
@@ -456,7 +371,7 @@
             <span>{{message.createAt}}</span>
         </div><!--message-dt end-->
         <div class="messg-usr-img">
-            <img :src="people[message.formId].image" alt="">
+            <img :src=" 'userimage/' + people[message.formId].image" alt="">
         </div><!--messg-usr-img end-->
     </div><!--main-message-box end-->
 
@@ -470,16 +385,16 @@
         "😌","😛","😜","😝","😒","😓","😔","😕","😲","😷","😖","😞","😟","😤","😢",
         "😭","😦","😧","😨","😬","😰","😱","😳","😵","😡","😠", "🌹","🍀","🍎","💰"
         ,"📱","🌙","🍁","🍂","🍃","🌷","💎","🔪","🔫","🏀","⚽","⚡","👄","👍","🔥"]
-    let people = {1:{image:"https://c-ssl.duitang.com/uploads/item/201510/08/20151008192345_uPC5U.thumb.700_0.jpeg"}}
+    let people = {}
     let roomPeople = []
     let message = {content:"123",createAt:new Date(),formId:1}
     let roomMessage = {time:0,message:[]}
     let own = {}
-    let dialogId = 1;
+    let dialogId = parseInt(localStorage.getItem("dialogId"));
     Vue.component('room-people',{
         //定义数据
         props:['user'],
-        date:function () {
+        data:function () {
             return{
                 own
             }
@@ -494,7 +409,7 @@
     Vue.component('room-message',{
         //定义数据
         props:['message'],
-        date:function () {
+        data:function () {
             return{
                 people,
                 own
@@ -510,7 +425,7 @@
     Vue.component('other-message',{
         //定义数据
         props:['message'],
-        date:function () {
+        data:function () {
             return{
                 people
             }
@@ -526,7 +441,7 @@
     Vue.component('me-message',{
         //定义数据
         props:['message'],
-        date:function () {
+        data:function () {
             return{
                 people
             }
@@ -564,9 +479,7 @@
 
         },
         mounted(){
-
-            dialogId = localStorage.getItem("dialogId")
-            dialogId = 1;
+            console.log(dialogId)
             let time = new Date().getTime();
 
             //得到people
@@ -577,7 +490,7 @@
             //得到自己
             axios.get("/user/self").then((res)=>{
                 own = res.data
-                this.ws = new WS(`ws://127.0.0.1:8080/dialog/${own.id}/${dialogId}`)
+                this.ws = new WS(`ws://192.168.43.238:8080/dialog/${own.id}/${dialogId}`)
                 //获取历史信息
                 axios.get(`/dialog/message?dialogId=${dialogId}&time=${time}`).then((res)=>{
                     if(!res.data){
@@ -591,10 +504,10 @@
                 })
             })
 
-            axios.get("/dialog/user").then((res)=>{
-                roomPeople = res.data
-                for (people_item of roomPeople){
+            axios.get(`/dialog/live/user?dialogId=${dialogId}`).then((res)=>{
+                for (people_item of res.data){
                     people[people_item.id] = people_item
+                    roomPeople.push(people_item)
                 }
                 localStorage.setItem("people", JSON.stringify(people));
             })

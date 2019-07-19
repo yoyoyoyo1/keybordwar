@@ -259,13 +259,14 @@
                     <img src="images/resources/cmp-icon12.png" alt="">
                     <h3>{{dialog.title}}</h3>
                     <ul>
-                        <li><a href="" title="" class="follow">加入</a></li>
+                        <li><a  href="javascript:void(0)" @click="join(dialog.id)" title="" class="follow">加入</a></li>
                     </ul>
                 </div>
-                <a  href="javascript:void(0)" @mouseover="showContent" class="view-more-pro">详细信息</a>
+                <a  href="javascript:void(0)" @click="showContent" class="view-more-pro">详细信息</a>
             </div><!--company_profile_info end-->
         </div>
     </script>
+    <a id="dialog" href="dialog.html"></a>
     <script src="js/vue.min.js"></script>
     <script src="js/axios.min.js"></script>
     <script>
@@ -275,6 +276,10 @@
             props:['dialog'],
             //定义方法
             methods:{
+                join(id){
+                    localStorage.setItem("dialogId",id)
+                    document.getElementById("dialog").click()
+                },
                 showContent(){
                     alert(this.dialog.content)
                 },
@@ -288,8 +293,9 @@
                 page:0,
             },
             methods:{
+
                 more(){
-                    axios.get(`json/a.json?page=${this.page}`).then( (res) =>{
+                    axios.get(`/dialog/live?page=${this.page}`).then( (res) =>{
                         if(res.data.length != 0 ){
                             this.dialogs = this.dialogs.concat(res.data)
                             this.page += 1
