@@ -12,8 +12,6 @@ public class Likes {
     private  int id;
     private int userId;//用户id
     private int shareId;//说说id
-    @Column(columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP" )
-    private Date createdAt;//创建时间
     @Column(columnDefinition="tinyint default 0")
     private int watch;//观看状态
 
@@ -22,11 +20,10 @@ public class Likes {
 
     }
 
-    public Likes(int id,int userId, int shareId, Date createdAt, int watch) {
+    public Likes(int id,int userId, int shareId,  int watch) {
         this.userId = userId;
         this.id = id;
         this.shareId = shareId;
-        this.createdAt = createdAt;
         this.watch = watch;
     }
 
@@ -52,14 +49,6 @@ public class Likes {
 
     public void setShareId(int shareId) {
         this.shareId = shareId;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
     }
 
     public int getWatch() {

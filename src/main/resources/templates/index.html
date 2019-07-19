@@ -18,7 +18,10 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<link rel="stylesheet" type="text/css" href="css/responsive.css">
 </head>
-
+<style>
+	.like{ font-size:20px;  color:#ccc; cursor:pointer;border:none;background: none;outline: 0!important}
+	.cs{color:#f00;}
+</style>
 
 <body>
 <div class="wrapper">
@@ -367,11 +370,14 @@
 										</div>
 										<div class="job-status-bar">
 											<ul class="like-com">
-												<li>
+												<li th:id="${share.id}">
 													<a href="#"><i th:text="${share.likes}" class="la la-heart"></i></a>
 												</li>
-
 											</ul>
+											<form th:action="@{/addLike(userId=${session.user.id},shareId=${share.id})}"  method="post" target="nm_iframe">
+											<button class="like" type="submit" th:onclick="add([[${share.id}]]);" value="post">&#10084;</button>
+											</form>
+											<iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
 											<a href="#">评论&nbsp<span th:text="${share.comments}"/></a>
 										</div>
 									</div><!--post-bar end-->
@@ -996,6 +1002,20 @@
             }
         })
     })*/
+</script>
+<script typet="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(function () {
+        $(".like").click(function () {
+            $(this).toggleClass('cs');
+        })
+    })
+</script>
+<script>
+	function add(shareid) {
+	    document.getElementById(shareid).innerHTML="Hello World";
+		
+    }
 </script>
 </body>
 </html>
