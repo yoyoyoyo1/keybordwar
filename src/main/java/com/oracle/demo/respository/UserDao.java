@@ -36,6 +36,16 @@ public interface UserDao extends JpaRepository<User,Integer> {
     //查询批量删除是否成功
     @Transactional
     public List<User> findAllByIdIn(List<Integer> id);
+    //修改用户头像为默认头像
+    @Transactional
+    @Modifying
+    @Query(value = "update User set image = ?1 where id=?2",nativeQuery = true)
+    public int edituserhimg(String image,int id);
+    //管理员修改用户的密码
+    @Transactional
+    @Modifying
+    @Query(value = "update User set pass = ?1 where  id=?2",nativeQuery = true)
+    public int edituserpass(String newpass,int id);
     //分页查询用户(未实现)
     //blic Page<User> getUserListByIdContaining(String mohu, Pageable pageable);
     @Query(value = "select * from User where id in ?1",nativeQuery = true)
