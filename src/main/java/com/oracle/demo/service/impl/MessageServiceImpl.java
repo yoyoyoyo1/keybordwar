@@ -20,11 +20,16 @@ public class MessageServiceImpl implements MessageService {
         return messageDao.getDialogMessageByIdAndTime(dialogId, time);
     }
 
+
+    public Object getchatMessageByIdAndTime(Integer toId, Long time) {
+        return messageDao.getchatMessageByIdAndTime(toId,time);
+    }
+
     @Override
     public Object save(Message message) {
         return messageDao.save(message);
     }
-    
+    @Override
     public Message sendMessage(Message message, HttpServletResponse response) throws IOException {
         /*PrintWriter out=response.getWriter();
         out.print("<html><head><meta charset='UTF-8'></head>");

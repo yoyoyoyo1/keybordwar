@@ -2481,7 +2481,7 @@ select {
 }
 .footy-sec p img {
     padding-right: 5px;
-    float: auto;
+    float: none;
     position: relative;
     top: 6px;
 }
@@ -4802,7 +4802,7 @@ a:hover {
     float: right;
     padding-right: 85px;
 }
-.main-message-box.ta-right .message-dt > span {
+.main-message-box.ta-right .message-dt {
     float: right;
     width: auto;
 }
@@ -4858,7 +4858,7 @@ a:hover {
     top: 3px;
     padding-left: 5px;
 }
-.main-message-box.st3 .messg-usr-img {
+.main-message-box.st3 .messg-usr-img > span{
     bottom: 13px;
 }
 
@@ -4868,10 +4868,7 @@ a:hover {
     height: 604px;
 }
 
-.hz-message-list{
-	min-height: 30px;
-	margin: 10px 0;
-}
+
 
 .hz-message-list-text{
 	padding: 7px 13px;
