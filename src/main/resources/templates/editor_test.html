@@ -9,24 +9,17 @@
 <body>
 <h1 >图片上传Demo</h1>
 <form action="fileUpload" method="post" enctype="multipart/form-data">
-    <p>选择文件: <input type="file" name="fileName"/></p>
+    <p>选择文件: <input type="file" name="shareimg"/></p>
     <p><input type="submit" value="提交"/></p>
 </form>
-<table border="1">
-    <tr>
-        <th style="width: 200px;height: 200px">图片</th>
-        <th style="width: 200px;height: 200px">图片地址</th>
-    </tr>
-    <tr>
 
-    <div th:each="sharePicture ,sharePicStat: ${sharePictureList}" class="post-bar">
 
-        <td style="width: 200px;height: 200px">
-        <img th:src="${sharePicture.img}" alt="" height="200px" width="200px"></td>
-        <td style="width: 200px;height: 200px"th:text="${sharePicture.img}"> </td>
+    <div th:each="sharePicture : ${sharePictureList}" class="post-bar">
+
+        <img th:src="'shareimg/'+${sharePicture.img}" alt="" height="200px" width="200px">
+
     </div>
-    </tr>
-</table>
+
 
     <!--
     <div th:if="${sharePictureList.shareId} eq ${share.id}">

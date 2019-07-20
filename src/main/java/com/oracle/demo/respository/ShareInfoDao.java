@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 public interface ShareInfoDao extends JpaRepository<ShareInfo,String> {
 
-    @Query(value = "select Share.userId,Share.id,User.nickname,User.image,Share.content,Share.comments,Share.likes,Share.forwards,Share.createdAt from Share left join User on Share.userId = User.id ORDER BY createdAt DESC",nativeQuery = true)
+    @Query(value = "select Share.userId,Share.id,User.nickname,SharePicture.img,User.image,Share.content,Share.comments,Share.likes,Share.forwards,Share.createdAt from Share left join User on Share.userId = User.id    " +
+              "left join SharePicture on Share.id=SharePicture.shareId  ORDER BY createdAt DESC",nativeQuery = true)
     public List<ShareInfo> findtime();
 }
