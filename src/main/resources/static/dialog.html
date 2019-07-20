@@ -490,7 +490,6 @@
             //得到自己
             axios.get("/user/self").then((res)=>{
                 own = res.data
-                this.ws = new WS(`ws://192.168.43.238:8080/dialog/${own.id}/${dialogId}`)
                 //获取历史信息
                 axios.get(`/dialog/message?dialogId=${dialogId}&time=${time}`).then((res)=>{
                     if(!res.data){
@@ -510,6 +509,7 @@
                     roomPeople.push(people_item)
                 }
                 localStorage.setItem("people", JSON.stringify(people));
+                this.ws = new WS(`ws://192.168.43.238:8080/dialog/${own.id}/${dialogId}`)
             })
         }
     })

@@ -7,6 +7,7 @@ class WS{
         };
 
         this.ws.onclose = function (evt) {
+            alert("断开连接")
             console.log('Connection closed.');
         };
         this.ws.onmessage = (evt)=> {

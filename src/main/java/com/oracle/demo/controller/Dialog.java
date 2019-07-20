@@ -30,15 +30,15 @@ public class Dialog {
     @Autowired
     DialogService dialogService;
     @GetMapping("/live/user")
-    public Object liveUser(String dialogId){
+    public Object liveUser(Integer dialogId){
         List<User> list = new ArrayList<>();
         System.out.println(dialogWebSocket.Dialog);
-        Map<String,Session> dialog =  dialogWebSocket.Dialog.get(dialogId);
+        Map<Integer,Session> dialog =  dialogWebSocket.Dialog.get(dialogId);
         if(dialog==null){
             return list;
         }
-        for (String key : dialog.keySet()) {
-            list.add(userService.findById(Integer.parseInt(key)));
+        for (Integer key : dialog.keySet()) {
+            list.add(userService.findById(key));
         }
         return list;
     }

@@ -3,6 +3,7 @@ package com.oracle.demo.entity;
 import com.alibaba.fastjson.JSON;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Dialog {
@@ -17,7 +18,8 @@ public class Dialog {
     private int likes;
     @Column(columnDefinition="tinyint default 1")
     private int active;
-
+    @Column(columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP" )
+    private Date createdAt;
     public Dialog(){}
 
     public Dialog(int id, String title, String content,String image) {
@@ -26,6 +28,30 @@ public class Dialog {
         this.content = content;
         this.image = image;
     }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+    public int getActive() {
+        return active;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
 
     public String getImage() {
         return image;
