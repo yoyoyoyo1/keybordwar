@@ -20,6 +20,8 @@ public class ShareInfo {
     @Column(columnDefinition="INT default 0" )
     private int comments;//评论数
     @Column(columnDefinition="INT default 0" )
+    private int likeInfo;
+    @Column(columnDefinition="INT default 0" )
     private int forwards;//转发数
     @Column(columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP" )
     private Date createdAt;//创建时间
@@ -105,6 +107,14 @@ public class ShareInfo {
 
     public void setCreatedAt(Date createAt) {
         this.createdAt = createAt;
+    }
+
+    public int getLikeInfo() {
+        return likeInfo;
+    }
+
+    public void setLikeInfo(int likeInfo) {
+        this.likeInfo = likeInfo;
     }
 
 }

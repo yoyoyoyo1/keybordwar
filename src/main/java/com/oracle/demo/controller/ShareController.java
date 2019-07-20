@@ -3,6 +3,10 @@ package com.oracle.demo.controller;
 
 import com.oracle.demo.entity.Share;
 import com.oracle.demo.entity.ShareInfo;
+import com.oracle.demo.entity.User;
+import com.oracle.demo.respository.LikeDao;
+import com.oracle.demo.service.impl.ShareServiceImpl;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import com.oracle.demo.entity.SharePicture;
 import com.oracle.demo.service.impl.ShareServiceImpl;
 import com.oracle.demo.util.FileUtils;
@@ -32,12 +36,28 @@ import java.util.UUID;
 public class ShareController {
     @Autowired
     private ShareServiceImpl shareService;
+    @Autowired
+    LikeDao likeDao;
 
 
-    @RequestMapping("index")
-    public String toIndex(Model model){
+    @RequestMapping("/index")
+    public String toIndex(Model model, HttpSession session){
+        User user=(User)session.getAttribute("user");
+        int userid=user.getId();
         List<ShareInfo> shareList=shareService.getAll();
-        //List<SharePicture> sharePictureList = shareService.getAllPicture();
+        System.out.println("查找成功");
+        for (int i=0;i<shareList.size();i++){
+            if(likeDao.findLike(shareList.get(i).getId(),userid)==null)
+            {
+                shareList.get(i).setLikeInfo(0);
+                System.out.println(shareList.get(i).getId()+"pjj没jj没点赞");
+            }else {
+                shareList.get(i).setLikeInfo(1);
+                System.out.println(shareList.get(i).getId()+"pjj有jj点了赞");
+            }
+
+        }
+
         model.addAttribute("shareList",shareList);
         //model.addAttribute("sharePictureList",sharePictureList);
         return "index";
