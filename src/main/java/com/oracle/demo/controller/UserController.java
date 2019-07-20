@@ -80,7 +80,7 @@ public class UserController {
 
     @RequestMapping("touserprofile")
     public String touserprofile(int userId,Model model,HttpSession session)
-    {   model.addAttribute("share",shareService.findShareByIdOrderByTime(userId));
+    {   model.addAttribute("shareList",shareService.findOne(userId));
         List<Integer> followme=followService.followMeList(userId);
         if(followme.size()!=0)
         {

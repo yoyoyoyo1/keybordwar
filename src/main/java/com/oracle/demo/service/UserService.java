@@ -26,4 +26,6 @@ public interface UserService {
     public int updatePwd(String pass,int id);
     //忘记用户密码
     public int changePwd(String pass,String email);
+    //根据用户邮箱和电话查询
+    public User findByEandP(String email,String phone);
 }

@@ -53,5 +53,9 @@ public class UserServiceImpl implements UserService {
     {
         return userDao.changepwd(pass,email);
     }
+    public User findByEandP(String email,String phone)
+    {
+        return userDao.findByEmailAndPhone(email,phone);
+    }
 
 }

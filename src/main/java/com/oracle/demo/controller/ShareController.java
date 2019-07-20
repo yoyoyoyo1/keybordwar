@@ -42,9 +42,9 @@ public class ShareController {
             }else {
                 shareList.get(i).setLikeInfo(1);
             }
+            System.out.println(shareList.get(i).getLikeInfo()+"-------------");
 
         }
-
         model.addAttribute("shareList",shareList);
         return "index";
     }

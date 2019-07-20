@@ -3,19 +3,26 @@ package com.oracle.demo.controller;
 Created by szg
 */
 import com.oracle.demo.entity.User;
-import com.oracle.demo.respository.UserDao;
 import com.oracle.demo.service.MailService;
 import com.oracle.demo.service.UserService;
 import com.oracle.demo.util.MD5Util;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
+
 
 @Controller
 public class MailController {
@@ -23,6 +30,9 @@ public class MailController {
     private MailService mailService;
     private HashMap<String,Object> codeMap = new HashMap<>();
     private HashMap<String,Object> recodeMap=new HashMap<>();
+    //发送短信的url
+    private static String Url = "http://106.ihuyi.cn/webservice/sms.php?method=Submit";
+    private HashMap<String,Object> mobileMap=new HashMap<>();
     @Autowired
     private UserService userService;
     @RequestMapping("user")
@@ -80,29 +90,53 @@ public class MailController {
     }
     @RequestMapping("getrecode")
     @ResponseBody
-    public String getrecode(String email)
+    public String getrecode(String email,String phone)
     {
-        if(userService.findByEmail(email)==null)
+        if(userService.findByEandP(email,phone)==null)
         {
             return "bad";
         }else {
-            String checkcode=String.valueOf(new Random().nextInt(899999) + 100000);
-            String msg="您的找回密码验证码为 +"+checkcode;
+            HttpClient client = new HttpClient();
+            PostMethod method = new PostMethod(Url);
+            client.getParams().setContentCharset("UTF-8");
+            method.setRequestHeader("ContentType", "application/x-www-form-urlencoded;charset=UTF-8");
+            String  mobile_code = String.valueOf(new Random().nextInt(899999) + 100000);
+            String content = new String("您的验证码是：" + mobile_code + "。请不要把验证码泄露给其他人。");
+            mobileMap.put(phone,mobile_code);
+            NameValuePair[] data = new NameValuePair[]{new NameValuePair("account", "C49830037"), new NameValuePair("password", "11b5eb237f4ead95b4ff3e05a4fc1cfd    "), new NameValuePair("mobile", phone), new NameValuePair("content", content)};
+            method.setRequestBody(data);
             try {
-                mailService.sendCheckCodeMail(email,"找回密码验证码",msg);
-                recodeMap.put(email,checkcode);
-            }catch (Exception e)
-            {   //404页面
-                return "404";
+                client.executeMethod(method);
+                String SubmitResult = method.getResponseBodyAsString();
+                Document doc = DocumentHelper.parseText(SubmitResult);
+                Element root = doc.getRootElement();
+                String code = root.elementText("code");
+                String msg = root.elementText("msg");
+                String smsid = root.elementText("smsid");
+                System.out.println(code);
+                System.out.println(msg);
+                System.out.println(smsid);
+                if (code == "2") {
+                    System.out.println("短信提交成功");
+                }
+            } catch (HttpException var12) {
+                var12.printStackTrace();
+            } catch (IOException var13) {
+                var13.printStackTrace();
+            } catch (DocumentException var14) {
+                var14.printStackTrace();
             }
             return "ok";
         }
     }
     @RequestMapping("userchangepwd")
     @ResponseBody
-    public String userchangepwd(String email,String ccode,String pass)
+    public String userchangepwd(String email,String ccode,String pass,String phone)
     {
-        if(ccode.equals(recodeMap.get(email)))
+        System.out.println(mobileMap.get(phone)+"code-------------------");
+        System.out.println(ccode+"code------------------");
+        System.out.println(phone+"-----------------phone");
+        if(ccode.equals(mobileMap.get(phone)))
         {
             userService.changePwd(MD5Util.encode(pass),email);
             return "ok";

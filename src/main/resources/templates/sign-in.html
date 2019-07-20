@@ -137,6 +137,7 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<input type="email" placeholder="输入你的邮箱" id="reemail">
+								<input type="number" placeholder="输入你的电话" id="rephone">
 							</div>
 								<input type="number" placeholder="验证码" id="recode">
 								<input type="password" placeholder="输入新密码" id="repass">
@@ -198,10 +199,12 @@
 	//忘记密码
 	function sendrechkcode(obj){
 		var email = $("#reemail").val();
-		if(isreEmail()) {
+		var phone=$("#rephone").val();
+		if(isreEmail()&&isrePhone()) {
 			$.ajax({
 				url:"/getrecode",
-				data:{email:email},
+				data:{email:email,
+				phone:phone},
 				dataType:"text",
 				type:"post",
 				async : false,
@@ -262,40 +265,45 @@
 	//用户修改密码
 	function userepwd() {
 		var email = $("#reemail").val();
-		var ccode=$("#recode").val();
-		var pass=$("#repass").val();
-		if(pass.length!=0) {
-			$.ajax({
-				url: "/userchangepwd",
-				data: {
-					email: email,
-					ccode: ccode,
-					pass: pass
-				},
-				dataType: "text",
-				type: "post",
-				async: false,
-				cache: false,
-				success: function (res) {
-					debugger;
-					if (res == "ok" && res != null) {
-						alert("修改成功")
-						window.location.href="/user";
-					} else if(res == "bad" && res != null){
-						alert("验证码错误");
-					}else {
-						alert("验证码错误");
-					}
-				},
-				error: function () {
-					alert("失败");
+		var ccode = $("#recode").val();
+		var pass = $("#repass").val();
+		var phone = $("#rephone").val();
+		if (pass.length != 0) {
+				if(isrePhone())
+				{
+					$.ajax({
+						url: "/userchangepwd",
+						data: {
+							email: email,
+							ccode: ccode,
+							pass: pass,
+							phone: phone
+						},
+						dataType: "text",
+						type: "post",
+						async: false,
+						cache: false,
+						success: function (res) {
+							debugger;
+							if (res == "ok" && res != null) {
+								alert("修改成功")
+								window.location.href = "/user";
+							} else if (res == "bad" && res != null) {
+								alert("验证码错误");
+							} else {
+								alert("验证码错误");
+							}
+						},
+						error: function () {
+							alert("失败");
+						}
+					})
 				}
-			})
-		}else {
-			alert("密码不能为空");
+			} else {
+				alert("密码不能为空");
+			}
 		}
 
-	}
 	//用户登录
 	function userlogin() {
 		var email=$("#loginemail").val();
@@ -349,6 +357,16 @@
 
 	function isPhone(){
 		var phonenum = $("#phone").val();
+		var reg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+		if(!reg.test(phonenum)){
+			alert('请输入有效的手机号码！');
+			return false;
+		}else{
+			return true;
+		}
+	}
+	function isrePhone(){
+		var phonenum = $("#rephone").val();
 		var reg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
 		if(!reg.test(phonenum)){
 			alert('请输入有效的手机号码！');

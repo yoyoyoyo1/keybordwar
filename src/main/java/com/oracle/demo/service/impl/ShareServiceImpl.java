@@ -44,4 +44,8 @@ public class ShareServiceImpl implements ShareService {
     {
         return shareDao.deleteshare(id);
     }
+    public List<ShareInfo> findOne(int id)
+    {
+        return shareInfoDao.findOne(id);
+    }
 }

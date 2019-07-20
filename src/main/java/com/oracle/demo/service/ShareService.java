@@ -17,4 +17,5 @@ public interface ShareService {
     public List<Share> findShareByIdOrderByTime(int userId);
     //用户删除动态
     public int deleteshare(int id);
+    public List<ShareInfo> findOne(int id);
 }

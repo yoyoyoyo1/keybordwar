@@ -53,4 +53,6 @@ public interface UserDao extends JpaRepository<User,Integer> {
     @org.springframework.transaction.annotation.Transactional
     @Query(value = "update User set pass=?1 where email=?2",nativeQuery = true)
     public int changepwd(String pass,String email);
+    @Query(value = "select * from User where email = ?1 and phone=?2",nativeQuery = true)
+    public User findByEmailAndPhone(String email,String phone);
 }

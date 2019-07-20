@@ -281,13 +281,13 @@
                                 <div class="product-feed-tab current" id="feed-dd">
                                     <div class="posts-section">
                                         <div class="post-bar">
-                                            <tr th:each="share:${share}">
+                                            <tr th:each="share:${shareList}">
                                                 <div class="post_topbar">
                                                     <div class="usy-dt">
                                                         <img th:src="'userimage/'+${session.user.image}" height="50" width="50" >
                                                         <div class="usy-name">
                                                             <h3 th:text="${session.user.nickname}"/>
-                                                            <span th:text="${share.updatedAt}"><img src="images/clock.png" alt=""></span>
+                                                            <span th:text="${share.createdAt}"><img src="images/clock.png" alt=""></span>
                                                         </div>
                                                     </div>
                                                     <div class="ed-opts">
@@ -303,8 +303,8 @@
                                                     <div class="job-status-bar">
                                                         <ul class="like-com">
                                                             <li>
-                                                                <a href="###" th:onclick="'javascript:dolike(\''+${share.id}+'\')'" th:id="do+${share.id}"><i th:text="${share.likes}" class="la la-heart" th:id="donum+${share.id}"></i></a>
-                                                                <a href="###" th:onclick="'javascript:undolike(\''+${share.id}+'\')'" th:id="undo+${share.id}"><i th:text="${share.likes}" class="la la-heart" th:id="undonum+${share.id}"></i></a>
+                                                                <a href="###" th:if="${share.likeInfo} eq '0'" th:onclick="'javascript:dolike(\''+${share.id}+'\')'" th:id="do+${share.id}"><i th:text="${share.likes}" class="la la-heart" th:id="donum+${share.id}"></i></a>
+                                                                <a href="###" th:if="${share.likeInfo} eq '0'" th:onclick="'javascript:undolike(\''+${share.id}+'\')'" th:id="undo+${share.id}"><i th:text="${share.likes}" class="la la-heart" th:id="undonum+${share.id}"></i></a>
                                                         </ul>
                                                         <a href="###" th:onclick="'javascript:(\''+${share.id}+'\')'">评论<span th:text="${share.comments}"/></a>
                                                     </div>
@@ -619,10 +619,8 @@
             success:function(res) {
                 if (res !=null && res == "ok") {
                     document.getElementById("donum"+shareid).innerHTML=likenum+1;
-
                 }else {
                     alert("asd");
-
                 }
             },
             error:function() {// 失败的时候要执行的函数
