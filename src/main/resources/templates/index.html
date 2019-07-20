@@ -1014,12 +1014,12 @@
         console.log(likenum);
         if(button.className == "like"){
             button.className = "unLike"
-            likenum.innerHTML=parseInt(likenum.innerText)+1+"&nbsp&nbsp";
+            likenum.innerHTML=parseInt(likenum.innerText)+1;
         }else {
             button.className = "like"
             console.log(likenum)
 			console.log(likenum.innerText)
-            likenum.innerHTML=parseInt(likenum.innerText)-1+"&nbsp&nbsp";
+            likenum.innerHTML=parseInt(likenum.innerText)-1;
 
         }
     }
