@@ -109,8 +109,23 @@
           </div>
       </form>
     </div>
+    <script th:inline="javascript">
+        $(function  () {
+            layui.use('form', function(){
+                var form = layui.form;
+                // layer.msg('玩命卖萌中', function(){
+                //   //关闭后的操作
+                //   });
+                var msg=[[${msg}]]
+                if(msg != null) {
+                    layer.alert(msg);
+                }
+
+            });
+        })
+    </script>
    <script>
-        layui.use(['form','layer'], function(){
+        $(layui.use(['form','layer'], function(){
             $ = layui.jquery;
           var form = layui.form
           ,layer = layui.layer;
@@ -118,8 +133,8 @@
           //自定义验证规则
         form.verify({
             nickname: function(value){
-                if( value.length >= 10) {
-                    return '昵称长度应在2到10之间';
+                if( value.length < 2) {
+                    return '昵称长度昵称至少2个字符';
                 }},
             pass: [/(.+){6,12}$/, '密码必须6到12位']
              ,
@@ -134,6 +149,7 @@
           form.on('submit(add)', function(data){
           });
         });
+
     </script>
 
 

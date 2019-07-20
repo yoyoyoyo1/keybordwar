@@ -100,12 +100,61 @@ public class AdminServiceImpl implements AdminService{
     public String toadminedituser(int id, Model model) {
         User user1=userDao.findById(id);
         model.addAttribute("adeduser",user1);
-        return "adminedituser";
+        return "admin-edituser";
     }
 
     @Override
+    //修改用户基本信息
     public String adminedituser(User user, Model model) {
-        return null;
+        int x=userDao.edituser(user.getEmail(),user.getPass(),user.getNickname(),user.getPhone(),user.getImage(),user.getMotto(),user.getId());
+        System.out.println("修改标志:"+x);
+        User user1=userDao.findById(user.getId());
+        if (x!=0){
+            model.addAttribute("adeduser",user1);
+            model.addAttribute("msg","修改成功");
+        }else{
+            model.addAttribute("adeduser",user1);
+            model.addAttribute("msg","修改失败");
+        }
+        return "admin-edituser";
+    }
+
+    @Override
+    //修改用户头像为默认头像
+    public String adminedituserhimg(String image, int id) {
+        int x=userDao.edituserhimg(image,id);
+        System.out.println("修改默认头像状态："+x);
+        if (x!=0){
+            return "ok";
+        }else
+        {
+            return "bad";
+        }
+    }
+
+    @Override
+    //跳转到修改用户密码的页面
+    public String toadminedituserpass(int id, Model model) {
+        User user2=userDao.findById(id);
+        model.addAttribute("adeduserpass",user2);
+        return "admin-edituserpass";
+    }
+
+    @Override
+    //修改用户的密码
+    public String adminedituserpass(int id, String newpass, Model model) {
+        int x=userDao.edituserpass(newpass,id);
+        User user3=userDao.findById(id);
+        if (x!=0){
+            model.addAttribute("adeduserpass",user3);
+            model.addAttribute("msg","修改用户密码成功");
+            System.out.println("model值：修改密码成功");
+        }else{
+            model.addAttribute("adeduserpass",user3);
+            model.addAttribute("msg","修改密码失败");
+        }
+
+        return "admin-edituserpass";
     }
 
 

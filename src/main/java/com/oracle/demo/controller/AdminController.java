@@ -33,10 +33,10 @@ public class AdminController {
     return adminService.adminlogin(admin,model,session);
   }
 
-  @RequestMapping("gethello")
-  public String xxx(String xx){
+  @RequestMapping("/gethello")
+  public String xxx(@RequestParam(value = "xx") String xx){
     System.out.println(xx);
-      return "";
+      return "admin-welcome";
   }
   @GetMapping("/gethello1")
   public String zz(){
@@ -165,14 +165,40 @@ public class AdminController {
   }
 
   //通过修改修改用户id的跳转
-  @RequestMapping("/toamdinedituser")
+  @RequestMapping("/toadminedituser")
   public String toadminedituser(int id,Model model){
-     return adminService.toadminedituser(id,model);
+    System.out.println("编辑用户的id"+id);
+    return adminService.toadminedituser(id,model);
   }
 
-  //修改用户
+  //修改用户基本
   @RequestMapping("/adminedituser")
   public String adminedituser(@ModelAttribute User user,Model model){
-    return "";
+    return adminService.adminedituser(user,model);
+  }
+
+  //修改用户头像为默认头像
+  @RequestMapping("/adminedithimage")
+  @ResponseBody
+  public String adminedithimage(int id){
+    String mimage="default.png";
+    System.out.println("修改默认头像id："+id);
+    return adminService.adminedituserhimg(mimage,id);
+  }
+
+  //跳转到修改用户密码
+  @RequestMapping("/toadmineditpass")
+  public String toadmineditpass(int id,Model model){
+    System.out.println("修改用户的id:"+id);
+     return adminService.toadminedituserpass(id,model);
+  }
+
+  //修改用户密码
+  @RequestMapping("/admineditpass")
+  public String admineditpass(@RequestParam(value = "id") int id,@RequestParam(value = "newpass") String newpass,Model model)
+  {
+    String newpassMD5=MD5Util.encode(newpass);
+    System.out.println("修改用户的新密码:"+newpassMD5);
+    return adminService.adminedituserpass(id,newpassMD5,model);
   }
 }
