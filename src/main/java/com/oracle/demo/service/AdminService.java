@@ -22,4 +22,8 @@ public interface AdminService {
     public String adminfduserbyphone(String pkey,Model model);
     //批量删除用户
     public String admindelbnuser(List<Integer> id);
+    //通过修改用户的id进行跳转
+    public String toadminedituser(int id,Model model);
+    //修改用户的信息
+    public String adminedituser(User user,Model model);
 }

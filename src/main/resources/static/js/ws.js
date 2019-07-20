@@ -13,15 +13,29 @@ class WS{
             console.log(evt.data)
             let data = JSON.parse(evt.data)
             console.log(data)
-            this.text(data)
+            this[data.type](data)
         };
 
     }
     deletePeople(data){
+        for(let people in roomPeople){
+            if(roomPeople[people].id == data.id){
+                roomPeople.splice(people, 1);
+                return
+            }
+        }
 
     }
     addPeople(data){
-
+        for(let people of roomPeople){
+            if(people.id == data.id){
+                people = data
+                return
+            }
+        }
+        roomPeople.push(data)
+        people[data.id] = data
+        localStorage.setItem("people", JSON.stringify(people));
     }
     text(data){
         roomMessage.message.push(data)

@@ -28,6 +28,8 @@ public class ShareInfo {
     @Column(length=20)
     private String nickname;
     private String image;
+    @Column(length=100)
+    private String img;
 
     public String getImg() {
         return img;
@@ -36,9 +38,6 @@ public class ShareInfo {
     public void setImg(String img) {
         this.img = img;
     }
-
-    @Column(length=100)
-    private String img;
 
     public int getId() {
         return id;

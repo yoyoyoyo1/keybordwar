@@ -19,5 +19,8 @@ public interface AdminDao extends JpaRepository<Admin,Integer> {
     //添加用户
     public User save(User user);
 
+    //补全用户昵称的查询
+    @Query(value = "select nickname from User where nickname=?1",nativeQuery = true)
+    public List<String> findnkey(String k);
 
 }

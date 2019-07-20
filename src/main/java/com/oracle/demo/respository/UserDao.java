@@ -26,10 +26,15 @@ public interface UserDao extends JpaRepository<User,Integer> {
     //模糊查询手机
     public List<User> findAllByPhoneLike(String pkey);
     //批量删除
-    @org.springframework.transaction.annotation.Transactional
+    @Transactional
     public void deleteUserByIdIn(List<Integer> id);
+    //修改用户的信息
+    @Transactional
+    @Modifying
+    @Query(value = "update User set email = ?1,pass = ?2,nickname = ?3,phone = ?4,image = ?5,motto = ?6 where id=?7",nativeQuery = true)
+    public int  edituser(String email,String pass, String nickname, String phone, String image, String motto,int id);
     //查询批量删除是否成功
-    @org.springframework.transaction.annotation.Transactional
+    @Transactional
     public List<User> findAllByIdIn(List<Integer> id);
     //分页查询用户(未实现)
     //blic Page<User> getUserListByIdContaining(String mohu, Pageable pageable);
@@ -38,11 +43,15 @@ public interface UserDao extends JpaRepository<User,Integer> {
     @Query(value = "select * from User where id = ?1",nativeQuery = true)
     public User findById(int id);
     @Modifying
-    @org.springframework.transaction.annotation.Transactional
+    @Transactional
     @Query(value = "update User set image = ?1 where id = ?2",nativeQuery = true)
     public int changeImg(String name,int id);
     @Modifying
-    @org.springframework.transaction.annotation.Transactional
+    @Transactional
     @Query(value = "update User set nickname = ?1,motto =?2 where id = ?3",nativeQuery = true)
     public int updateinfo(String nickname,String motto,int id);
+    @Modifying
+    @org.springframework.transaction.annotation.Transactional
+    @Query(value = "update User set pass = ?1 where id = ?2",nativeQuery = true)
+    public int updatepwd(String pass,int id);
 }

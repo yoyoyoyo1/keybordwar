@@ -8,6 +8,8 @@ import com.oracle.demo.service.FollowService;
 import com.oracle.demo.service.ShareService;
 import com.oracle.demo.service.UserService;
 import com.oracle.demo.util.MD5Util;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+import org.hibernate.validator.constraints.pl.REGON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 @Controller
@@ -47,7 +50,7 @@ public class UserController {
     }
     //登录后跳转主页
     @RequestMapping("toindex")
-    public String toindex(String email,HttpSession session)
+    public String toindex(String email,HttpSession session,Model model)
     {
         Follow follow=new Follow();
         int id=userService.findIdByEmail(email);
@@ -74,7 +77,7 @@ public class UserController {
 //    }
 
     @RequestMapping("touserprofile")
-    public String touserprofile(int userId,Model model)
+    public String touserprofile(int userId,Model model,HttpSession session)
     {   model.addAttribute("share",shareService.findShareByIdOrderByTime(userId));
         List<Integer> followme=followService.followMeList(userId);
         if(followme.size()!=0)
@@ -88,6 +91,11 @@ public class UserController {
             model.addAttribute("following",userService.followMeList(following));
         }else {
         model.addAttribute("following",null);}
+        Follow follow=new Follow();
+        follow.setFollowering(followService.showFollowing(userId));
+        follow.setFollower(followService.showFollower(userId));
+        session.getAttribute("follow");
+        session.setAttribute("follow",follow);
         return "my-profile-feed";
     }
     @RequestMapping("userupdateimg")
@@ -119,6 +127,7 @@ public class UserController {
         model.addAttribute("userinfo",userService.findById(id));
         return "profile-account-setting";
     }
+    //更新用户签名昵称
     @RequestMapping("updateuserinfo")
     public String updateuserinfo(@ModelAttribute User user,HttpSession session)
     {
@@ -131,5 +140,102 @@ public class UserController {
     @ResponseBody
     public Object self(HttpSession session){
         return session.getAttribute("user");
+    }
+    //更新用户密码
+    @RequestMapping("/userupdatepwd")
+    public void userupdatepwd(@ModelAttribute User user,HttpSession session,HttpServletResponse response) throws IOException
+    {
+        String pass=MD5Util.encode(user.getPass());
+        userService.updatePwd(pass,user.getId());
+        response.setCharacterEncoding("utf-8");
+        PrintWriter out = response.getWriter();
+        out.print("<html><head><meta charset='UTF-8'></head>");
+        out.print("<script>alert('修改成功，需要重新登录');window.location='/user'</script>");
+        out.flush();
+        out.close();
+        session.getAttribute("user");
+        session.invalidate();
+    }
+    //用户注销
+    @RequestMapping("/userlogout")
+    public void logout(HttpSession session,HttpServletResponse response) throws IOException
+    {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter out = response.getWriter();
+        out.print("<html><head><meta charset='UTF-8'></head>");
+        out.print("<script>alert('注销成功!');window.location='/user'</script>");
+        out.flush();
+        out.close();
+        /*User user=(User)session.getAttribute("user");
+        System.out.println(user+"===========================");*/
+        session.invalidate();
+    }
+    //用户关注他人
+    @RequestMapping("/userdofollow")
+    public void userpofollow(int toid,HttpSession session,HttpServletResponse response) throws IOException
+    {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter out = response.getWriter();
+        User user=(User)session.getAttribute("user");
+        if(followService.isFollow(user.getId(),toid)==null)
+        {
+            Follow follow=new Follow();
+            follow.setFollower(user.getId());
+            follow.setFollowering(toid);
+            followService.doFollow(follow);
+            out.print("<html><head><meta charset='UTF-8'></head>");
+            out.print("<script>alert('关注成功!');window.location='/touserprofile?userId="+user.getId()+"'</script>");
+            out.flush();
+            out.close();
+        }else {
+            out.print("<html><head><meta charset='UTF-8'></head>");
+            out.print("<script>alert('你关注过他了!');window.location='/touserprofile?userId="+user.getId()+"'</script>");
+            out.flush();
+            out.close();
+        }
+    }
+    //用户取关某人
+    @RequestMapping("userundofollow")
+    public void userundofollow(int toid,HttpSession session,HttpServletResponse response) throws  IOException
+    {
+        response.setCharacterEncoding("utf-8");
+        PrintWriter out = response.getWriter();
+        User user=(User)session.getAttribute("user");
+        followService.undoFollow(user.getId(),toid);
+        out.print("<html><head><meta charset='UTF-8'></head>");
+        out.print("<script>alert('你已经不再关注TA惹!');window.location='/touserprofile?userId="+user.getId()+"'</script>");
+        out.flush();
+        out.close();
+    }
+    @RequestMapping("othersprofile")
+    public String othersprofile(int id,Model model,HttpSession session)
+    {
+        model.addAttribute("otheruser",userService.findById(id));
+        User user=(User)session.getAttribute("user");
+        Follow follow=new Follow();
+        follow.setFollower(followService.showFollower(id));
+        follow.setFollowering(followService.showFollowing(id));
+        model.addAttribute("follownum",follow);
+        List<Integer> followta=followService.followMeList(id);
+        if(followta.size()!=0)
+        {
+            model.addAttribute("followta",userService.followMeList(followta));
+        }else {
+            model.addAttribute("followta",null);}
+        List<Integer> tafollowing=followService.followingList(id);
+        if(tafollowing.size()!=0)
+        {
+            model.addAttribute("tafollowing",userService.followMeList(tafollowing));
+        }else {
+            model.addAttribute("tafollowing",null);}
+        model.addAttribute("tashare",shareService.findShareByIdOrderByTime(id));
+        if(followService.isFollowta(user.getId(),id)==null)
+        {
+            model.addAttribute("isfollow",false);
+        }else {
+            model.addAttribute("isfollow",true);
+        }
+        return "user-profile";
+
     }
 }

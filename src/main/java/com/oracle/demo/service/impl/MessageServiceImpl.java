@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -16,8 +17,8 @@ public class MessageServiceImpl implements MessageService {
     @Autowired
     public MessageDao messageDao;
     @Override
-    public Object getDialogMessageByIdAndTime(Integer dialogId, Long time) {
-        return messageDao.getDialogMessageByIdAndTime(dialogId, time);
+    public Object getMessageByDialogId(Integer dialogId) {
+        return messageDao.getDialogMessageByIdAndTime(dialogId);
     }
 
     @Override
@@ -32,5 +33,10 @@ public class MessageServiceImpl implements MessageService {
         out.flush();
         out.close();*/
         return null;
+    }
+
+    @Override
+    public List<Integer> getFormIdByDialogId(Integer dialogId) {
+        return messageDao.getFormIdByDialogId(dialogId);
     }
 }

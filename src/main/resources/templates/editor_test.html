@@ -1,0 +1,32 @@
+<!doctype html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>jquery多图片上传预览</title>
+    <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+
+</head>
+<body>
+<h1 >图片上传Demo</h1>
+<form action="fileUpload" method="post" enctype="multipart/form-data">
+    <p>选择文件: <input type="file" name="shareimg"/></p>
+    <p><input type="submit" value="提交"/></p>
+</form>
+
+
+    <div th:each="sharePicture : ${sharePictureList}" class="post-bar">
+
+        <img th:src="'shareimg/'+${sharePicture.img}" alt="" height="200px" width="200px">
+
+    </div>
+
+
+    <!--
+    <div th:if="${sharePictureList.shareId} eq ${share.id}">
+        <img th:src="'/image/${sharePicture.img }" alt="" height="50px" width="50px">
+    </div> -->
+
+
+
+</body>
+</html>

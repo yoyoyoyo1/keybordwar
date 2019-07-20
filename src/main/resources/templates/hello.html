@@ -1,11 +1,32 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<!doctype html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+        $(function() {
+            var availableTags = [
+                "James",
+                "Kobe",
+                "Jordan"
+            ];
+            $( "#tags" ).autocomplete({
+                source: availableTags
+            });
+        });
+    </script>
 </head>
-<body >
-   你好
-       <a href="/tohello1">kkljsdaf</a>
+<body>
+
+<div class="ui-widget">
+    <label for="tags">Tags: </label>
+    <input id="tags">
+</div>
+<form th:action="@{/gethello1}" method="post" >
+    xx:<input name="xx" placeholder="你好">
+    <input type="submit" value="确定">
+</form>
+
 </body>
-</html>
