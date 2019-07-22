@@ -35,7 +35,7 @@
     </div>
     <div class="x-body">
       <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so" th:action="@{/adminfinduserbynname}">
+        <form class="layui-form layui-col-md12 x-so" th:action="@{/toadminuserlistbypage}">
           <!--
           <input class="layui-input" placeholder="开始日" name="start" id="start">
           <input class="layui-input" placeholder="截止日" name="end" id="end">
@@ -45,9 +45,10 @@
         </form>
       </div>
       <xblock>
+        <a href="javascript:void(0)" title="google" onclick="self.parent.addTab('百度','http://www.baidu.com','icon-add')">打开新TAB</a>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
         <button class="layui-btn" onclick="x_admin_show('添加用户','./member-add.html',600,400)"><i class="layui-icon"></i>添加</button>
-        <span class="x-right" style="line-height:40px">共有数据：88 条</span>
+        <span class="x-right" style="line-height:40px" th:text="'共有数据：'+${totalpagenum}+'条'"></span>
       </xblock>
       <table class="layui-table">
         <thead>
@@ -88,7 +89,7 @@
               <a th:onclick="x_admin_show('修改密码','/toadmineditpass?id=[[${users.id}]]',600,600)" title="修改密码" href="javascript:;">
                 <i class="layui-icon">&#xe631;</i>
               </a>
-              <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
+              <a title="删除" th:onclick="member_del(this,'[[${users.id}]]')" href="javascript:;">
                 <i class="layui-icon">&#xe640;</i>
               </a>
             </td>
@@ -97,17 +98,17 @@
       </table>
       <div class="page">
         <div>
-          <a class="prev" href="">&lt;&lt;</a>
-          <a class="num" href="">1</a>
-          <span class="current">2</span>
-          <a class="num" href="">3</a>
-          <a class="num" href="">489</a>
-          <a class="next" href="">&gt;&gt;</a>
+          <a th:onclick="checkpprev()" class="prev" href="javascript:;">首页</a>
+          <a th:onclick="checkprev()" class="prev"  href="javascript:;">上一页</a>
+          <span class="current" th:text="${pagenum+1}"></span>
+          <a  th:onclick="checknext()" class="next" href="javascript:;">下一页</a>
+          <a  th:onclick="checknnext()" class="next" href="javascript:;">尾页</a>
         </div>
       </div>
 
     </div>
-    <script>
+
+    <script th:inline="javascript">
       layui.use('laydate', function(){
         var laydate = layui.laydate;
         
@@ -117,6 +118,10 @@
         });
 
         //执行一个laydate实例
+          //@{'/toadminuserlistbypage?pagenum='+${totalpages}+'&nkey='+${nkey}}
+          // @{'/toadminuserlistbypage?pagenum='+${pagenum+1}+'&nkey='+${nkey}}
+          //@{'/toadminuserlistbypage?pagenum='+${pagenum-1}+'&nkey='+${nkey}}
+          //@{'/toadminuserlistbypage?pagenum=0&nkey='+${nkey}}
         laydate.render({
           elem: '#end' //指定元素
         });
@@ -148,6 +153,47 @@
           max:5,
 
       })
+      //判断用户是否从首页跳到首页
+      function checkpprev() {
+          var page=[[${pagenum}]];
+          var page1=(parseInt(page));
+          if (page1==0){
+              layer.msg('这已经是第一页了',{icon:5,time:1000});
+              return;
+          }
+          window.location.href="/toadminuserlistbypage?pagenum=0&nkey="+[[${nkey}]];
+      }
+      //判断用户是否从上一页跳到首页
+      function checkprev() {
+          var page=[[${pagenum}]];
+          var page1=(parseInt(page));
+          if (page1==0){
+              layer.msg('这已经是第一页了',{icon:5,time:1000});
+              return;
+          }
+          window.location.href="/toadminuserlistbypage?pagenum="+[[${pagenum-1}]]+"&nkey="+[[${nkey}]];
+      }
+      //判断用户是否从下一页跳到尾页
+      function checknext() {
+          var page=[[${pagenum}]];
+          var tpage=[[${totalpages}]];
+          if(page==tpage){
+              layer.msg('这已经是最后一页了',{icon:5,time:1000});
+              return;
+          }
+          window.location.href="/toadminuserlistbypage?pagenum="+[[${pagenum+1}]]+"&nkey="+[[${nkey}]];
+
+      }
+      //判断用户是否从尾页跳到尾页
+      function checknnext() {
+          var page=[[${pagenum}]];
+          var tpage=[[${totalpages}]];
+          if(page==tpage){
+              layer.msg('这已经是最后一页了',{icon:5,time:1000});
+              return;
+          }
+          window.location.href="/toadminuserlistbypage?pagenum="+[[${pagenum+1}]]+"&nkey="+[[${nkey}]];
+      }
 
        /*用户-停用*/
       function mes(obj,id){
@@ -183,6 +229,7 @@
                   success:function (res) {
                       if (res  == "ok"){
                           layer.msg('已修改头像为默认头像',{icon: 1,time:1000});
+                          window.location.reload();
                       }
                       else{
                           layer.msg('修改失败',{icon: 5,time:1000});
@@ -196,13 +243,26 @@
       /*用户-删除*/
       function member_del(obj,id){
           layer.confirm('确认要删除吗？',function(index){
-
-              layer.msg('已删除!',{icon:1,time:1000});
+              $.ajax({
+                  type:"POST",
+                  url:"/admindeluser",
+                  data: {"id":id},
+                  traditional:true,
+                  success:function (res) {
+                      if (res  == "ok"){
+                          $(obj).parents("tr").remove();
+                          layer.msg('已删除!',{icon:1,time:1000});
+                      }
+                      else{
+                          layer.msg('删除成功',{icon: 5,time:1000});
+                      }
+                  }
+              })
           });
       }
 
 
-
+      //用户的批量删除
       function delAll (argument) {
 
         var data = tableCheck.getData();
