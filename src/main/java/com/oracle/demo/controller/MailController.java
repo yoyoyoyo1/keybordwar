@@ -133,9 +133,6 @@ public class MailController {
     @ResponseBody
     public String userchangepwd(String email,String ccode,String pass,String phone)
     {
-        System.out.println(mobileMap.get(phone)+"code-------------------");
-        System.out.println(ccode+"code------------------");
-        System.out.println(phone+"-----------------phone");
         if(ccode.equals(mobileMap.get(phone)))
         {
             userService.changePwd(MD5Util.encode(pass),email);
