@@ -4867,19 +4867,6 @@ a:hover {
     width: 100%;
     height: 604px;
 }
-
-.hz-message-list{
-	min-height: 30px;
-	margin: 10px 0;
-}
-
-.hz-message-list-text{
-	padding: 7px 13px;
-	border-radius: 15px;
-	width: auto;
-	max-width: 85%;
-	display: inline-block;
-}
 /* ============== message-send-area ============ */
 
 .message-send-area {

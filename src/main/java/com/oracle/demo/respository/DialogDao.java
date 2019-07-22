@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface DialogDao extends JpaRepository<Dialog,Integer> {
     public List<Dialog> getDialogsByActive(int i);
+
 }

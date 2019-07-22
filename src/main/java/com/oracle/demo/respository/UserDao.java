@@ -73,4 +73,5 @@ public interface UserDao extends JpaRepository<User,Integer>, PagingAndSortingRe
     @org.springframework.transaction.annotation.Transactional
     @Query(value = "update User set pass = ?1 where id = ?2",nativeQuery = true)
     public int updatepwd(String pass,int id);
+
 }
