@@ -17,6 +17,73 @@
     <link rel="stylesheet" type="text/css" href="lib/slick/slick-theme.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/responsive.css">
+    <style>
+        .audio {
+            position: relative;
+            margin-right: 6px;
+            max-width: 116px;
+            min-width: 30px;
+            height: 24px;
+            line-height: 24px;
+            padding: 0 4px 0 10px;
+            border-radius: 2px;
+            color: #000;
+            text-align: right;
+            background-color: rgba(107, 197, 107, 0.85);
+        }
+
+        .audio {
+            text-align: left;
+        }
+
+        /*.audio:before {*/
+            /*position: absolute;*/
+            /*right: -8px;*/
+            /*top: 8px;*/
+            /*content: '';*/
+            /*display: inline-block;*/
+            /*width: 0;*/
+            /*height: 0;*/
+            /*border-style: solid;*/
+            /*border-width: 4px;*/
+            /*border-color: transparent transparent transparent rgba(107, 197, 107, 0.85);*/
+        /*}*/
+
+        .audio span {
+            color: rgba(255, 255, 255, .8);
+            display: inline-block;
+            transform-origin: center;
+        }
+
+        .audio span:nth-child(1) {
+            font-weight: 400;
+        }
+        @keyframes wink {
+            from {
+                color: rgba(255, 255, 255, .8);
+            }
+            to {
+                color: rgba(255, 255, 255, .1);
+            }
+        }
+        .audio span:nth-child(2) {
+            transform: scale(0.8);
+            font-weight: 500;
+        }
+
+        .audio span:nth-child(3) {
+            transform: scale(0.5);
+            font-weight: 700
+        }
+
+        .audio.wink span {
+            animation: wink 1s ease infinite;
+        }
+
+        .duration {
+            margin: 3px 2px;
+        }
+    </style>
 </head>
 
 
@@ -277,7 +344,7 @@
                                     </ul>
                                     <ul>
                                         <li @click="showEmoji" ><i class="fa fa-smile-o"></i></li>
-                                        <li><i class="fa fa-camera"></i></li>
+                                        <li ><i @mouseup="closeMedia" @mousedown="requestMediaAccess" class="fa fa-microphone"></i></li>
                                         <li><i class="fa fa-paperclip"></i></li>
                                     </ul>
                                 </form>
@@ -311,7 +378,7 @@
     </footer>
 
 </div><!--theme-layout end-->
-
+<audio src="" id="audio"></audio>
 
 
 <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -352,7 +419,12 @@
     <div class="main-message-box ta-right">
         <div class="message-dt ">
             <div class="message-inner-dt">
-                <p>{{message.content}}</p>
+                <p v-if="message.type=='text'">{{message.content}}</p>
+                <div v-else @click="Play(message.content)" class="audio" style="width: 40px; float:right">
+                    <span>(</span>
+                    <span>(</span>
+                    <span>(</span>
+                </div>
             </div><!--message-inner-dt end-->
             <span>{{message.createAt}}</span>
         </div><!--message-dt end-->
@@ -366,7 +438,12 @@
     <div class="main-message-box st3">
         <div class="message-dt st3">
             <div class="message-inner-dt">
-                <p>{{message.content}}</p>
+                <p v-if="message.type=='text'">{{message.content}}</p>
+                <div v-else @click="Play(message.content)" class="audio" style="width: 40px; float:left">
+                    <span>(</span>
+                    <span>(</span>
+                    <span>(</span>
+                </div>
             </div><!--message-inner-dt end-->
             <span>{{message.createAt}}</span>
         </div><!--message-dt end-->
@@ -391,6 +468,7 @@
     let roomMessage = {time:0,message:[]}
     let own = {}
     let dialogId = parseInt(localStorage.getItem("dialogId"));
+    let chunk = []
     Vue.component('room-people',{
         //定义数据
         props:['user'],
@@ -432,7 +510,11 @@
         },
         //定义方法
         methods:{
-
+            Play(content){
+                let audio = document.getElementById("audio")
+                audio.src = "/audio/"+content;
+                audio.play()
+            }
         },
         template:'#other-message'
 
@@ -448,7 +530,11 @@
         },
         //定义方法
         methods:{
-
+            Play(content){
+                let audio = document.getElementById("audio")
+                audio.src = "/audio/"+content;
+                audio.play()
+            }
         },
         template:'#me-message'
 
@@ -461,9 +547,42 @@
             message,
             roomMessage,
             emoji,
+            audioUrl:"",
+            recorder:"",
             ws:"",
         },
         methods:{
+            closeMedia(){
+                this.recorder.stop()
+            },
+            saveRecordingData() {
+                let blob = new Blob(chunk, { 'type': 'audio/ogg; codecs=opus' }),
+                    audioStream = URL.createObjectURL(blob),
+                    //估算时长
+                    duration = parseInt(blob.size / 6600);
+                if (duration <= 0) {
+                    alert('说话时间太短');
+                    return;
+                }
+                if (duration > 60) {
+                    duration = 60;
+                }
+                chunk = [];
+                const formData = new FormData()
+                formData.append('file', blob, new Date().getTime()+'.ogg')
+                axios({
+                    method: 'post',
+                    url: '/api/video/upload',
+                    data: formData,
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then(res => {
+                            this.ws.send({content:res.data,type:"audio"})
+                        }).catch(err => {
+                            console.log('上传失败！')
+                        })
+            },
             checkEmoji(item){
                 document.getElementById('emoji').style.display = 'none'
                 document.getElementById('message').value += item
@@ -474,7 +593,26 @@
             send(){
                 let str = document.getElementById("message").value
                 document.getElementById("message").value = ""
-                this.ws.ws.send(str)
+                this.ws.send({content:str,type:"text"})
+            },
+            getRecordingData(e) {
+                //录制的数据
+                chunk.push(e.data)
+            },
+
+            requestMediaAccess() {
+
+                navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+                    //创建媒体录制对象
+                    recorder = new window.MediaRecorder(stream);
+                    recorder.start(0)
+                    this.recorder = recorder
+                    recorder.ondataavailable = this.getRecordingData;
+                    recorder.onstop = this.saveRecordingData;
+                    console.log("开始记录")
+                }, error => {
+                    alert('出错，请确保已允许浏览器获取录音权限');
+                });
             }
 
         },
@@ -509,7 +647,16 @@
                     roomPeople.push(people_item)
                 }
                 localStorage.setItem("people", JSON.stringify(people));
-                this.ws = new WS(`ws://192.168.43.238:8080/dialog/${own.id}/${dialogId}`)
+                this.ws = new WS(`wss://192.168.43.238:8080/dialog/${own.id}/${dialogId}`)
+            })
+
+            axios.get(`/dialog/history/user?dialogId=${dialogId}`).then((res)=>{
+                console.log(res.data,123)
+                for (people_item of res.data){
+                    people[people_item.id] = people_item
+                }
+                console.log(res.data,123)
+                localStorage.setItem("people", JSON.stringify(people));
             })
         }
     })

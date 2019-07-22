@@ -44,8 +44,12 @@ class WS{
     image(data){
 
     }
+    audio(data){
+        roomMessage.message.push(data)
+    }
     send(message) {
-        ws.send(message)
+        console.log(JSON.stringify(message))
+        this.ws.send(JSON.stringify(message))
     }
 
 }

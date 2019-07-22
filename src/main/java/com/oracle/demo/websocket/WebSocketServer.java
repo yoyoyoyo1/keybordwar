@@ -23,7 +23,7 @@ import javax.websocket.server.ServerEndpoint;
 public class WebSocketServer {
 
     //concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
-    private static Map<String,WebSocketServer> webSocketMap = new ConcurrentHashMap<>();
+    public static Map<String,WebSocketServer> webSocketMap = new ConcurrentHashMap<>();
 
     //与某个客户端的连接会话，需要通过它来给客户端发送数据
     private Session session;

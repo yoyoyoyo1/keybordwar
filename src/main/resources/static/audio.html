@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .audio {
+            position: relative;
+            margin-right: 6px;
+            max-width: 116px;
+            min-width: 30px;
+            height: 24px;
+            line-height: 24px;
+            padding: 0 4px 0 10px;
+            border-radius: 2px;
+            color: #000;
+            text-align: right;
+            background-color: rgba(107, 197, 107, 0.85);
+        }
+
+        .audio {
+            text-align: left;
+        }
+
+        .audio:before {
+            position: absolute;
+            right: -8px;
+            top: 8px;
+            content: '';
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 4px;
+            border-color: transparent transparent transparent rgba(107, 197, 107, 0.85);
+        }
+
+        .audio span {
+            color: rgba(255, 255, 255, .8);
+            display: inline-block;
+            transform-origin: center;
+        }
+
+        .audio span:nth-child(1) {
+            font-weight: 400;
+        }
+        @keyframes wink {
+            from {
+                color: rgba(255, 255, 255, .8);
+            }
+            to {
+                color: rgba(255, 255, 255, .1);
+            }
+        }
+        .audio span:nth-child(2) {
+            transform: scale(0.8);
+            font-weight: 500;
+        }
+
+        .audio span:nth-child(3) {
+            transform: scale(0.5);
+            font-weight: 700
+        }
+
+        .audio.wink span {
+            animation: wink 1s ease infinite;
+        }
+
+        .duration {
+            margin: 3px 2px;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- <audio src="音频.wav"  controls="controls">
+    您的浏览器不支持 video 标签。
+</audio> -->
+<div class="audio" style="width: 40px;">
+    <span>(</span>
+    <span>(</span>
+    <span>(</span>
+</div>
+<audio id="video" src="">
+
+</audio>
+<div class="duration">1</div>
+<button onclick="requestMediaAccess()">123</button>
+<button onclick="close1()">123123</button>
+<script src="/js/axios.min.js"></script>
+<script>
+
+    let chunk = []
+    let video = document.getElementById("video")
+    let recorder
+    function close1() {
+        recorder.stop()
+    }
+
+    function requestMediaAccess() {
+
+        //向PeerConnection中加入需要发送的流
+        //获取用户媒体权限，视频的话参数{audio: true, video: true}
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+            //创建媒体录制对象
+            recorder = new window.MediaRecorder(stream);
+            recorder.start(0)
+            bindEvents();
+        }, error => {
+            alert('出错，请确保已允许浏览器获取录音权限');
+        });
+    }
+    function bindEvents() {
+        recorder.ondataavailable = getRecordingData;
+        recorder.onstop = saveRecordingData;
+    }
+
+    function getRecordingData(e) {
+        //录制的数据
+        chunk.push(e.data)
+    }
+
+    //保存音频数据
+    function saveRecordingData() {
+        let blob = new Blob(chunk, { 'type': 'audio/ogg; codecs=opus' }),
+            audioStream = URL.createObjectURL(blob),
+            //估算时长
+            duration = parseInt(blob.size / 6600);
+        if (duration <= 0) {
+            alert('说话时间太短');
+            return;
+        }
+        if (duration > 60) {
+            duration = 60;
+        }
+        video.src = audioStream
+        chunk = [];
+        const formData = new FormData()
+        formData.append('file', blob, new Date().getTime()+'.ogg')
+        axios({
+            method: 'post',
+            url: '/api/video/upload',
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+            .then(
+                res => {
+                    console.log(res.data)
+                }
+            )
+            .catch(
+                err => {
+                    console.log('上传失败！')
+                }
+            )
+    }
+
+</script>
+</body>
+
+</html>

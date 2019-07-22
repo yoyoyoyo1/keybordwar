@@ -47,10 +47,10 @@ public class Dialog {
     public Object historyUser(Integer dialogId){
         List<User> list = new ArrayList<>();
         List<Integer> userList = messageService.getFormIdByDialogId(dialogId);
+        System.out.println(userList);
         for(Integer key : userList){
             list.add(userService.findById(key));
         }
-
         return list;
     }
     @GetMapping("/message")

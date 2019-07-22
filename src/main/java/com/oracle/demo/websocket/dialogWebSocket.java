@@ -7,6 +7,7 @@ import com.oracle.demo.service.DialogService;
 import com.oracle.demo.service.MessageService;
 import com.oracle.demo.service.UserService;
 import com.oracle.demo.util.BeanToMap;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -91,16 +92,18 @@ public class dialogWebSocket {
             dialogWebSocket.Dialog.remove(dialogId);
             return;
         }
+        JSONObject messageJson = JSONObject.fromObject(message);
         Message mess =  new Message();
         mess.setFormId(userId);
-        mess.setContent(message);
+        mess.setContent((String) messageJson.get("content"));
         mess.setCreateAt(new Date());
         mess.setWatch(2);
         mess.setToId(dialogId);
+        mess.setType((String) messageJson.get("type"));
+        System.out.println(JSON.toJSONString(mess));
         messageService.save(mess);
-        Map<String, Object> messMap = BeanToMap.BeanToMap(mess);
-        messMap.put("type","text");
-        sendMessage(JSON.toJSONString(messMap));
+        System.out.println(3);
+        sendMessage(JSON.toJSONString(mess));
 
     }
 

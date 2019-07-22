@@ -12,6 +12,8 @@ public class Message {
     private int id;//消息id
     private int formId;//消息来源（用户id）
     private int toId;//消息的去向（用户或圆桌id）
+    @Column(length=20)
+    private String type;
     @Column(columnDefinition="TEXT")
     private String content;//（内容）
     @Column(columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP" )
@@ -35,6 +37,14 @@ public class Message {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public int getFormId() {
