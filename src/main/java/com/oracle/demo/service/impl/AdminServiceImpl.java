@@ -7,10 +7,17 @@ import com.oracle.demo.respository.UserDao;
 import com.oracle.demo.service.AdminService;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpRequest;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
+import javax.persistence.criteria.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -142,19 +149,63 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     //修改用户的密码
-    public String adminedituserpass(int id, String newpass, Model model) {
+    public String adminedituserpass(int adminid,String adminpass,int id, String newpass, Model model) {
         int x=userDao.edituserpass(newpass,id);
+        Admin admin1=adminDao.findAdminByIdAndPassword(adminid,adminpass);
         User user3=userDao.findById(id);
+        if (admin1 != null){
         if (x!=0){
-            model.addAttribute("adeduserpass",user3);
             model.addAttribute("msg","修改用户密码成功");
             System.out.println("model值：修改密码成功");
         }else{
-            model.addAttribute("adeduserpass",user3);
             model.addAttribute("msg","修改密码失败");
         }
-
+        }
+        model.addAttribute("msg","输入的管理员密码错误");
+        model.addAttribute("adeduserpass",user3);
         return "admin-edituserpass";
+    }
+
+    @Override
+    //模糊查询昵称进行分页
+    public String adminfduserbynamepage(String name, int pagenum, int pagesize,Model model) {
+        String nkey="%"+name+"%";
+        Pageable pageable= PageRequest.of(pagenum,pagesize);
+        Specification<User> spec=new Specification<User>() {
+            @Nullable
+            @Override
+            public Predicate toPredicate(Root<User> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                Predicate p1=criteriaBuilder.like(root.get("nickname").as(String.class),nkey);
+                return p1;
+
+            }
+        };
+        Page<User> userPage=userDao.findAll(spec,pageable);
+        List<User> usersPagelist=userPage.getContent();
+        model.addAttribute("Userlist",usersPagelist);
+        //总记录数
+        model.addAttribute("totalpagenum",userPage.getTotalElements());
+        //当前页码
+        model.addAttribute("pagenum",pagenum);
+        System.out.println("当前页"+pagenum);
+        //每页多少数量
+        model.addAttribute("pagesize",pagesize);
+        //总页数
+        model.addAttribute("totalpages",userPage.getTotalPages()-1);
+
+        System.out.println("按已查询的nkey"+name);
+        return "admin-userlist";
+    }
+
+    @Override
+    //管理员删除用户
+    public String admindeluser(int id) {
+        int x=userDao.deleteUserById(id);
+        if (x!=0){
+            return "ok";
+        }else{
+            return "bad";
+        }
     }
 
 

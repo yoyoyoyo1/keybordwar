@@ -2,15 +2,18 @@ package com.oracle.demo.respository;
 
 import com.oracle.demo.entity.User;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface UserDao extends JpaRepository<User,Integer> {
+public interface UserDao extends JpaRepository<User,Integer>, PagingAndSortingRepository<User,Integer>,JpaSpecificationExecutor<User> {
     @Query(value = "select * from User where email=?1",nativeQuery = true)
     public User findByEmail(String email);
     @Query(value = "select * from User where email=?1 and pass=?2",nativeQuery = true)
@@ -19,6 +22,8 @@ public interface UserDao extends JpaRepository<User,Integer> {
     public int findIdByEmail(String email);
     //查询全部用户
     public List<User> findAllBy();
+    //分页查询
+    public Page<User> findAll(Pageable pageable);
     //模糊查询昵称
     public List<User> findAllByNicknameLike(String nkey);
     //模糊查询邮箱
@@ -33,6 +38,10 @@ public interface UserDao extends JpaRepository<User,Integer> {
     @Modifying
     @Query(value = "update User set email = ?1,pass = ?2,nickname = ?3,phone = ?4,image = ?5,motto = ?6 where id=?7",nativeQuery = true)
     public int  edituser(String email,String pass, String nickname, String phone, String image, String motto,int id);
+    //
+    @Transactional
+    @Modifying
+    public int deleteUserById(Integer id);
     //查询批量删除是否成功
     @Transactional
     public List<User> findAllByIdIn(List<Integer> id);
@@ -64,4 +73,5 @@ public interface UserDao extends JpaRepository<User,Integer> {
     @org.springframework.transaction.annotation.Transactional
     @Query(value = "update User set pass = ?1 where id = ?2",nativeQuery = true)
     public int updatepwd(String pass,int id);
+
 }

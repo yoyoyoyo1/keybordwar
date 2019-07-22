@@ -23,4 +23,7 @@ public interface AdminDao extends JpaRepository<Admin,Integer> {
     @Query(value = "select nickname from User where nickname=?1",nativeQuery = true)
     public List<String> findnkey(String k);
 
+    //通过管理员id和账号查找管理员
+    public Admin findAdminByIdAndPassword(Integer id,String pass);
+
 }
