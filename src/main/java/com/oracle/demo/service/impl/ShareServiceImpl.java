@@ -2,8 +2,10 @@ package com.oracle.demo.service.impl;
 
 import com.oracle.demo.entity.Share;
 import com.oracle.demo.entity.ShareInfo;
+import com.oracle.demo.entity.SharePicture;
 import com.oracle.demo.respository.ShareDao;
 import com.oracle.demo.respository.ShareInfoDao;
+import com.oracle.demo.respository.SharePictureDao;
 import com.oracle.demo.service.ShareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ public class ShareServiceImpl implements ShareService {
     ShareDao shareDao;
     @Autowired
     ShareInfoDao shareInfoDao;
+    @Autowired
+    SharePictureDao sharePictureDao;
     public Share sendShare(Share share, HttpServletResponse response) throws IOException {
         /*PrintWriter out=response.getWriter();
         out.print("<html><head><meta charset='UTF-8'></head>");
@@ -30,6 +34,33 @@ public class ShareServiceImpl implements ShareService {
     @Override
     public List<ShareInfo> getAll() {
         return shareInfoDao.findtime();
+    }
+    @Override
+    public int getShareNum(){
+        return shareInfoDao.countShareNum();
+    }
+    @Override
+    public List<ShareInfo> getByPage(int page) {
+        page=5*page;
+        return shareInfoDao.findShareByPage(page);
+    }
+    public List<ShareInfo> getOnesBypage(int userId,int page)
+    {
+        page=5*page;
+        return shareInfoDao.findShareByOnesPage(userId,page);
+    }
+    public int getOneShareNum(int userId)
+    {
+        return shareInfoDao.countOneShareNum(userId);
+    }
+
+
+    @Override
+    public List<SharePicture>getAllPicture(){return sharePictureDao.findSharePictureById();}
+
+    @Override
+    public void savePicture(SharePicture sharePicture){
+        sharePictureDao.save(sharePicture);
     }
 
     @Override

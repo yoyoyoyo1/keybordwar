@@ -10,7 +10,9 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="/css/font.css">
     <link rel="stylesheet" href="/css/xadmin.css">
-    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="/js/xadmin.js"></script>
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
@@ -38,7 +40,7 @@
           <input class="layui-input" placeholder="开始日" name="start" id="start">
           <input class="layui-input" placeholder="截止日" name="end" id="end">
           -->
-          <input type="text" name="nkey"  placeholder="请输入用户昵称" autocomplete="off" class="layui-input">
+          <input type="text" name="nkey"  id="nkname"  placeholder="请输入用户昵称" autocomplete="off" class="layui-input">
           <button class="layui-btn"  lay-submit="" lay-filter=""><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>
@@ -75,10 +77,12 @@
             <td th:text="${users.pass}"></td>
             <td th:text="${users.motto}"></td>
             <td class="td-manage">
+              <!--
               <a onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">
                 <i class="layui-icon">&#xe601;</i>
               </a>
-              <a title="编辑"  onclick="x_admin_show('编辑','member-edit.html',600,400)" href="javascript:;">
+              -->
+              <a title="编辑"  th:onclick="x_admin_show('编辑','/toadminedituser?id=[[${users.id}]]')" href="javascript:;">
                 <i class="layui-icon">&#xe642;</i>
               </a>
               <a onclick="x_admin_show('修改密码','member-password.html',600,400)" title="修改密码" href="javascript:;">
@@ -117,6 +121,33 @@
           elem: '#end' //指定元素
         });
       });
+      //输入用户昵称自动补全
+      $("#nkname").autocomplete({
+          source:function (requset,response) {
+              $.ajax({
+                  async:false,
+                  type:"post",
+                  url:"getnkname?nkey="+$("#nkname").val(),
+                  data:{
+                      localName : $("#nkname").val()
+                  },
+                  success:function (data) {
+                      console.log(data),
+                          response(
+                              $.map(data,function (item) {
+                                  return {
+                                      label:item,
+                                      value:item,
+                                  }
+                              })
+                          )
+                  }
+              });
+          },
+          minLength: 1,
+          max:5,
+
+      })
 
        /*用户-停用*/
       function member_stop(obj,id){
@@ -161,7 +192,7 @@
             return;
         }
   
-        layer.confirm('确认要删除吗？'+data,function(index){
+        layer.confirm('确认要删除吗？'+'用户id为:'+data,function(index){
             //捉到所有被选中的，发异步进行删除
             var ids="";
             if (data.length>0){

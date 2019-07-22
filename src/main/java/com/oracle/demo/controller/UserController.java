@@ -2,13 +2,17 @@ package com.oracle.demo.controller;
 
 import com.oracle.demo.entity.Follow;
 import com.oracle.demo.entity.Share;
+import com.oracle.demo.entity.ShareInfo;
 import com.oracle.demo.entity.User;
+import com.oracle.demo.respository.LikeDao;
+import com.oracle.demo.respository.ShareInfoDao;
 import com.oracle.demo.respository.UserDao;
 import com.oracle.demo.service.FollowService;
 import com.oracle.demo.service.ShareService;
 import com.oracle.demo.service.UserService;
 import com.oracle.demo.util.MD5Util;
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+import net.bytebuddy.asm.Advice;
 import org.hibernate.validator.constraints.pl.REGON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,6 +42,8 @@ public class UserController {
     private FollowService followService;
     @Autowired
     private ShareService shareService;
+    @Autowired
+    private LikeDao likeDao;
     @RequestMapping("userlogin")
     @ResponseBody
     public String userlogin(String email, String pass, HttpSession httpSession)
@@ -80,7 +86,17 @@ public class UserController {
 
     @RequestMapping("touserprofile")
     public String touserprofile(int userId,Model model,HttpSession session)
-    {   model.addAttribute("shareList",shareService.findOne(userId));
+    {   List<ShareInfo> shareList=shareService.findOne(userId);
+        for (int i=0;i<shareList.size();i++){
+            if(likeDao.findLike(shareList.get(i).getId(),userId)==null)
+            {
+                shareList.get(i).setLikeInfo(0);
+            }else {
+                shareList.get(i).setLikeInfo(1);
+            }
+
+        }
+        model.addAttribute("shareList",shareList);
         List<Integer> followme=followService.followMeList(userId);
         if(followme.size()!=0)
         {
@@ -98,7 +114,31 @@ public class UserController {
         follow.setFollower(followService.showFollower(userId));
         session.getAttribute("follow");
         session.setAttribute("follow",follow);
+        int page=shareService.getOneShareNum(userId);
+        page=page/5+1;//获得动态页数
+        model.addAttribute("page",page);
         return "my-profile-feed";
+    }
+    @RequestMapping("mypage")
+    public String mypage(Model model,int page, HttpSession session)
+    {
+        User user=(User)session.getAttribute("user");
+        int userid=user.getId();
+        List<ShareInfo> shareList=shareService.getOnesBypage(userid,page);
+        for (int i=0;i<shareList.size();i++){
+            if(likeDao.findLike(shareList.get(i).getId(),userid)==null)
+            {
+                shareList.get(i).setLikeInfo(0);
+            }else {
+                shareList.get(i).setLikeInfo(1);
+            }
+
+
+        }
+
+        model.addAttribute("shareList",shareList);
+        //model.addAttribute("sharePictureList",sharePictureList);
+        return "my-profile-feed::shareSpace";
     }
     @RequestMapping("userupdateimg")
     public String userupdateimg(@RequestParam("userimage") MultipartFile file,@ModelAttribute User user,HttpSession session)
@@ -175,7 +215,7 @@ public class UserController {
     //用户关注他人
     @RequestMapping("/userdofollow")
     public void userpofollow(int toid,HttpSession session,HttpServletResponse response) throws IOException
-    {
+    {   //System.out.println("======="+toid);
         response.setCharacterEncoding("utf-8");
         PrintWriter out = response.getWriter();
         User user=(User)session.getAttribute("user");

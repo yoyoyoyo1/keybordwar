@@ -18,10 +18,123 @@
 	<link rel="stylesheet" type="text/css" href="lib/slick/slick-theme.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<link rel="stylesheet" type="text/css" href="css/responsive.css">
+	<style type="text/css">
+		.toolbar {
+			border: 1px solid #ccc;
+		}
+		.text {
+			border: 1px solid #ccc;
+			height: 400px;
+		}
+		.dongtai {
+			font-size: 25px;
+			font-family: 微软雅黑;
+			font-weight: bold;
+		}
+		.wrap{
+			width:150px;
+			position:relative;
+			overflow:hidden;
+			margin-right:4px;
+			display:inline-block;
+			padding:4px 10px;
+			line-height:18px;
+			text-align:center;
+			vertical-align:middle;
+			cursor:pointer;
+			background:rgb(217,237,247);
+			border-radius:4px;
+			-webkit-border-radius:4px;
+			-moz-border-radius:4px;
+			margin-top: 10px;
+			float:left;
+		}
+		.wrap span{
+			color:black;
+			font-size: 16px;
+		}
+		#fileupload{
+			height: 20px;
+		}
+		.wrap .file{
+
+			position:absolute;
+			top:0;
+			right:0;
+			margin:0;
+			border:solid transparent;
+			opacity:0;
+			filter:alpha(opacity=0);
+			cursor: pointer;
+		}
+		.imageDiv {
+			display:inline-block;
+			width:160px;
+			height:130px;
+			-webkit-box-sizing:border-box;
+			-moz-box-sizing:border-box;
+			box-sizing:border-box;
+			border:1px dashed darkgray;
+			background:#f8f8f8;
+			position:relative;
+			overflow:hidden;
+			margin:10px
+		}
+		.cover {
+			position:absolute;
+			z-index:1;
+			top:0;
+			left:0;
+			width:160px;
+			height:130px;
+			background-color:rgba(0,0,0,.3);
+			display:none;
+			line-height:125px;
+			text-align:center;
+			cursor:pointer;
+		}
+		.cover .delbtn {
+			color:red;
+			font-size:20px;
+		}
+		.imageDiv:hover .cover {
+			display:block;
+		}
+		.addImages {
+			display:inline-block;
+			width:200px;
+			height:200px;
+			-webkit-box-sizing:border-box;
+			-moz-box-sizing:border-box;
+			box-sizing:border-box;
+			border:1px dashed darkgray;
+			background:#f8f8f8;
+			position:relative;
+			overflow:hidden;
+			margin:10px;
+		}
+		.text-detail {
+			margin-top:40px;
+			text-align:center;
+		}
+		.text-detail span {
+			text-align:center;
+			font-size:40px;
+		}
+		.file {
+			position:absolute;
+			top:0;
+			left:0;
+			width:160px;
+			height:130px;
+			opacity:0;
+		}
+	</style>
 </head>
 <style>
 	.like{ font-size:20px;  color:#ccc; cursor:pointer;border:none;background: none;outline: 0!important}
-	.cs{color:#f00;}
+	.unLike{font-size:20px;  color:#f00; cursor:pointer;border:none;background: none;outline: 0!important}
+	.btn{font-size:20px;  color:#ccc; cursor:pointer;border:none;background: none;outline: 0!important}
 </style>
 
 <body>
@@ -82,47 +195,7 @@
 								<span><img src="images/icon6.png" alt=""></span>
 								Messages
 							</a>
-							<div class="notification-box msg">
-								<div class="nt-title">
-									<h4>Setting</h4>
-									<a href="#" title="">Clear all</a>
-								</div>
-								<div class="nott-list">
-									<div class="notfication-details">
-										<div class="noty-user-img">
-											<img src="images/resources/ny-img1.png" alt="">
-										</div>
-										<div class="notification-info">
-											<h3><a href="messages.html" title="">Jassica William</a> </h3>
-											<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do.</p>
-											<span>2 min ago</span>
-										</div><!--notification-info -->
-									</div>
-									<div class="notfication-details">
-										<div class="noty-user-img">
-											<img src="images/resources/ny-img2.png" alt="">
-										</div>
-										<div class="notification-info">
-											<h3><a href="messages.html" title="">Jassica William</a></h3>
-											<p>Lorem ipsum dolor sit amet.</p>
-											<span>2 min ago</span>
-										</div><!--notification-info -->
-									</div>
-									<div class="notfication-details">
-										<div class="noty-user-img">
-											<img src="images/resources/ny-img3.png" alt="">
-										</div>
-										<div class="notification-info">
-											<h3><a href="messages.html" title="">Jassica William</a></h3>
-											<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempo incididunt ut labore et dolore magna aliqua.</p>
-											<span>2 min ago</span>
-										</div><!--notification-info -->
-									</div>
-									<div class="view-all-nots">
-										<a href="messages.html" title="">View All Messsages</a>
-									</div>
-								</div><!--nott-list end-->
-							</div><!--notification-box end-->
+
 						</li>
 						<li>
 							<a href="#" title="" class="not-box-open">
@@ -345,17 +418,49 @@
 						</div>
 						<div class="col-lg-6 col-md-8 no-pd">
 							<div class="main-ws-sec">
-								<div class="post-topbar">
-									<div class="user-picy">
-										<img th:src="'userimage/'+${session.user.image}">
-									</div>
-									<div class="post-st">
-										<ul>
-											<li><a class="post-jb active" href="#" title="">发一条动态</a></li>
-										</ul>
-									</div><!--post-st end-->
+								<div id="box" class="post-topbar">
+									<div class="dongtai">动态发布</div>
+									<br/>
+									<form th:action="@{/sendshare(userId=${session.user.id})}"  method="post" enctype="multipart/form-data" multipart="">
+										<div id="contents">
+											<div id="div2"  class="text" style="height: 100px"> <!--可使用 min-height 实现编辑区域自动增加高度-->
+											</div>
+											<div id="div1" class="toolbar">
+											</div>
+											<textarea id="text1" name="content" style="width:100%; height:100px;display: none;"></textarea>
+											<div class="post-st">
+												<ul><li>
+													<button id="btn"style="border: none" type="button"><a >添加图片</a></button>&nbsp;
+													<button  id="btn2" type="submit"  class="active" value="post" style="border: none"><a>发布</a></button>
+												</li></ul>
+											</div>
+										</div>
+										<div id="spread" style="overflow: hidden;height:0px">
+											<div style="height:300px;width: 100%;overflow-y: auto">
+												<br/><br/><br/><br/><br/><br/>
+												<div  id="passForm" >
+													    <!--点击预览图片-->
+													    <div id="Pic_pass">
+													        <p><span style="color: red">注：每张照片大写不可超过4M，且最多可以传十张</span></p>
+													        <div class="picDiv">
+													            <div class="addImages">
+													                <!--multiple属性可选择多个图片上传-->
+													                <input type="file" class="file" name="shareimg" id="fileInput" multiple="" accept="image/png, image/jpeg, image/gif, image/jpg">
+													                <div class="text-detail">
+													                    <span>+</span>
+													                    <p>点击上传</p>
+													                </div>
+													            </div>
+													        </div>
+													    </div>
+													    <div class="msg" style="display: none;"></div>
+												</div>
+											</div>
+										</div>
+									</form>
 								</div><!--post-topbar end-->
 								<div class="posts-section">
+									<div id="shareSpace" th:fragment="shareSpace">
 									<div th:each="share : ${shareList}" class="post-bar">
 										<div class="post_topbar">
 											<div class="usy-dt">
@@ -368,218 +473,39 @@
 										</div>
 										<div class="job_descp">
 											<p th:text="${share.content}"> </p>
+											<div style="width: 100%;height: 300px">
+												<img th:src="'shareimg/'+${share.img}" alt="" height="100px" width="100px">
+											</div>
+											<!--
+											<div th:each="sharePicture : ${sharePictureList}" class="post-bar">
+												<div th:if="${sharePictureList.shareId} eq ${share.id}">
+												<img th:src="${sharePicture.img }" alt="" height="50px" width="50px">
+											</div>
+											</div>-->
 											<a href="#" title="">查看更多</a>
 										</div>
 										<div class="job-status-bar">
-											<ul class="like-com">
-												<li th:id="${share.id}">
-													<a href="#"><i th:text="${share.likes}" class="la la-heart"></i></a>
-												</li>
+											<ul th:id="${share.id}" class="like-com">
+												<li th:text="${share.likes}"></li>
 											</ul>
 											<form th:action="@{/addLike(userId=${session.user.id},shareId=${share.id})}"  method="post" target="nm_iframe">
-											<button class="like" type="submit" th:onclick="add([[${share.id}]]);" value="post">&#10084;</button>
+										<div th:if="${share.likeInfo} eq 0">
+											<button class="like" type="submit" th:onclick="like(this,[[${share.id}]]);" value="post">&#10084;</button>
+										</div>
+										<div th:if="${share.likeInfo} eq 1">
+											<button class="unLike" type="submit" th:onclick="like(this,[[${share.id}]]);" value="post">&#10084;</button>
+										</div>
 											</form>
 											<iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
 											<a href="#">评论&nbsp<span th:text="${share.comments}"/></a>
 										</div>
 									</div><!--post-bar end-->
-									<div class="top-profiles">
-										<div class="pf-hd">
-											<h3>Top Profiles</h3>
-											<i class="la la-ellipsis-v"></i>
-										</div>
-										<div class="profiles-slider">
-											<div class="user-profy">
-												<img src="images/resources/user1.png" alt="">
-												<h3>John Doe</h3>
-												<span>Graphic Designer</span>
-												<ul>
-													<li><a href="#" title="" class="followw">Follow</a></li>
-													<li><a href="#" title="" class="envlp"><img src="images/envelop.png" alt=""></a></li>
-													<li><a href="#" title="" class="hire">hire</a></li>
-												</ul>
-												<a href="#" title="">View Profile</a>
-											</div><!--user-profy end-->
-											<div class="user-profy">
-												<img src="images/resources/user2.png" alt="">
-												<h3>John Doe</h3>
-												<span>Graphic Designer</span>
-												<ul>
-													<li><a href="#" title="" class="followw">Follow</a></li>
-													<li><a href="#" title="" class="envlp"><img src="images/envelop.png" alt=""></a></li>
-													<li><a href="#" title="" class="hire">hire</a></li>
-												</ul>
-												<a href="#" title="">View Profile</a>
-											</div><!--user-profy end-->
-											<div class="user-profy">
-												<img src="images/resources/user3.png" alt="">
-												<h3>John Doe</h3>
-												<span>Graphic Designer</span>
-												<ul>
-													<li><a href="#" title="" class="followw">Follow</a></li>
-													<li><a href="#" title="" class="envlp"><img src="images/envelop.png" alt=""></a></li>
-													<li><a href="#" title="" class="hire">hire</a></li>
-												</ul>
-												<a href="#" title="">View Profile</a>
-											</div><!--user-profy end-->
-											<div class="user-profy">
-												<img src="images/resources/user1.png" alt="">
-												<h3>John Doe</h3>
-												<span>Graphic Designer</span>
-												<ul>
-													<li><a href="#" title="" class="followw">Follow</a></li>
-													<li><a href="#" title="" class="envlp"><img src="images/envelop.png" alt=""></a></li>
-													<li><a href="#" title="" class="hire">hire</a></li>
-												</ul>
-												<a href="#" title="">View Profile</a>
-											</div><!--user-profy end-->
-											<div class="user-profy">
-												<img src="images/resources/user2.png" alt="">
-												<h3>John Doe</h3>
-												<span>Graphic Designer</span>
-												<ul>
-													<li><a href="#" title="" class="followw">Follow</a></li>
-													<li><a href="#" title="" class="envlp"><img src="images/envelop.png" alt=""></a></li>
-													<li><a href="#" title="" class="hire">hire</a></li>
-												</ul>
-												<a href="#" title="">View Profile</a>
-											</div><!--user-profy end-->
-											<div class="user-profy">
-												<img src="images/resources/user3.png" alt="">
-												<h3>John Doe</h3>
-												<span>Graphic Designer</span>
-												<ul>
-													<li><a href="#" title="" class="followw">Follow</a></li>
-													<li><a href="#" title="" class="envlp"><img src="images/envelop.png" alt=""></a></li>
-													<li><a href="#" title="" class="hire">hire</a></li>
-												</ul>
-												<a href="#" title="">View Profile</a>
-											</div><!--user-profy end-->
-										</div><!--profiles-slider end-->
-									</div><!--top-profiles end-->
-
-									<div class="posty">
-										<div class="post-bar no-margin">
-											<div class="post_topbar">
-												<div class="usy-dt">
-													<img src="images/resources/us-pc2.png" alt="">
-													<div class="usy-name">
-														<h3>John Doe</h3>
-														<span><img src="images/clock.png" alt="">3 min ago</span>
-													</div>
-												</div>
-												<div class="ed-opts">
-													<a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
-													<ul class="ed-options">
-														<li><a href="#" title="">Edit Post</a></li>
-														<li><a href="#" title="">Unsaved</a></li>
-														<li><a href="#" title="">Unbid</a></li>
-														<li><a href="#" title="">Close</a></li>
-														<li><a href="#" title="">Hide</a></li>
-													</ul>
-												</div>
-											</div>
-											<div class="epi-sec">
-												<ul class="descp">
-													<li><img src="images/icon8.png" alt=""><span>Epic Coder</span></li>
-													<li><img src="images/icon9.png" alt=""><span>India</span></li>
-												</ul>
-												<ul class="bk-links">
-													<li><a href="#" title=""><i class="la la-bookmark"></i></a></li>
-													<li><a href="#" title=""><i class="la la-envelope"></i></a></li>
-												</ul>
-											</div>
-											<div class="job_descp">
-												<h3>Senior Wordpress Developer</h3>
-												<ul class="job-dt">
-													<li><a href="#" title="">Full Time</a></li>
-													<li><span>$30 / hr</span></li>
-												</ul>
-												<p>iquam luctus hendrerit metus, ut ullamcorper quam finibus at. Etiam id magna sit amet... <a href="#" title="">view more</a></p>
-												<ul class="skill-tags">
-													<li><a href="#" title="">HTML</a></li>
-													<li><a href="#" title="">PHP</a></li>
-													<li><a href="#" title="">CSS</a></li>
-													<li><a href="#" title="">Javascript</a></li>
-													<li><a href="#" title="">Wordpress</a></li>
-												</ul>
-											</div>
-											<div class="job-status-bar">
-												<ul class="like-com">
-													<li>
-														<a href="#"><i class="la la-heart"></i> Like</a>
-														<img src="images/liked-img.png" alt="">
-														<span>25</span>
-													</li>
-													<li><a href="#" title="" class="com"><img src="images/com.png" alt=""> Comment 15</a></li>
-												</ul>
-												<a><i class="la la-eye"></i>Views 50</a>
-											</div>
-										</div><!--post-bar end-->
-										<div class="comment-section">
-											<div class="plus-ic">
-												<i class="la la-plus"></i>
-											</div>
-											<div class="comment-sec">
-												<ul>
-													<li>
-														<div class="comment-list">
-															<div class="bg-img">
-																<img src="images/resources/bg-img1.png" alt="">
-															</div>
-															<div class="comment">
-																<h3>John Doe</h3>
-																<span><img src="images/clock.png" alt=""> 3 min ago</span>
-																<p>Lorem ipsum dolor sit amet, </p>
-																<a href="#" title="" class="active"><i class="fa fa-reply-all"></i>Reply</a>
-															</div>
-														</div><!--comment-list end-->
-														<ul>
-															<li>
-																<div class="comment-list">
-																	<div class="bg-img">
-																		<img src="images/resources/bg-img2.png" alt="">
-																	</div>
-																	<div class="comment">
-																		<h3>John Doe</h3>
-																		<span><img src="images/clock.png" alt=""> 3 min ago</span>
-																		<p>Hi John </p>
-																		<a href="#" title=""><i class="fa fa-reply-all"></i>Reply</a>
-																	</div>
-																</div><!--comment-list end-->
-															</li>
-														</ul>
-													</li>
-													<li>
-														<div class="comment-list">
-															<div class="bg-img">
-																<img src="images/resources/bg-img3.png" alt="">
-															</div>
-															<div class="comment">
-																<h3>John Doe</h3>
-																<span><img src="images/clock.png" alt=""> 3 min ago</span>
-																<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit metus, ut ullamcorper quam finibus at.</p>
-																<a href="#" title=""><i class="fa fa-reply-all"></i>Reply</a>
-															</div>
-														</div><!--comment-list end-->
-													</li>
-												</ul>
-											</div><!--comment-sec end-->
-											<div class="post-comment">
-												<div class="cm_img">
-													<img src="images/resources/bg-img4.png" alt="">
-												</div>
-												<div class="comment_box">
-													<form>
-														<input type="text" placeholder="Post a comment">
-														<button type="submit">Send</button>
-													</form>
-												</div>
-											</div><!--post-comment end-->
-										</div><!--comment-section end-->
-									</div><!--posty end-->
+									</div>
 									<div class="process-comm">
-										<a href="#" title=""><img src="images/process-icon.png" alt=""></a>
+										<button onclick="previousPage()" class="btn">←</button>
+										<span id="pageNum">1</span>
+										<button th:onclick="nextPage([[${page}]])" class="btn">→</button><br>
+										共<span th:text="${page}"></span>页
 									</div><!--process-comm end-->
 								</div><!--posts-section end-->
 							</div><!--main-ws-sec end-->
@@ -1005,19 +931,221 @@
         })
     })*/
 </script>
-<script typet="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
 <script>
-    $(function () {
-        $(".like").click(function () {
-            $(this).toggleClass('cs');
-        })
-    })
+	//i是页数-1
+	var i=0;
+    function nextPage(page) {
+        page=page-1;
+        if(i<page){
+            i++;
+            $('#shareSpace').load("/page?page="+i);
+            document.getElementById("pageNum").innerText = i+1;
+            scrollTo(0,0);
+        }
+    }
+    function previousPage() {
+        if(i>0){
+            i--;
+            $('#shareSpace').load("/page?page="+i);
+            document.getElementById("pageNum").innerText = i+1;
+            scrollTo(0,0);
+    }
+    }
+
+</script>
+
+<script>
+    function like(button,shareid,i) {
+        var likenum=document.getElementById(shareid).getElementsByTagName('li')[0];
+        console.log("取消点赞");
+        console.log(likenum);
+        if(button.className == "like"){
+            button.className = "unLike"
+            likenum.innerHTML=parseInt(likenum.innerText)+1;
+        }else {
+            button.className = "like"
+            console.log(likenum)
+			console.log(likenum.innerText)
+            likenum.innerHTML=parseInt(likenum.innerText)-1;
+
+        }
+    }
 </script>
 <script>
-	function add(shareid) {
-	    document.getElementById(shareid).innerHTML="Hello World";
-		
+    //图片上传预览功能
+    var userAgent = navigator.userAgent; //用于判断浏览器类型
+
+    $(".file").change(function() {
+        //获取选择图片的对象
+        var docObj = $(this)[0];
+        var picDiv = $(this).parents(".picDiv");
+        //得到所有的图片文件
+        var fileList = docObj.files;
+        //循环遍历
+        for (var i = 0; i < fileList.length; i++) {
+            //动态添加html元素
+            var picHtml = "<div class='imageDiv' > <img id='img" + fileList[i].name + "' /> <div class='cover'><i class='delbtn'>删除</i></div></div>";
+            console.log(picHtml);
+            picDiv.prepend(picHtml);
+            //获取图片imgi的对象
+            var imgObjPreview = document.getElementById("img" + fileList[i].name);
+            if (fileList && fileList[i]) {
+                //图片属性
+                imgObjPreview.style.display = 'block';
+                imgObjPreview.style.width = '160px';
+                imgObjPreview.style.height = '130px';
+                //imgObjPreview.src = docObj.files[0].getAsDataURL();
+                //火狐7以上版本不能用上面的getAsDataURL()方式获取，需要以下方式
+                if (userAgent.indexOf('MSIE') == -1) {
+                    //IE以外浏览器
+                    imgObjPreview.src = window.URL.createObjectURL(docObj.files[i]); //获取上传图片文件的物理路径;
+                    console.log(imgObjPreview.src);
+                    // var msgHtml = '<input type="file" id="fileInput" multiple/>';
+                } else {
+                    //IE浏览器
+                    if (docObj.value.indexOf(",") != -1) {
+                        var srcArr = docObj.value.split(",");
+                        imgObjPreview.src = srcArr[i];
+                    } else {
+                        imgObjPreview.src = docObj.value;
+                    }
+                }
+            }
+        }
+
+        /*删除功能*/
+        $(".delbtn").click(function() {
+            var _this = $(this);
+            _this.parents(".imageDiv").remove();
+        });
+    });
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="editor/wangEditor.min.js"></script>
+<script type="text/javascript">
+    var E = window.wangEditor
+    var editor = new E('#div1', '#div2')  // 两个参数也可以传入 elem 对象，class 选择器
+
+    var $text1 = $('#text1')
+    document.getElementById('btn2').addEventListener('click', function () {
+        // 读取 text
+        $text1.val(editor.txt.text())
+    }, false)
+    // 自定义菜单配置
+    editor.customConfig.menus = [
+        'emoticon',  // 表情
+        'list',  // 列表
+        'link',  // 插入链接
+        'image' // 插入图片
+    ]
+    editor.customConfig.emotions = [
+
+        {
+            // tab 的标题
+            title: 'emoji',
+            // type -> 'emoji' / 'image'
+            type: 'emoji',
+            // content -> 数组
+            content: ['😀', '😃', '😄', '😁', '😆','😁','😬','🤣','😂','😉','😊','😋','😍',
+                '😘','🙂','🤗','🤔','😐','🙄','😏','😣','😫','😴','😛','😒','😤','😭','😱',
+                '😳','😡','😈','👿','👿','💀','👻','💩','💋','💪','👈','👉','☝','👆','👇','✌',
+                '🤞','🤘','🤙','🖐','✋','👌','👍','👎','✊','👊','🤛','🤜','👋','🙏','🤝','🍉',
+                '🍊','🍌','🍗','🍔','🍕','🍲','🍜','🍧','🍭','🍼','🥛','🍷','🍺','🍻','🍽','❤',
+                '💓','💘','💔','💕','💗','💙','💚','💛','🖤','💤','💢','🔔','🔕','🔞','📵','🚯',
+                '⏰','🎈','🎁','📱','☎','💻','🖥','📀','📽','📷','🖊','✏','🏇','⛷','🏌🏻','🏊‍♂️',
+                '⛹','⛹️‍♀️','🏋','🚴','⚽','⚾','🏀','🏐','🎾','🏓','🎮','⬆','↗','➡','↘','⬇',
+                '↙','⬅','↖','↕','↔','↩','↪','⤴','⤵','▶','⏩','◀','⏪','⏫','⏬','♻','♿','⚠','⛔',
+                '✈','⌛','⏳','⌚','⏰','☎','✉','✏','✒','✂','☠','♠','♥','♦','♣','♨','✡','✝']
+        }
+    ]
+    editor.customConfig.linkCheck = function (text, link) {
+        console.log(text) // 插入的文字
+        console.log(link) // 插入的链接
+
+        return true // 返回 true 表示校验成功
+        // return '验证失败' // 返回字符串，即校验失败的提示信息
     }
+
+    editor.customConfig.onfocus = function () {
+        console.log("onfocus")
+    }
+    editor.customConfig.onblur = function (html) {
+        // html 即编辑器中的内容
+        console.log('onblur', html)
+    }
+    editor.customConfig.linkImgCallback = function (url) {
+        console.log(url) // url 即插入图片的地址
+    }
+    editor.customConfig.linkCheck = function (text, link) {
+        console.log(text) // 插入的文字
+        console.log(link) // 插入的链接
+
+        return true // 返回 true 表示校验成功
+        // return '验证失败' // 返回字符串，即校验失败的提示信息
+    }
+    editor.customConfig.linkImgCheck = function (src) {
+        console.log(src) // 图片的链接
+
+        return true // 返回 true 表示校验成功
+        // return '验证失败' // 返回字符串，即校验失败的提示信息
+    }
+    editor.customConfig.uploadImgShowBase64 = true   // 使用 base64 保存图片
+    editor.customConfig.uploadImgMaxLength=150
+    // 隐藏“网络图片”tab
+    editor.customConfig.showLinkImg = false
+    //  editor.customConfig.uploadImgServer = '/upload'
+    // 将图片大小限制为 3M
+    //editor.customConfig.uploadImgMaxSize = 3 * 1024 * 1024
+    // 限制一次最多上传 5 张图片
+    editor.customConfig.uploadImgMaxLength = 5
+    editor.create()
+    // 初始化 textarea 的值
+    // $text1.val(editor.txt.text())
+
+</script>
+<script type="text/javascript">
+    /*获得btn*/
+    var btn = document.getElementById('btn')
+    var spread = document.getElementById('spread')
+    var iSpread = false
+    /*高度*/
+    var height = spread.scrollHeight
+    /*总时间*/
+    var time = 100;
+    /*间隔*/
+    var interval = 5
+    /*速度*/
+    var speed = height/(time/interval)
+    /*点击事件*/
+    btn.onclick = function (e) {
+        btn.disabled = 'disabled'
+        if(!iSpread){
+            var speeds = 0
+            var timer = setInterval(function () {
+                speeds += speed
+                spread.style.height = speeds + 'px'
+
+                if(parseInt(spread.style.height) >=height){
+                    clearTimeout(timer)
+                    btn.disabled = ''
+                }
+            },interval)
+            this.innerHTML = '收起'
+        }else {
+            var speeds = height
+            this.innerHTML = '展开'
+            var timer = setInterval(function () {
+                speeds -= speed
+                spread.style.height = speeds + 'px'
+                if(speeds <= 0){
+                    clearTimeout(timer)
+                    btn.disabled = ''
+                }
+            },interval)
+        }
+        iSpread = !iSpread
+    }
+
 </script>
 </body>
 </html>

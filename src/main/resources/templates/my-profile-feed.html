@@ -19,8 +19,11 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/responsive.css">
 </head>
-
-
+<style>
+    .like{ font-size:20px;  color:#ccc; cursor:pointer;border:none;background: none;outline: 0!important}
+    .unLike{font-size:20px;  color:#f00; cursor:pointer;border:none;background: none;outline: 0!important}
+    .btn{font-size:20px;  color:#ccc; cursor:pointer;border:none;background: none;outline: 0!important}
+</style>
 <body>
 
 
@@ -280,139 +283,54 @@
                                 </div><!--user-tab-sec end-->
                                 <div class="product-feed-tab current" id="feed-dd">
                                     <div class="posts-section">
-                                        <div class="post-bar">
-                                            <tr th:each="share:${shareList}">
+                                        <div id="shareSpace" th:fragment="shareSpace">
+                                            <div th:each="share : ${shareList}" class="post-bar">
                                                 <div class="post_topbar">
                                                     <div class="usy-dt">
-                                                        <img th:src="'userimage/'+${session.user.image}" height="50" width="50" >
+                                                        <img th:src="'userimage/'+${share.image}" alt="" height="50px" width="50px">
                                                         <div class="usy-name">
-                                                            <h3 th:text="${session.user.nickname}"/>
+                                                            <h3 th:text="${share.nickname}"></h3>
                                                             <span th:text="${share.createdAt}"><img src="images/clock.png" alt=""></span>
                                                         </div>
                                                     </div>
-                                                    <div class="ed-opts">
-                                                        <a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
-                                                        <ul class="ed-options">
-                                                            <li><a href="#" title="">编辑</a></li>
-                                                            <li><a th:href="@{/userdeleteshare(id=${share.id})}" title="">删除</a></li>
-                                                        </ul>
-                                                    </div>
                                                 </div>
                                                 <div class="job_descp">
-                                                    <p th:text="${share.content}"></p>
-                                                    <div class="job-status-bar">
-                                                        <ul class="like-com">
-                                                            <li>
-                                                                <a href="###" th:if="${share.likeInfo} eq '0'" th:onclick="'javascript:dolike(\''+${share.id}+'\')'" th:id="do+${share.id}"><i th:text="${share.likes}" class="la la-heart" th:id="donum+${share.id}"></i></a>
-                                                                <a href="###" th:if="${share.likeInfo} eq '0'" th:onclick="'javascript:undolike(\''+${share.id}+'\')'" th:id="undo+${share.id}"><i th:text="${share.likes}" class="la la-heart" th:id="undonum+${share.id}"></i></a>
-                                                        </ul>
-                                                        <a href="###" th:onclick="'javascript:(\''+${share.id}+'\')'">评论<span th:text="${share.comments}"/></a>
+                                                    <p th:text="${share.content}"> </p>
+                                                    <div style="width: 100%;height: 300px">
+                                                        <img th:src="'shareimg/'+${share.img}" alt="" height="100px" width="100px">
                                                     </div>
+                                                    <!--
+                                                    <div th:each="sharePicture : ${sharePictureList}" class="post-bar">
+                                                        <div th:if="${sharePictureList.shareId} eq ${share.id}">
+                                                        <img th:src="${sharePicture.img }" alt="" height="50px" width="50px">
+                                                    </div>
+                                                    </div>-->
+                                                    <a href="#" title="">查看更多</a>
                                                 </div>
-
+                                                <div class="job-status-bar">
+                                                    <ul th:id="${share.id}" class="like-com">
+                                                        <li th:text="${share.likes}"></li>
+                                                    </ul>
+                                                    <form th:action="@{/addLike(userId=${session.user.id},shareId=${share.id})}"  method="post" target="nm_iframe">
+                                                        <div th:if="${share.likeInfo} eq 0">
+                                                            <button class="like" type="submit" th:onclick="like(this,[[${share.id}]]);" value="post">&#10084;</button>
+                                                        </div>
+                                                        <div th:if="${share.likeInfo} eq 1">
+                                                            <button class="unLike" type="submit" th:onclick="like(this,[[${share.id}]]);" value="post">&#10084;</button>
+                                                        </div>
+                                                    </form>
+                                                    <iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
+                                                    <a href="#">评论&nbsp<span th:text="${share.comments}"/></a>
+                                                </div>
+                                            </div><!--post-bar end-->
                                         </div>
-                                        </tr>
-
                                         <div class="process-comm">
-                                            <a href="#" title=""><img src="images/process-icon.png" alt=""></a>
+                                            <button onclick="previousPage()" class="btn">←</button>
+                                            <span id="pageNum">1</span>
+                                            <button th:onclick="nextPage([[${page}]])" class="btn">→</button><br>
+                                            共<span th:text="${page}"></span>页
                                         </div><!--process-comm end-->
                                     </div><!--posts-section end-->
-                                </div><!--product-feed-tab end-->
-                                <div class="product-feed-tab" id="payment-dd">
-                                    <div class="billing-method">
-                                        <ul>
-                                            <li>
-                                                <h3>Add Billing Method</h3>
-                                                <a href="#" title=""><i class="fa fa-plus-circle"></i></a>
-                                            </li>
-                                            <li>
-                                                <h3>See Activity</h3>
-                                                <a href="#" title="">View All</a>
-                                            </li>
-                                            <li>
-                                                <h3>Total Money</h3>
-                                                <span>$0.00</span>
-                                            </li>
-                                        </ul>
-                                        <div class="lt-sec">
-                                            <img src="images/lt-icon.png" alt="">
-                                            <h4>All your transactions are saved here</h4>
-                                            <a href="#" title="">Click Here</a>
-                                        </div>
-                                    </div><!--billing-method end-->
-                                    <div class="add-billing-method">
-                                        <h3>Add Billing Method</h3>
-                                        <h4><img src="images/dlr-icon.png" alt=""><span>With workwise payment protection , only pay for work delivered.</span></h4>
-                                        <div class="payment_methods">
-                                            <h4>Credit or Debit Cards</h4>
-                                            <form>
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <div class="cc-head">
-                                                            <h5>Card Number</h5>
-                                                            <ul>
-                                                                <li><img src="images/cc-icon1.png" alt=""></li>
-                                                                <li><img src="images/cc-icon2.png" alt=""></li>
-                                                                <li><img src="images/cc-icon3.png" alt=""></li>
-                                                                <li><img src="images/cc-icon4.png" alt=""></li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="inpt-field pd-moree">
-                                                            <input type="text" name="cc-number" placeholder="">
-                                                            <i class="fa fa-credit-card"></i>
-                                                        </div><!--inpt-field end-->
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="cc-head">
-                                                            <h5>First Name</h5>
-                                                        </div>
-                                                        <div class="inpt-field">
-                                                            <input type="text" name="f-name" placeholder="">
-                                                        </div><!--inpt-field end-->
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="cc-head">
-                                                            <h5>Last Name</h5>
-                                                        </div>
-                                                        <div class="inpt-field">
-                                                            <input type="text" name="l-name" placeholder="">
-                                                        </div><!--inpt-field end-->
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="cc-head">
-                                                            <h5>Expiresons</h5>
-                                                        </div>
-                                                        <div class="rowwy">
-                                                            <div class="row">
-                                                                <div class="col-lg-6 pd-left-none no-pd">
-                                                                    <div class="inpt-field">
-                                                                        <input type="text" name="f-name" placeholder="">
-                                                                    </div><!--inpt-field end-->
-                                                                </div>
-                                                                <div class="col-lg-6 pd-right-none no-pd">
-                                                                    <div class="inpt-field">
-                                                                        <input type="text" name="f-name" placeholder="">
-                                                                    </div><!--inpt-field end-->
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="cc-head">
-                                                            <h5>Cvv (Security Code) <i class="fa fa-question-circle"></i></h5>
-                                                        </div>
-                                                        <div class="inpt-field">
-                                                            <input type="text" name="l-name" placeholder="">
-                                                        </div><!--inpt-field end-->
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <button type="submit">Continue</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                            <h4>Add Paypal Account</h4>
-                                        </div>
-                                    </div><!--add-billing-method end-->
                                 </div><!--product-feed-tab end-->
                             </div><!--main-ws-sec end-->
                         </div>
@@ -607,28 +525,39 @@
         document.getElementById("userimage").click();
         imgBtn.style.display="block";
     }
-    function dolike(shareid) {
-    var likenum=$("#donum"+shareid).val();
-        $.ajax({
-            type : "get",
-            url : "/userdolike",
-            data :{id:shareid},
-            dataType: "text",
-            async: false,
-            cache: false,
-            success:function(res) {
-                if (res !=null && res == "ok") {
-                    document.getElementById("donum"+shareid).innerHTML=likenum+1;
-                }else {
-                    alert("asd");
-                }
-            },
-            error:function() {// 失败的时候要执行的函数
-                alert("失败");
-            }
+    function like(button,shareid,i) {
+        var likenum=document.getElementById(shareid).getElementsByTagName('li')[0];
+        console.log("取消点赞");
+        console.log(likenum);
+        if(button.className == "like"){
+            button.className = "unLike"
+            likenum.innerHTML=parseInt(likenum.innerText)+1;
+        }else {
+            button.className = "like"
+            console.log(likenum)
+            console.log(likenum.innerText)
+            likenum.innerHTML=parseInt(likenum.innerText)-1;
 
-        });
-
+        }
+    }
+    //i是页数-1
+    var i=0;
+    function nextPage(page) {
+        page=page-1;
+        if(i<page){
+            i++;
+            $('#shareSpace').load("/mypage?page="+i);
+            document.getElementById("pageNum").innerText = i+1;
+            scrollTo(0,0);
+        }
+    }
+    function previousPage() {
+        if(i>0){
+            i--;
+            $('#shareSpace').load("/mypage?page="+i);
+            document.getElementById("pageNum").innerText = i+1;
+            scrollTo(0,0);
+        }
     }
 </script>
 </body>
