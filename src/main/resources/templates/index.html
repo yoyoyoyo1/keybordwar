@@ -134,6 +134,7 @@
 <style>
 	.like{ font-size:20px;  color:#ccc; cursor:pointer;border:none;background: none;outline: 0!important}
 	.unLike{font-size:20px;  color:#f00; cursor:pointer;border:none;background: none;outline: 0!important}
+	.btn{font-size:20px;  color:#ccc; cursor:pointer;border:none;background: none;outline: 0!important}
 </style>
 
 <body>
@@ -190,7 +191,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="/test" title="" class="not-box-open">
+							<a href="#" title="" class="not-box-open">
 								<span><img src="images/icon6.png" alt=""></span>
 								Messages
 							</a>
@@ -459,6 +460,7 @@
 									</form>
 								</div><!--post-topbar end-->
 								<div class="posts-section">
+									<div id="shareSpace" th:fragment="shareSpace">
 									<div th:each="share : ${shareList}" class="post-bar">
 										<div class="post_topbar">
 											<div class="usy-dt">
@@ -498,80 +500,7 @@
 											<a href="#">评论&nbsp<span th:text="${share.comments}"/></a>
 										</div>
 									</div><!--post-bar end-->
-									<div class="top-profiles">
-										<div class="pf-hd">
-											<h3>Top Profiles</h3>
-											<i class="la la-ellipsis-v"></i>
-										</div>
-										<div class="profiles-slider">
-											<div class="user-profy">
-												<img src="images/resources/user1.png" alt="">
-												<h3>John Doe</h3>
-												<span>Graphic Designer</span>
-												<ul>
-													<li><a href="#" title="" class="followw">Follow</a></li>
-													<li><a href="#" title="" class="envlp"><img src="images/envelop.png" alt=""></a></li>
-													<li><a href="#" title="" class="hire">hire</a></li>
-												</ul>
-												<a href="#" title="">View Profile</a>
-											</div><!--user-profy end-->
-											<div class="user-profy">
-												<img src="images/resources/user2.png" alt="">
-												<h3>John Doe</h3>
-												<span>Graphic Designer</span>
-												<ul>
-													<li><a href="#" title="" class="followw">Follow</a></li>
-													<li><a href="#" title="" class="envlp"><img src="images/envelop.png" alt=""></a></li>
-													<li><a href="#" title="" class="hire">hire</a></li>
-												</ul>
-												<a href="#" title="">View Profile</a>
-											</div><!--user-profy end-->
-											<div class="user-profy">
-												<img src="images/resources/user3.png" alt="">
-												<h3>John Doe</h3>
-												<span>Graphic Designer</span>
-												<ul>
-													<li><a href="#" title="" class="followw">Follow</a></li>
-													<li><a href="#" title="" class="envlp"><img src="images/envelop.png" alt=""></a></li>
-													<li><a href="#" title="" class="hire">hire</a></li>
-												</ul>
-												<a href="#" title="">View Profile</a>
-											</div><!--user-profy end-->
-											<div class="user-profy">
-												<img src="images/resources/user1.png" alt="">
-												<h3>John Doe</h3>
-												<span>Graphic Designer</span>
-												<ul>
-													<li><a href="#" title="" class="followw">Follow</a></li>
-													<li><a href="#" title="" class="envlp"><img src="images/envelop.png" alt=""></a></li>
-													<li><a href="#" title="" class="hire">hire</a></li>
-												</ul>
-												<a href="#" title="">View Profile</a>
-											</div><!--user-profy end-->
-											<div class="user-profy">
-												<img src="images/resources/user2.png" alt="">
-												<h3>John Doe</h3>
-												<span>Graphic Designer</span>
-												<ul>
-													<li><a href="#" title="" class="followw">Follow</a></li>
-													<li><a href="#" title="" class="envlp"><img src="images/envelop.png" alt=""></a></li>
-													<li><a href="#" title="" class="hire">hire</a></li>
-												</ul>
-												<a href="#" title="">View Profile</a>
-											</div><!--user-profy end-->
-											<div class="user-profy">
-												<img src="images/resources/user3.png" alt="">
-												<h3>John Doe</h3>
-												<span>Graphic Designer</span>
-												<ul>
-													<li><a href="#" title="" class="followw">Follow</a></li>
-													<li><a href="#" title="" class="envlp"><img src="images/envelop.png" alt=""></a></li>
-													<li><a href="#" title="" class="hire">hire</a></li>
-												</ul>
-												<a href="#" title="">View Profile</a>
-											</div><!--user-profy end-->
-										</div><!--profiles-slider end-->
-									</div><!--top-profiles end-->
+									</div>
 
 									<div class="posty">
 										<div class="post-bar no-margin">
@@ -694,7 +623,10 @@
 										</div><!--comment-section end-->
 									</div><!--posty end-->
 									<div class="process-comm">
-										<a href="#" title=""><img src="images/process-icon.png" alt=""></a>
+										<button onclick="previousPage()" class="btn">←</button>
+										<span id="pageNum">1</span>
+										<button th:onclick="nextPage([[${page}]])" class="btn">→</button><br>
+										共<span th:text="${page}"></span>页
 									</div><!--process-comm end-->
 								</div><!--posts-section end-->
 							</div><!--main-ws-sec end-->
@@ -1119,6 +1051,28 @@
             }
         })
     })*/
+</script>
+<script>
+	//i是页数-1
+	var i=0;
+    function nextPage(page) {
+        page=page-1;
+        if(i<page){
+            i++;
+            $('#shareSpace').load("/page?page="+i);
+            document.getElementById("pageNum").innerText = i+1;
+            scrollTo(0,0);
+        }
+    }
+    function previousPage() {
+        if(i>0){
+            i--;
+            $('#shareSpace').load("/page?page="+i);
+            document.getElementById("pageNum").innerText = i+1;
+            scrollTo(0,0);
+    }
+    }
+
 </script>
 
 <script>

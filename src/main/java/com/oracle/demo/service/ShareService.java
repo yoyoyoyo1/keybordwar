@@ -13,6 +13,8 @@ public interface ShareService {
     //发送一条
     public Share sendShare(Share share, HttpServletResponse response) throws IOException;
     List<ShareInfo> getAll();
+    List<ShareInfo> getByPage(int page);
+    int getShareNum();
     List<SharePicture>getAllPicture();
     void savePicture(SharePicture sharePicture);
     void save(Share share);

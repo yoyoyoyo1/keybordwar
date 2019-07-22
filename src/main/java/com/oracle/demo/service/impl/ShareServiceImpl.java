@@ -35,6 +35,15 @@ public class ShareServiceImpl implements ShareService {
     public List<ShareInfo> getAll() {
         return shareInfoDao.findtime();
     }
+    @Override
+    public int getShareNum(){
+        return shareInfoDao.countShareNum();
+    }
+    @Override
+    public List<ShareInfo> getByPage(int page) {
+        page=5*page;
+        return shareInfoDao.findShareByPage(page);
+    }
 
     @Override
     public List<SharePicture>getAllPicture(){return sharePictureDao.findSharePictureById();}

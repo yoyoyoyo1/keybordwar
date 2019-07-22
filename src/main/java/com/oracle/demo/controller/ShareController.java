@@ -45,12 +45,14 @@ public class ShareController {
         User user=(User)session.getAttribute("user");
         int userid=user.getId();
         List<ShareInfo> shareList=shareService.getAll();
+        int page=shareService.getShareNum();
+        page=page/5+1;//获得动态页数
         System.out.println("查找成功");
         for (int i=0;i<shareList.size();i++){
             if(likeDao.findLike(shareList.get(i).getId(),userid)==null)
             {
                 shareList.get(i).setLikeInfo(0);
-                System.out.println(shareList.get(i).getId()+"pjj没jj没点赞");
+                System.out.println(shareList.get(i).getId()+"pjj他jj没点赞");
             }else {
                 shareList.get(i).setLikeInfo(1);
                 System.out.println(shareList.get(i).getId()+"pjj有jj点了赞");
@@ -59,8 +61,29 @@ public class ShareController {
         }
 
         model.addAttribute("shareList",shareList);
+        model.addAttribute("page",page);
         //model.addAttribute("sharePictureList",sharePictureList);
         return "index";
+    }
+    @RequestMapping("/page")
+    public String toPage(Model model,int page, HttpSession session){
+        User user=(User)session.getAttribute("user");
+        int userid=user.getId();
+        List<ShareInfo> shareList=shareService.getByPage(page);
+        System.out.println("查找成功");
+        for (int i=0;i<shareList.size();i++){
+            if(likeDao.findLike(shareList.get(i).getId(),userid)==null)
+            {
+                shareList.get(i).setLikeInfo(0);
+            }else {
+                shareList.get(i).setLikeInfo(1);
+            }
+
+        }
+
+        model.addAttribute("shareList",shareList);
+        //model.addAttribute("sharePictureList",sharePictureList);
+        return "index::shareSpace";
     }
 
     @RequestMapping("sendshare")
@@ -108,22 +131,6 @@ public class ShareController {
     }
 
 
-
-    private final ResourceLoader resourceLoader;
-   // @Value("${web.upload-path}")
-    //private String uploadPicturePath;
-
-    @Autowired
-    public ShareController(ResourceLoader resourceLoader) {
-        this.resourceLoader = resourceLoader;
-    }
-    @RequestMapping("test")
-    public String toeditor_test(Model model)
-    {
-        List<SharePicture> sharePictureList = shareService.getAllPicture();
-        model.addAttribute("sharePictureList",sharePictureList);
-        return "editor_test";
-    }
     /**
      * 显示单张图片
      * @return
