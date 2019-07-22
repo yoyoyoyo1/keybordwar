@@ -15,4 +15,14 @@ public class DialogServiceImpl implements DialogService {
     public List<Dialog> getDialogsByActive(int i) {
         return dialogDao.getDialogsByActive(i);
     }
+
+    @Override
+    public int updateActive(Integer dialogId) {
+        return dialogDao.updateActive(dialogId);
+    }
+
+    @Override
+    public int updateAll(Long time) {
+        return dialogDao.updateAll(time);
+    }
 }

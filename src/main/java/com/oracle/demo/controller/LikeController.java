@@ -18,7 +18,5 @@ public class LikeController {
     @RequestMapping("/addLike")
     public void toAddLike(int shareId,int userId){
         addLikeService.addLike(shareId, userId);
-
-
 }
 }

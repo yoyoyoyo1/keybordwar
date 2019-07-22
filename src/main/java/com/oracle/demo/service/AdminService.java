@@ -26,4 +26,15 @@ public interface AdminService {
     public String toadminedituser(int id,Model model);
     //修改用户的信息
     public String adminedituser(User user,Model model);
+    //修改用户头像为默认头像
+    public String adminedituserhimg(String image,int id);
+    //跳转到通过修改用户的id修改密码
+    public String toadminedituserpass(int id,Model model);
+    //修改用户的密码
+    public String adminedituserpass(int adminid,String adminpass,int id,String newpass,Model model);
+    //模糊查询昵称进行分页
+    public String adminfduserbynamepage(String name,int pagenum,int pagesize,Model model);
+    //通过用户的id删除用户
+    public String admindeluser(int id);
+
 }

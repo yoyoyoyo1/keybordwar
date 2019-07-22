@@ -91,6 +91,7 @@ public class ShareController {
                             SharePicture picture, HttpSession httpSession) throws IOException
     {
 
+        System.out.println("12312"+file.getOriginalFilename());
         shareService.sendShare(share,response);
         System.out.println("用户id为："+share.getUserId()+"发布了一条动态,内容是："+share.getContent());
         /**
@@ -98,7 +99,7 @@ public class ShareController {
          */
         String fileName= MD5Util.encode(share.getId()+"")+file.getOriginalFilename();
         //相对地址
-        String filePath= ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/shareimg/";
+        String filePath= ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/images/";
         File dest=new File(filePath + fileName);
         try{
             file.transferTo(dest);

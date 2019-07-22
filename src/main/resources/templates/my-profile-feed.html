@@ -283,7 +283,7 @@
                                             <div th:each="share : ${shareList}" class="post-bar">
                                                 <div class="post_topbar">
                                                     <div class="usy-dt">
-                                                        <img th:src="'userimage/'+${share.image}" alt="" height="50px" width="50px">
+                                                        <a th:href="@{/othersprofile(id=${share.userId})}"><img th:src="'userimage/'+${share.image}" alt="" height="50px" width="50px"></a>
                                                         <div class="usy-name">
                                                             <h3 th:text="${share.nickname}"></h3>
                                                             <span th:text="${share.createdAt}"><img src="images/clock.png" alt=""></span>
@@ -516,6 +516,7 @@
 <script type="text/javascript" src="lib/slick/slick.min.js"></script>
 <script type="text/javascript" src="js/script.js"></script>
 <script type="text/javascript">
+
     function updateUserImage() {
         var imgBtn=document.getElementById("updateimg");
         document.getElementById("userimage").click();

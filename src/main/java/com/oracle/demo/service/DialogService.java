@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface DialogService {
     public List<Dialog> getDialogsByActive(int i);
+    public int updateActive(Integer dialogId);
+    public int updateAll(Long time);
 }

@@ -5,7 +5,7 @@ var websocket = null;
 
 //判断当前浏览器是否支持WebSocket， springboot是项目名
 if ('WebSocket' in window) {
-    websocket = new WebSocket("ws://localhost:8080/websocket/${from}/${to}");
+   websocket = new WebSocket("ws://localhost:8080`/websocket")
 } else {
     console.error("不支持WebSocket");
 }
@@ -23,13 +23,13 @@ websocket.onopen = function () {
         url: ctx + "/websocket/getOnlineList",
         contentType: 'application/json;charset=utf-8',
         dataType: 'json',
-        data: {nickname:nickname},
+        data: {formId:formId},
         success: function (data) {
             if (data.length) {
                 //列表
                 for (var i = 0; i < data.length; i++) {
-                    var nickName = data[i];
-                    $("#messages-list").append("<div class=\"usr-msg-details\"><span class='usr-mg-info'>" + nickName + "</span><span id=\"" + nickName + "-status\">[在线]</span><div id=\"msg-notifc" + nickName + "\" class='msg-notifc'>0</div></div>");
+                    var fromId = data[i];
+                    $("#messages-list").append("<div class=\"usr-msg-details\"><span class='usr-mg-info'>" + fromId + "</span><span id=\"" + fromId+ "-status\">[在线]</span><div id=\"msg-notifc" + fromId + "\" class='msg-notifc'>0</div></div>");
                 }
 
                 //在线人数

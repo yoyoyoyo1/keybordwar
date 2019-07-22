@@ -7,7 +7,6 @@ class WS{
         };
 
         this.ws.onclose = function (evt) {
-            alert("断开连接")
             console.log('Connection closed.');
         };
         this.ws.onmessage = (evt)=> {
@@ -16,15 +15,6 @@ class WS{
             console.log(data)
             this[data.type](data)
         };
-
-    }
-    deletePeople(data){
-        for(let people in roomPeople){
-            if(roomPeople[people].id == data.id){
-                roomPeople.splice(people, 1);
-                return
-            }
-        }
 
     }
     addPeople(data){
@@ -44,12 +34,8 @@ class WS{
     image(data){
 
     }
-    audio(data){
-        roomMessage.message.push(data)
-    }
     send(message) {
-        console.log(JSON.stringify(message))
-        this.ws.send(JSON.stringify(message))
+        ws.send(message)
     }
 
 }

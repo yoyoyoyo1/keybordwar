@@ -7,9 +7,13 @@ import com.oracle.demo.respository.UserDao;
 import com.oracle.demo.service.AdminService;
 import com.oracle.demo.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -33,10 +37,10 @@ public class AdminController {
     return adminService.adminlogin(admin,model,session);
   }
 
-  @RequestMapping("gethello")
-  public String xxx(String xx){
+  @RequestMapping("/gethello")
+  public String xxx(@RequestParam(value = "xx") String xx){
     System.out.println(xx);
-      return "";
+      return "admin-welcome";
   }
   @GetMapping("/gethello1")
   public String zz(){
@@ -84,15 +88,18 @@ public class AdminController {
     user.setPass(passmd5);
     System.out.println("添加用户的密码通过md5加密为："+passmd5);
     adminService.adminadduser(user);
-    return "admin-index";
+    model.addAttribute("msg","添加用户成功");
+    return "admin-adduser";
   }
 
+  /*
   //查询到全部用户
   @RequestMapping("/toadminuserlist")
   public String toadminuserlist(Model model){
     String x=adminService.toadminuserlist(model);
     return x;
   }
+  */
 
   @RequestMapping("/tohello1")
   public String tohello(){
@@ -165,14 +172,91 @@ public class AdminController {
   }
 
   //通过修改修改用户id的跳转
-  @RequestMapping("/toamdinedituser")
+  @RequestMapping("/toadminedituser")
   public String toadminedituser(int id,Model model){
-     return adminService.toadminedituser(id,model);
+    System.out.println("编辑用户的id"+id);
+    return adminService.toadminedituser(id,model);
   }
 
-  //修改用户
+  //修改用户基本
   @RequestMapping("/adminedituser")
   public String adminedituser(@ModelAttribute User user,Model model){
-    return "";
+    return adminService.adminedituser(user,model);
+  }
+
+  //修改用户头像为默认头像
+  @RequestMapping("/adminedithimage")
+  @ResponseBody
+  public String adminedithimage(int id){
+    String mimage="default.png";
+    System.out.println("修改默认头像id："+id);
+    return adminService.adminedituserhimg(mimage,id);
+  }
+
+  //跳转到修改用户密码
+  @RequestMapping("/toadmineditpass")
+  public String toadmineditpass(int id,Model model){
+    System.out.println("修改用户的id:"+id);
+     return adminService.toadminedituserpass(id,model);
+  }
+
+  //修改用户密码
+  @RequestMapping("/admineditpass")
+  public String admineditpass(@RequestParam(value = "adminid") int adminid,@RequestParam(value = "adminpass") String  adminpass,@RequestParam(value = "id") int id,@RequestParam(value = "newpass") String newpass,Model model)
+  {
+    String newpassMD5=MD5Util.encode(newpass);
+    System.out.println("修改用户的新密码:"+newpassMD5);
+    return adminService.adminedituserpass(adminid,adminpass,id,newpassMD5,model);
+  }
+
+  //全部用户的分页显示
+  /*
+  @RequestMapping("/toadminuserlistbypage")
+  public String  toadminuserlistbtpage(@RequestParam(value = "pagenum",required=false) String pagenum,Model model){
+    if (pagenum==null||"".equals(pagenum)){
+      pagenum="0";
+    }
+    int pagenumn=Integer.parseInt(pagenum);
+    int pagesize=5;
+    ModelAndView modelAndView=new ModelAndView();
+    Pageable pageable=PageRequest.of(pagenumn,pagesize);
+    System.out.println("这里这里");
+    Page<User> userPage=userDao.findAll(pageable);
+    List<User> usersPagelist=userPage.getContent();
+    model.addAttribute("Userlist",usersPagelist);
+    //总记录数
+    model.addAttribute("totalpagenum",userPage.getTotalElements());
+    //当前页码
+    model.addAttribute("pagenum",pagenumn);
+    System.out.println("当前页"+pagenumn);
+    //每页多少数量
+    model.addAttribute("pagesize",pagesize);
+    //总页数
+    model.addAttribute("totalpages",userPage.getTotalPages()-1);
+    return "admin-userlist";
+  }
+*/
+  //模糊查询昵称的分页显示
+  @RequestMapping("/toadminuserlistbypage")
+  public String adminfinduserbynnamepage(@RequestParam(value = "pagenum",required=false) String pagenum,@RequestParam(value = "nkey",required = false) String nkey,Model model){
+    if (pagenum==null||"".equals(pagenum)){
+      pagenum="0";
+    }
+    if (nkey==null||"".equals(nkey)){
+      nkey="";
+    }
+    System.out.println("查询关键字"+nkey);
+    model.addAttribute("nkey",nkey);
+    int pagenumn=Integer.parseInt(pagenum);
+    int pagesize=5;
+    return adminService.adminfduserbynamepage(nkey,pagenumn,pagesize,model);
+  }
+
+  //删除用户
+  @RequestMapping("/admindeluser")
+  @ResponseBody
+  public String admindeluser( int id){
+    System.out.println("要删除用户的id:"+id);
+    return adminService.admindeluser(id);
   }
 }
