@@ -132,14 +132,29 @@ public class UserController {
             }else {
                 shareList.get(i).setLikeInfo(1);
             }
-
-
         }
-
         model.addAttribute("shareList",shareList);
         //model.addAttribute("sharePictureList",sharePictureList);
         return "my-profile-feed::shareSpace";
     }
+    @RequestMapping("otherpage")
+    public String otherpage(Model model,int page,int id)
+    {
+        System.out.println(page+"---------"+id);
+        List<ShareInfo> shareList=shareService.getOnesBypage(id,page);
+        for (int i=0;i<shareList.size();i++){
+            if(likeDao.findLike(shareList.get(i).getId(),id)==null)
+            {
+                shareList.get(i).setLikeInfo(0);
+            }else {
+                shareList.get(i).setLikeInfo(1);
+            }
+        }
+        model.addAttribute("shareList",shareList);
+        //model.addAttribute("sharePictureList",sharePictureList);
+        return "user-profile::shareSpace";
+    }
+
     @RequestMapping("userupdateimg")
     public String userupdateimg(@RequestParam("userimage") MultipartFile file,@ModelAttribute User user,HttpSession session)
     {   System.out.println("-------------------------"+user.getId());
@@ -270,13 +285,27 @@ public class UserController {
             model.addAttribute("tafollowing",userService.followMeList(tafollowing));
         }else {
             model.addAttribute("tafollowing",null);}
-        model.addAttribute("tashare",shareService.findShareByIdOrderByTime(id));
+        //model.addAttribute("tashare",shareService.findShareByIdOrderByTime(id));
         if(followService.isFollowta(user.getId(),id)==null)
         {
             model.addAttribute("isfollow",false);
         }else {
             model.addAttribute("isfollow",true);
         }
+        List<ShareInfo> shareList=shareService.findOne(id);
+        for (int i=0;i<shareList.size();i++){
+            if(likeDao.findLike(shareList.get(i).getId(),id)==null)
+            {
+                shareList.get(i).setLikeInfo(0);
+            }else {
+                shareList.get(i).setLikeInfo(1);
+            }
+
+        }
+        model.addAttribute("shareList",shareList);
+        int page=shareService.getOneShareNum(id);
+        page=page/5+1;//获得动态页数
+        model.addAttribute("page",page);
         return "user-profile";
 
     }
@@ -309,7 +338,7 @@ public class UserController {
         out.flush();
         out.close();
     }
-    //用户点赞
+ /*   //用户点赞
     @RequestMapping("userdolike")
     @ResponseBody
     public String userdolike(int id)
@@ -318,7 +347,7 @@ public class UserController {
         map.put("status",1);
         map.put("success",true);
        return "ok";
-    }
+    }*/
     //用户删除动态
     @RequestMapping("userdeleteshare")
     public String deleteshare(int id,HttpSession session)

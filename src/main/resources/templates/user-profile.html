@@ -19,7 +19,11 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<link rel="stylesheet" type="text/css" href="css/responsive.css">
 </head>
-
+<style>
+	.like{ font-size:20px;  color:#ccc; cursor:pointer;border:none;background: none;outline: 0!important}
+	.unLike{font-size:20px;  color:#f00; cursor:pointer;border:none;background: none;outline: 0!important}
+	.btn{font-size:20px;  color:#ccc; cursor:pointer;border:none;background: none;outline: 0!important}
+</style>
 
 <body>
 
@@ -275,37 +279,53 @@
 								</div><!--user-tab-sec end-->
 								<div class="product-feed-tab current" id="feed-dd">
 									<div class="posts-section">
-										<div class="post-bar">
-											<tr th:each="share:${tashare}">
+										<div id="shareSpace" th:fragment="shareSpace">
+											<div th:each="share : ${shareList}" class="post-bar">
 												<div class="post_topbar">
 													<div class="usy-dt">
-														<img th:src="'userimage/'+${otheruser.image}" height="50" width="50" >
+														<img th:src="'userimage/'+${share.image}" alt="" height="50px" width="50px">
 														<div class="usy-name">
-															<h3 th:text="${otheruser.nickname}"/>
-															<span th:text="${share.updatedAt}"><img src="images/clock.png" alt=""></span>
+															<h3 th:text="${share.nickname}"></h3>
+															<span th:text="${share.createdAt}"><img src="images/clock.png" alt=""></span>
 														</div>
 													</div>
-													<div class="ed-opts">
-													</div>
-												</div>
-												<div class="epi-sec">
 												</div>
 												<div class="job_descp">
-													<p th:text="${share.content}"></p>
-													<div class="job-status-bar">
-														<ul class="like-com">
-															<li>
-																<a href="#"><i th:text="${share.likes}" class="la la-heart"></i></a>
-														</ul>
-														<a href="#">评论<span th:text="${share.comments}"/></a>
+													<p th:text="${share.content}"> </p>
+													<div style="width: 100%;height: 300px">
+														<img th:src="'shareimg/'+${share.img}" alt="" height="100px" width="100px">
 													</div>
+													<!--
+                                                    <div th:each="sharePicture : ${sharePictureList}" class="post-bar">
+                                                        <div th:if="${sharePictureList.shareId} eq ${share.id}">
+                                                        <img th:src="${sharePicture.img }" alt="" height="50px" width="50px">
+                                                    </div>
+                                                    </div>-->
+													<a href="#" title="">查看更多</a>
 												</div>
-
+												<div class="job-status-bar">
+													<ul th:id="${share.id}" class="like-com">
+														<li th:text="${share.likes}"></li>
+													</ul>
+													<form th:action="@{/addLike(userId=${session.user.id},shareId=${share.id})}"  method="post" target="nm_iframe">
+														<div th:if="${share.likeInfo} eq 0">
+															<button class="like" type="submit" th:onclick="like(this,[[${share.id}]]);" value="post">&#10084;</button>
+														</div>
+														<div th:if="${share.likeInfo} eq 1">
+															<button class="unLike" type="submit" th:onclick="like(this,[[${share.id}]]);" value="post">&#10084;</button>
+														</div>
+													</form>
+													<iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
+													<a href="#">评论&nbsp<span th:text="${share.comments}"/></a>
+												</div>
+											</div><!--post-bar end-->
 										</div>
-										</tr>
-
-										<div class="process-comm">
-											<a href="#" title=""><img src="images/process-icon.png" alt=""></a>
+										<div class="process-comm" th:if="not ${isfollow}"><span>关注他查看更多</span></div>
+										<div class="process-comm" th:if="${isfollow}">
+											<button th:onclick="'javascript:previousPage(\''+${otheruser.id}+'\')'" class="btn">←</button>
+											<span id="pageNum">1</span>
+											<button th:onclick="'javascript:nextPage(\''+${otheruser.id}+'\',\''+${page}+'\')'" class="btn">→</button><br>
+											共<span th:text="${page}"></span>页
 										</div><!--process-comm end-->
 									</div><!--posts-section end-->
 								</div><!--product-feed-tab end-->
@@ -613,7 +633,7 @@
 				debugger;
 
 				if (res == "ok" && res != null) {
-					alert("关注成功);
+					alert("关注成功");
 					window.location.reload();
 				}else {
 					alert("你已经关注了这个人了");
@@ -623,6 +643,41 @@
 				alert("哇哦，出错失败了");
 			}
 		})
+	}
+	function like(button,shareid,i) {
+		var likenum=document.getElementById(shareid).getElementsByTagName('li')[0];
+		console.log("取消点赞");
+		console.log(likenum);
+		if(button.className == "like"){
+			button.className = "unLike"
+			likenum.innerHTML=parseInt(likenum.innerText)+1;
+		}else {
+			button.className = "like"
+			console.log(likenum)
+			console.log(likenum.innerText)
+			likenum.innerHTML=parseInt(likenum.innerText)-1;
+
+		}
+	}
+	//i是页数-1
+	var i=0;
+	function nextPage(id,page) {
+		console.log(id+"-------"+page);
+		page=page-1;
+		if(i<page){
+			i++;
+			$('#shareSpace').load("/otherpage?page="+i+"&id="+id);
+			document.getElementById("pageNum").innerText = i+1;
+			scrollTo(0,0);
+		}
+	}
+	function previousPage(id) {
+		if(i>0){
+			i--;
+			$('#shareSpace').load("/otherpage?page="+i+"&id="+id);
+			document.getElementById("pageNum").innerText = i+1;
+			scrollTo(0,0);
+		}
 	}
 </script>
 </body>
