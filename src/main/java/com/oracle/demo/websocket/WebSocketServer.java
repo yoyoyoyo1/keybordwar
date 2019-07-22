@@ -1,12 +1,17 @@
 package com.oracle.demo.websocket;
 
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.oracle.demo.bean.Message;
+//import com.oracle.demo.bean.Message;
+import com.oracle.demo.entity.Message;
+import com.oracle.demo.util.BeanToMap;
+import net.sf.json.JSONObject;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -17,37 +22,30 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
+import static com.oracle.demo.websocket.dialogWebSocket.messageService;
 
-@ServerEndpoint("/websocket/{from}/{to}")
+
+@ServerEndpoint("/websocket/{from}")
 @Component
 public class WebSocketServer {
 
     //concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
-    private static Map<String,WebSocketServer> webSocketMap = new ConcurrentHashMap<>();
+    private static Map<Integer,Session> sessionMap = new ConcurrentHashMap<>();
 
     //与某个客户端的连接会话，需要通过它来给客户端发送数据
     private Session session;
 
     //接收sid
-    private String from = "";
-    private String to = "";
+    private Integer from ;
     /**
      * 连接建立成功调用的方法*/
     @OnOpen
     public void onOpen(Session session,
-                       @PathParam("from") String from,
-                       @PathParam("to") String to) {
+                       @PathParam("from") Integer from) {
         this.session = session;
-        webSocketMap.put(from,this);
         this.from=from;
-        this.to = to;
-        Message message =  new Message();
-        message.setUserId(from);
-        message.setMessage("hello");
-        try {
-            sendMessage(message);
-        } catch (IOException e) {
-        }
+        sessionMap.put(from,session);
+
     }
 
     /**
@@ -55,7 +53,7 @@ public class WebSocketServer {
      */
     @OnClose
     public void onClose() {
-        webSocketMap.remove(from);  //从set中删除
+        sessionMap.remove(from);  //从set中删除
     }
 
     /**
@@ -64,38 +62,25 @@ public class WebSocketServer {
      * @param message 客户端发送过来的消息*/
     @OnMessage
     public void onMessage(String message, Session session) throws IOException {
-        //群发消息
-        Message mess =  new Message();
-        mess.setUserId(from);
-        mess.setMessage(message);
-        if(webSocketMap.get(to)!=null){
-            webSocketMap.get(to).sendMessage(mess);
+        JSONObject messageMap = JSONObject.fromObject(message);
+        Integer toId = (Integer) messageMap.get("toId");
+        System.out.println(messageMap);
+        Message mess = new Message();
+        mess.setCreateAt(new Date());
+        mess.setToId(toId);
+        mess.setFormId(from);
+        mess.setContent((String) messageMap.get("str"));
+        mess.setWatch(0);
+        Map<String, Object> a = BeanToMap.BeanToMap(mess);
+        a.put("type","text");
+        if(sessionMap.get(toId) != null){
+            mess.setWatch(1);
+            a = BeanToMap.BeanToMap(mess);
+            a.put("type","text");
+            sendMessage(toId,a);
         }
-        webSocketMap.get(from).sendMessage(mess);
-
-        /*try {//私聊消息
-            HashMap hashMap = new ObjectMapper().readValue(message, HashMap.class);
-
-            //消息类型
-            String type = (String) hashMap.get("type");
-
-            //来源用户
-            Map srcUser = (Map) hashMap.get("from");
-
-            //目标用户
-            Map tarUser = (Map) hashMap.get("to");
-
-            //如果点击的是自己，那就是群聊
-            if (srcUser.get("nickname").equals(tarUser.get("nickname"))) {
-                //群聊
-                groupChat(session, hashMap);
-            } else {
-                //私聊
-                privateChat(session, tarUser, hashMap);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+        sendMessage(from,a);
+        messageService.save(mess);
     }
 
     /**
@@ -105,14 +90,15 @@ public class WebSocketServer {
      */
     @OnError
     public void onError(Session session, Throwable error) {
-        webSocketMap.remove(from);
+        sessionMap.remove(from);
         error.printStackTrace();
     }
     /**
      * 实现服务器主动推送
      */
-    public void sendMessage(Object message) throws IOException{
-        this.session.getBasicRemote().sendText(message.toString());
+    public void sendMessage(Integer toId,Object message) throws IOException{
+        sessionMap.get(toId).getBasicRemote().sendText(JSON.toJSONString(message));
+
     }
 
 

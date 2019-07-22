@@ -34,6 +34,20 @@ public class MessageServiceImpl implements MessageService {
         out.close();*/
         return null;
     }
+    @Override
+    public Object getchatMessageById(Integer formId,Integer toId){
+        return messageDao.getchatMessageById(formId,toId);
+    }
+
+    @Override
+    public List<Integer> latelyTalk(Integer userId, Long time) {
+        return messageDao.latelyTalk(userId,time);
+    }
+
+    @Override
+    public List<Integer> eachOtherFollow(Integer userId) {
+        return messageDao.eachOtherFollow(userId);
+    }
 
     @Override
     public List<Integer> getFormIdByDialogId(Integer dialogId) {
