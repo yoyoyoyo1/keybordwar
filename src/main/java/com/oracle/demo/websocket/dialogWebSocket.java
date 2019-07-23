@@ -104,7 +104,6 @@ public class dialogWebSocket {
         messageService.save(mess);
         System.out.println(3);
         sendMessage(JSON.toJSONString(mess));
-
     }
 
     /**

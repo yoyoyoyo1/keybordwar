@@ -222,7 +222,7 @@
 										<li :class="toId==people.id?'active':''" @click="changeTo($event,people.id)" v-for="(people,index) in latelyTalk">
 											<room-people :user="people"></room-people>
 										</li>
-										<li @click="changeTo($event,people.id)" v-for="(people,index) in eachOther">
+										<li :class="toId==people.id?'active':''" @click="changeTo($event,people.id)" v-for="(people,index) in eachOther">
 											<room-people :user="people"></room-people>
 										</li>
 									</ul>
@@ -480,17 +480,23 @@
             axios.get("/user/self").then((res)=>{
                 own = res.data
 				people[own.id] = own
-                this.ws = new WS(`ws://localhost:8080/websocket/${own.id}`)
+                this.ws = new WS(`wss://192.168.43.238:8080/websocket/${own.id}`)
                 //获取历史信息
             })
 			axios.get("/privatechat/user/latelyTalk").then((res)=>{
-                this.toId = res.data[0].id
+                if(res.data[0]){
+                    this.toId = res.data[0].id
+				}
+
                 for (let user of res.data){
                     latelyTalk.push(user)
                     this.people[user.id] = user
 				}
 			})
 			axios.get("/privatechat/user/eachother").then((res)=>{
+                if(!this.toId&&res.data[0]){
+                    this.toId = res.data[0].id
+				}
                 for (let user of res.data){
                     eachOther.push(user)
                     this.people[user.id] = user

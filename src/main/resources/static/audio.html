@@ -106,6 +106,7 @@
         //向PeerConnection中加入需要发送的流
         //获取用户媒体权限，视频的话参数{audio: true, video: true}
         navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+            console.log(123131, stream)
             //创建媒体录制对象
             recorder = new window.MediaRecorder(stream);
             recorder.start(0)

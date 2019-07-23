@@ -18,6 +18,9 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/responsive.css">
     <style>
+        .audio-left{
+
+        }
         .audio {
             position: relative;
             margin-right: 6px;
@@ -36,18 +39,22 @@
             text-align: left;
         }
 
-        /*.audio:before {*/
-            /*position: absolute;*/
-            /*right: -8px;*/
-            /*top: 8px;*/
-            /*content: '';*/
-            /*display: inline-block;*/
-            /*width: 0;*/
-            /*height: 0;*/
-            /*border-style: solid;*/
-            /*border-width: 4px;*/
-            /*border-color: transparent transparent transparent rgba(107, 197, 107, 0.85);*/
-        /*}*/
+        .audio:before {
+            position: absolute;
+            right: -8px;
+            top: 8px;
+            content: '';
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 4px;
+            border-color: transparent transparent transparent rgba(107, 197, 107, 0.85);
+        }
+        .left:before{
+            left: -8px;
+            border-color: transparent rgba(107, 197, 107, 0.85) transparent transparent;
+        }
 
         .audio span {
             color: rgba(255, 255, 255, .8);
@@ -55,9 +62,7 @@
             transform-origin: center;
         }
 
-        .audio span:nth-child(1) {
-            font-weight: 400;
-        }
+
         @keyframes wink {
             from {
                 color: rgba(255, 255, 255, .8);
@@ -66,14 +71,30 @@
                 color: rgba(255, 255, 255, .1);
             }
         }
-        .audio span:nth-child(2) {
+
+        .audio .span-right:nth-child(1) {
+            font-weight: 400;
+        }
+        .audio .span-right:nth-child(2) {
             transform: scale(0.8);
             font-weight: 500;
         }
-
-        .audio span:nth-child(3) {
+        .audio .span-right:nth-child(3) {
             transform: scale(0.5);
-            font-weight: 700
+            font-weight: 700;
+        }
+
+        .audio .span-left:nth-child(1) {
+            transform: scale(0.5);
+            font-weight: 700;
+        }
+
+        .audio .span-left:nth-child(2) {
+            transform: scale(0.8);
+            font-weight: 500;
+        }
+        .audio .span-left:nth-child(3) {
+            font-weight: 400;
         }
 
         .audio.wink span {
@@ -420,10 +441,10 @@
         <div class="message-dt ">
             <div class="message-inner-dt">
                 <p v-if="message.type=='text'">{{message.content}}</p>
-                <div v-else @click="Play(message.content)" class="audio" style="width: 40px; float:right">
-                    <span>(</span>
-                    <span>(</span>
-                    <span>(</span>
+                <div v-else @click="Play($event,message.content)" class="audio" style="width: 40px; float:right">
+                    <span class="span-right">(</span>
+                    <span class="span-right">(</span>
+                    <span class="span-right">(</span>
                 </div>
             </div><!--message-inner-dt end-->
             <span>{{message.createAt}}</span>
@@ -439,10 +460,10 @@
         <div class="message-dt st3">
             <div class="message-inner-dt">
                 <p v-if="message.type=='text'">{{message.content}}</p>
-                <div v-else @click="Play(message.content)" class="audio" style="width: 40px; float:left">
-                    <span>(</span>
-                    <span>(</span>
-                    <span>(</span>
+                <div v-else @click="Play($event,message.content)" class="audio left" style="width: 40px; float:left">
+                    <span class="span-left">)</span>
+                    <span class="span-left">)</span>
+                    <span class="span-left">)</span>
                 </div>
             </div><!--message-inner-dt end-->
             <span>{{message.createAt}}</span>
@@ -457,6 +478,18 @@
 
 </script>
 <script>
+    let audio = document.getElementById("audio")
+    audio.onended = function () {
+        let winks = document.getElementsByClassName("wink")
+        for(wink of winks){
+            if(wink.className.indexOf("left")!=-1){
+                wink.className = " left "
+            }else {
+                wink.className = ""
+            }
+            wink.className += " audio "
+        }
+    }
     let emoji = ["😀","😁","😂","😃","😄","😅","😆","😉","😊","😋","😎","😍","😘",
         "😗","😙","😚","😇","😐","😑","😶","😏","😣","😥","😮","😯","😪","😫","😴",
         "😌","😛","😜","😝","😒","😓","😔","😕","😲","😷","😖","😞","😟","😤","😢",
@@ -510,10 +543,26 @@
         },
         //定义方法
         methods:{
-            Play(content){
+            Play(e,content){
                 let audio = document.getElementById("audio")
+                console.log(content)
                 audio.src = "/audio/"+content;
                 audio.play()
+                let a = event.currentTarget
+                audio.onplaying = function () {
+                    let winks = document.getElementsByClassName("wink")
+                    for(wink of winks){
+                        if(wink.className.indexOf("left")!=-1){
+                            wink.className = " left "
+                        }else {
+                            wink.className = ""
+                        }
+                        wink.className += " audio "
+
+                    }
+                    a.className += " wink "
+                }
+
             }
         },
         template:'#other-message'
@@ -530,10 +579,25 @@
         },
         //定义方法
         methods:{
-            Play(content){
+            Play(event,content){
                 let audio = document.getElementById("audio")
+                console.log(content)
                 audio.src = "/audio/"+content;
                 audio.play()
+                let a = event.currentTarget
+                audio.onplaying = function () {
+                    let winks = document.getElementsByClassName("wink")
+                    for(wink of winks){
+                        if(wink.className.indexOf("left")!=-1){
+                            wink.className = " left "
+                        }else {
+                            wink.className = ""
+                        }
+                        wink.className += " audio "
+
+                    }
+                    a.className += " wink "
+                }
             }
         },
         template:'#me-message'
@@ -627,7 +691,9 @@
             }
             //得到自己
             axios.get("/user/self").then((res)=>{
+                console.log(res,2)
                 own = res.data
+                console.log(own)
                 //获取历史信息
                 axios.get(`/dialog/message?dialogId=${dialogId}&time=${time}`).then((res)=>{
                     if(!res.data){

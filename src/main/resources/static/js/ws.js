@@ -3,12 +3,12 @@ class WS{
         this.url = url
         this.ws = new WebSocket(`${url}`);
         this.ws.onopen = function (evt) {
-            console.log('Connection open ...');
+            console.log(evt,'Connection open ...');
         };
 
         this.ws.onclose = function (evt) {
             alert("断开连接")
-            console.log('Connection closed.');
+            console.log(evt,'Connection closed.');
         };
         this.ws.onmessage = (evt)=> {
             console.log(evt.data)
