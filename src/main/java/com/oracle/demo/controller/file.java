@@ -21,10 +21,11 @@ public class file {
     public Object upload(HttpSession httpSession,@RequestParam("file") MultipartFile file) throws IOException {
         System.out.println(file);
         User user = (User)httpSession.getAttribute("user");
+        String MIME =  file.getOriginalFilename().split("\\.")[1];
         String fileName= MD5Util.encode(user.getId()+file.getOriginalFilename());
-        String filePath = ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/audio/"+ fileName+".ogg";
+        String filePath = ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/audio/"+ fileName+"."+MIME;
         System.out.println(filePath);
         file.transferTo(new File(filePath));
-        return fileName+".ogg";
+        return fileName+"."+MIME;
     }
 }
