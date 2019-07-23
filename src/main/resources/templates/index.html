@@ -488,6 +488,7 @@
 											<ul th:id="${share.id}" class="like-com">
 												<li th:text="${share.likes}"></li>
 											</ul>
+											<a th:href="@{javascript:getComment(}+@{${share.id}}+@{);}">评论&nbsp<span th:text="${share.comments}"/></a>
 											<form th:action="@{/addLike(userId=${session.user.id},shareId=${share.id})}"  method="post" target="nm_iframe">
 										<div th:if="${share.likeInfo} eq 0">
 											<button class="like" type="submit" th:onclick="like(this,[[${share.id}]]);" value="post">&#10084;</button>
@@ -497,131 +498,48 @@
 										</div>
 											</form>
 											<iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
-											<a href="#">评论&nbsp<span th:text="${share.comments}"/></a>
 										</div>
-									</div><!--post-bar end-->
-									</div>
-
-									<div class="posty">
-										<div class="post-bar no-margin">
-											<div class="post_topbar">
-												<div class="usy-dt">
-													<img src="images/resources/us-pc2.png" alt="">
-													<div class="usy-name">
-														<h3>John Doe</h3>
-														<span><img src="images/clock.png" alt="">3 min ago</span>
-													</div>
-												</div>
-												<div class="ed-opts">
-													<a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
-													<ul class="ed-options">
-														<li><a href="#" title="">Edit Post</a></li>
-														<li><a href="#" title="">Unsaved</a></li>
-														<li><a href="#" title="">Unbid</a></li>
-														<li><a href="#" title="">Close</a></li>
-														<li><a href="#" title="">Hide</a></li>
-													</ul>
-												</div>
-											</div>
-											<div class="epi-sec">
-												<ul class="descp">
-													<li><img src="images/icon8.png" alt=""><span>Epic Coder</span></li>
-													<li><img src="images/icon9.png" alt=""><span>India</span></li>
-												</ul>
-												<ul class="bk-links">
-													<li><a href="#" title=""><i class="la la-bookmark"></i></a></li>
-													<li><a href="#" title=""><i class="la la-envelope"></i></a></li>
-												</ul>
-											</div>
-											<div class="job_descp">
-												<h3>Senior Wordpress Developer</h3>
-												<ul class="job-dt">
-													<li><a href="#" title="">Full Time</a></li>
-													<li><span>$30 / hr</span></li>
-												</ul>
-												<p>iquam luctus hendrerit metus, ut ullamcorper quam finibus at. Etiam id magna sit amet... <a href="#" title="">view more</a></p>
-												<ul class="skill-tags">
-													<li><a href="#" title="">HTML</a></li>
-													<li><a href="#" title="">PHP</a></li>
-													<li><a href="#" title="">CSS</a></li>
-													<li><a href="#" title="">Javascript</a></li>
-													<li><a href="#" title="">Wordpress</a></li>
-												</ul>
-											</div>
-											<div class="job-status-bar">
-												<ul class="like-com">
-													<li>
-														<a href="#"><i class="la la-heart"></i> Like</a>
-														<img src="images/liked-img.png" alt="">
-														<span>25</span>
-													</li>
-													<li><a href="#" title="" class="com"><img src="images/com.png" alt=""> Comment 15</a></li>
-												</ul>
-												<a><i class="la la-eye"></i>Views 50</a>
-											</div>
-										</div><!--post-bar end-->
-										<div class="comment-section">
+										<div th:id="comment+${share.id}" class="comment-section" style="display:none;">
 											<div class="plus-ic">
 												<i class="la la-plus"></i>
 											</div>
 											<div class="comment-sec">
-												<ul>
-													<li>
-														<div class="comment-list">
-															<div class="bg-img">
-																<img src="images/resources/bg-img1.png" alt="">
-															</div>
-															<div class="comment">
-																<h3>John Doe</h3>
-																<span><img src="images/clock.png" alt=""> 3 min ago</span>
-																<p>Lorem ipsum dolor sit amet, </p>
-																<a href="#" title="" class="active"><i class="fa fa-reply-all"></i>Reply</a>
-															</div>
-														</div><!--comment-list end-->
-														<ul>
-															<li>
-																<div class="comment-list">
-																	<div class="bg-img">
-																		<img src="images/resources/bg-img2.png" alt="">
-																	</div>
-																	<div class="comment">
-																		<h3>John Doe</h3>
-																		<span><img src="images/clock.png" alt=""> 3 min ago</span>
-																		<p>Hi John </p>
-																		<a href="#" title=""><i class="fa fa-reply-all"></i>Reply</a>
-																	</div>
-																</div><!--comment-list end-->
-															</li>
-														</ul>
-													</li>
-													<li>
-														<div class="comment-list">
-															<div class="bg-img">
-																<img src="images/resources/bg-img3.png" alt="">
-															</div>
-															<div class="comment">
-																<h3>John Doe</h3>
-																<span><img src="images/clock.png" alt=""> 3 min ago</span>
-																<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit metus, ut ullamcorper quam finibus at.</p>
-																<a href="#" title=""><i class="fa fa-reply-all"></i>Reply</a>
-															</div>
-														</div><!--comment-list end-->
-													</li>
+												<ul th:id="commentt+${share.id}">
+
+														<!--<ul>-->
+															<!--<li>-->
+																<!--<div class="comment-list">-->
+																	<!--<div class="bg-img">-->
+																		<!--<img src="images/resources/bg-img2.png" alt="">-->
+																	<!--</div>-->
+																	<!--<div class="comment">-->
+																		<!--<h3>didi</h3>-->
+																		<!--<span><img src="images/clock.png" alt=""> 3 min ago</span>-->
+																		<!--<p>Hi John </p>-->
+																		<!--<a href="#" title=""><i class="fa fa-reply-all"></i>Reply</a>-->
+																	<!--</div>-->
+																<!--</div>&lt;!&ndash;comment-list end&ndash;&gt;-->
+															<!--</li>-->
+														<!--</ul>-->
 												</ul>
 											</div><!--comment-sec end-->
+											<p class="tc"><a th:href="@{javascript:hide(}+@{${share.id}}+@{);}">收起</a></p>
 											<div class="post-comment">
 												<div class="cm_img">
-													<img src="images/resources/bg-img4.png" alt="">
+													<img th:src="'userimage/'+${session.user.image}" alt="" height="40px" width="40px">
 												</div>
 												<div class="comment_box">
-													<form>
-														<input type="text" placeholder="Post a comment">
-														<button type="submit">Send</button>
+													<form target="send_comment">
+														<input th:id="content+${share.id}" type="text" placeholder="Post a comment">
+														<button th:onclick="sendComment([[${share.id}]],[[${session.user.id}]]);">Send</button>
 													</form>
+													<iframe name="send_comment" style="display:none;"></iframe>
 												</div>
 											</div><!--post-comment end-->
 										</div><!--comment-section end-->
-									</div><!--posty end-->
+
+									</div><!--post-bar end-->
+									</div>
 									<div class="process-comm">
 										<button onclick="previousPage()" class="btn">←</button>
 										<span id="pageNum">1</span>
@@ -1051,6 +969,75 @@
             }
         })
     })*/
+</script>
+<script>
+//	function ceshi() {
+//        console.log("nmsl");
+//        var a=document.getElementById('ceshi').value;
+//        console.log(a);
+//    }
+	function sendComment(shareId,userId) {
+        var content=document.getElementById('content'+shareId).value;
+	    $.ajax({
+			type:"post",
+			url:"/sendComment?content="+content+"&shareId="+shareId+"&userId="+userId,
+            data:{},
+            async: false,
+			success:function (a) {
+				getComment(shareId);
+				console.log(a);
+            }
+		})
+
+    }
+	function getComment(shareId) {
+        $.ajax({
+            type:"post",
+            url:"/getComment?i="+shareId,
+            data:{},
+            async: false,
+            success:function(comments) {
+                document.getElementById('commentt'+shareId).innerHTML = "";
+                showData(comments);
+            }
+        });
+        function showData(d){
+            for(var i = 0;i<d.length;i++){
+                //循环遍历一边d
+                var html = "<li>\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"comment-list\">\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"bg-img\">\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<img src=\"images/resources/bg-img1.png\" alt=\"\">\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"comment\">\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<h3>" + d[i].nickname +
+                    "</h3>\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span><img src=\"images/clock.png\" alt=\"\">"+ d[i].createdAt +
+                    "</span>\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<p>" + d[i].content +
+                    "</p>\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<a href=\"#\" title=\"\"><i class=\"fa fa-reply-all\"></i>Reply</a>\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div><!--comment-list end-->\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t</li>";
+                //通过表体id把显示文本显示到网页中
+                $("#commentt"+shareId).append(html);
+            }
+        }
+        document.getElementById("comment"+shareId).style.display = "block";
+
+
+    }
+</script>
+<script>
+    function show(id){
+        document.getElementById("comment"+id).style.display = "block";
+    }
+
+    function hide(id){
+        document.getElementById("comment"+id).style.display='none';
+    }
+
 </script>
 <script>
 	//i是页数-1
