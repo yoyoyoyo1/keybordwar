@@ -39,8 +39,9 @@ public class ShareServiceImpl implements ShareService {
     public List<SharePicture>getAllPicture(){return sharePictureDao.findSharePictureById();}
 
     @Override
-    public void savePicture(SharePicture sharePicture){
-        sharePictureDao.save(sharePicture);
+    public void savePicture(String img,int shareId){
+       int x= sharePictureDao.saveP(img,shareId );
+        System.out.println("dksjafh:"+x);
     }
 
     @Override
@@ -51,4 +52,6 @@ public class ShareServiceImpl implements ShareService {
     {
         return shareDao.findShareByIdOrderByTime(userId);
     }
+
+
 }

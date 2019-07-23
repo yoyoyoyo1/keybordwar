@@ -13,7 +13,7 @@ public interface ShareService {
     public Share sendShare(Share share, HttpServletResponse response) throws IOException;
     List<ShareInfo> getAll();
     List<SharePicture>getAllPicture();
-    void savePicture(SharePicture sharePicture);
+    void savePicture(String img,int shareId);
     void save(Share share);
     //查询用户的动态信息--szg
     public List<Share> findShareByIdOrderByTime(int userId);
