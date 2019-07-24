@@ -42,7 +42,7 @@ class WS{
         roomMessage.message.push(data)
     }
     image(data){
-
+        roomMessage.message.push(data)
     }
     audio(data){
         roomMessage.message.push(data)

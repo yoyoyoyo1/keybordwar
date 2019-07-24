@@ -56,7 +56,7 @@ public class AdminController {
 
   }
 
-  @GetMapping("/toadminlogin")
+  @RequestMapping("/toadminlogin")
   public String login(){
       return "admin-login";
   }
