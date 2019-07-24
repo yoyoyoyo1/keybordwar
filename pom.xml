@@ -81,6 +81,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
+
         <!--短信所需-->
         <dependency>
             <groupId>commons-codec</groupId>
@@ -96,7 +97,12 @@
 			<artifactId>commons-httpclient</artifactId>
 			<version>3.1</version>
 		</dependency>
-	</dependencies>
+		<dependency>
+			<groupId>net.coobird</groupId>
+			<artifactId>thumbnailator</artifactId>
+			<version>0.4.8</version>
+		</dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
