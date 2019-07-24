@@ -25,4 +25,16 @@ public class CommentServiceImpl implements CommentService {
     public int updateCommentNum(int shareId){
         return commentDao.updateCommentNum(shareId,shareId);
     }
+    @Override
+    public List<CommentInfo> getCOC(int shareId){
+        return commentDao.findCommentOfCommentByShareId(shareId);
+    }
+    @Override
+    public  int addCOC(int commentId,String content,int shareId,int userId){
+        return commentDao.addCommentOfComment(commentId,content,shareId,userId);
+    }
+    @Override
+    public  int findShareId(int id){
+        return commentDao.findShareIdById(id);
+    }
 }

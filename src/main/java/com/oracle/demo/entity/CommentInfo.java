@@ -9,6 +9,8 @@ public class CommentInfo {
     private int id;
     @Column(length=20)
     private String nickname;
+    private String image;
+    private int cocNeedId;
     @Column(columnDefinition="TEXT")
     private String content;
     @Column(columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP" )
@@ -31,6 +33,14 @@ public class CommentInfo {
         this.nickname = nickname;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public String getContent() {
         return content;
     }
@@ -45,5 +55,13 @@ public class CommentInfo {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public int getCocNeedId() {
+        return cocNeedId;
+    }
+
+    public void setCocNeedId(int cocNeedId) {
+        this.cocNeedId = cocNeedId;
     }
 }

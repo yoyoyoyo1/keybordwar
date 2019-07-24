@@ -529,8 +529,8 @@
 													<img th:src="'userimage/'+${session.user.image}" alt="" height="40px" width="40px">
 												</div>
 												<div class="comment_box">
-													<form target="send_comment">
-														<input th:id="content+${share.id}" type="text" placeholder="Post a comment">
+													<form th:id="send+${share.id}" target="send_comment">
+														<input th:id="content+${share.id}" type="text" placeholder="回复此动态">
 														<button th:onclick="sendComment([[${share.id}]],[[${session.user.id}]]);">Send</button>
 													</form>
 													<iframe name="send_comment" style="display:none;"></iframe>
@@ -970,7 +970,7 @@
         })
     })*/
 </script>
-<script>
+<script>//评论用
 //	function ceshi() {
 //        console.log("nmsl");
 //        var a=document.getElementById('ceshi').value;
@@ -990,6 +990,36 @@
 		})
 
     }
+    function getCOCPut(commentId,nickname) {
+	    console.log("hiohoih")
+        $.ajax({
+            type:"post",
+            url:"/getShareId?commentId="+commentId,
+            data:{},
+            async: false,
+            success:function (shareId) {
+                document.getElementById('send'+shareId).innerHTML = "";
+                var cocSend="<input id=\"content"+shareId+"\" type=\"text\" placeholder=\"回复"+nickname+"\">\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<button onclick=\"sendCOC("+commentId+","+shareId+");\">Send</button>"
+                $("#send"+shareId).append(cocSend);
+            }
+        })
+
+    }
+    function sendCOC(commentId, shareId) {
+        var content=document.getElementById('content'+shareId).value;
+        console.log("123");
+        console.log(content);
+        $.ajax({
+            type:"post",
+            url:"/sendCOC?commentId="+commentId+"&content="+content+"&shareId="+shareId,
+            data:{},
+            async: false,
+            success:function (a) {
+                getComment(shareId);
+            }
+        })
+    }
 	function getComment(shareId) {
         $.ajax({
             type:"post",
@@ -1001,13 +1031,22 @@
                 showData(comments);
             }
         });
+        $.ajax({
+            type:"post",
+            url:"/getCOC?i="+shareId,
+            data:{},
+            async: false,
+            success:function(coc) {
+                showCOCData(coc);
+            }
+        });
         function showData(d){
             for(var i = 0;i<d.length;i++){
                 //循环遍历一边d
                 var html = "<li>\n" +
                     "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"comment-list\">\n" +
                     "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"bg-img\">\n" +
-                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<img src=\"images/resources/bg-img1.png\" alt=\"\">\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<img src=\"userimage/"+d[i].image+"\" alt=\"\""+"height=\"40px\" width=\"40px\""+">\n" +
                     "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n" +
                     "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"comment\">\n" +
                     "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<h3>" + d[i].nickname +
@@ -1016,12 +1055,35 @@
                     "</span>\n" +
                     "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<p>" + d[i].content +
                     "</p>\n" +
-                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<a href=\"#\" title=\"\"><i class=\"fa fa-reply-all\"></i>Reply</a>\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<a href=\"javascript:getCOCPut("+d[i].id+",'"+d[i].nickname+"');\" title=\"\"><i class=\"fa fa-reply-all\"></i>Reply</a>\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div><!--comment-list end-->\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t<ul id=\"coc"+d[i].id+"\"><ul></li>";
+                //通过表体id把显示文本显示到网页中
+                $("#commentt"+shareId).append(html);
+            }
+        }
+        function showCOCData(d){
+            for(var i = 0;i<d.length;i++){
+                //循环遍历一边
+                var html = "<li>\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"comment-list\">\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"bg-img\">\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<img src=\"userimage/"+d[i].image+"\" alt=\"\""+"height=\"40px\" width=\"40px\""+">\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"comment\">\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<h3>" + d[i].nickname +
+                    "</h3>\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span><img src=\"images/clock.png\" alt=\"\">"+ d[i].createdAt +
+                    "</span>\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<p>" + d[i].content +
+                    "</p>\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n" +
                     "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n" +
                     "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div><!--comment-list end-->\n" +
                     "\t\t\t\t\t\t\t\t\t\t\t\t\t</li>";
                 //通过表体id把显示文本显示到网页中
-                $("#commentt"+shareId).append(html);
+                $("#coc"+d[i].cocNeedId).append(html);
             }
         }
         document.getElementById("comment"+shareId).style.display = "block";
