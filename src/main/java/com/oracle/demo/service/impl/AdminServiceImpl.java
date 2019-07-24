@@ -1,11 +1,14 @@
 package com.oracle.demo.service.impl;
 
-import com.oracle.demo.entity.Admin;
-import com.oracle.demo.entity.User;
+import com.oracle.demo.entity.*;
 import com.oracle.demo.respository.AdminDao;
+import com.oracle.demo.respository.ShareDao;
+import com.oracle.demo.respository.SharePictureDao;
 import com.oracle.demo.respository.UserDao;
 import com.oracle.demo.service.AdminService;
+import com.oracle.demo.util.StringUtil;
 import net.sf.json.JSONArray;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -20,6 +23,9 @@ import org.springframework.data.domain.Pageable;
 import javax.persistence.criteria.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -28,6 +34,10 @@ public class AdminServiceImpl implements AdminService{
     AdminDao adminDao;
     @Autowired
     UserDao userDao;
+    @Autowired
+    ShareDao shareDao;
+    @Autowired
+    SharePictureDao sharePictureDao;
 
     @Override
     //管理员登录
@@ -160,8 +170,9 @@ public class AdminServiceImpl implements AdminService{
         }else{
             model.addAttribute("msg","修改密码失败");
         }
+        }else {
+            model.addAttribute("msg", "输入的管理员密码错误");
         }
-        model.addAttribute("msg","输入的管理员密码错误");
         model.addAttribute("adeduserpass",user3);
         return "admin-edituserpass";
     }
@@ -206,6 +217,89 @@ public class AdminServiceImpl implements AdminService{
         }else{
             return "bad";
         }
+    }
+
+    @Override
+    //查看用户的个人动态
+    public String admintouserdt(String start,String end,int id, int pagenum, int pagesize,Model model) {
+        List<Share> shares=shareDao.findAllByUserId(id);
+        System.out.println(shares.toString());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        Pageable pageable= PageRequest.of(pagenum,pagesize);
+        Specification<Share> spec=new Specification<Share>() {
+            @Nullable
+            @Override
+            public Predicate toPredicate(Root<Share> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> p=new ArrayList<>();
+
+                try {
+                    Predicate p1=criteriaBuilder.equal(root.get("userId"),id);
+                    System.out.println("hhh"+id);
+                    p.add(p1);
+                    if (StringUtils.isNotEmpty(start) && StringUtils.isNotEmpty(end)) {
+                        String start1=start+" 00:00:00";
+                        String end1=end+" 00:00:00";
+                        Date startt = sdf.parse(start1);
+                        Date endt = sdf.parse(end1);
+                        Predicate p2 = criteriaBuilder.between(root.get("createdAt"), startt, endt);
+                        p.add(p2);
+                    }
+                     return criteriaBuilder.and(p.toArray(new Predicate[p.size()]));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                System.out.println("sadf"+p.toString());
+                return null;
+            }
+        };
+        Page<Share> shares1=shareDao.findAll(spec,pageable);
+        List<Share> sharepage=shares1.getContent();
+        model.addAttribute("sharepage",sharepage);
+        //总记录数
+        model.addAttribute("totalpagenum",shares1.getTotalElements());
+        //当前页码
+        model.addAttribute("pagenum",pagenum);
+        System.out.println("当前页"+pagenum);
+        //每页多少数量
+        model.addAttribute("pagesize",pagesize);
+        //总页数
+        model.addAttribute("totalpages",shares1.getTotalPages()-1);
+        model.addAttribute("usershare",shares);
+        return "admin-usershare";
+
+    }
+
+    @Override
+    //批量删除某一用户的动态
+    public String admindelbhshare(List<Integer> id) {
+        shareDao.deleteShareByIdIn(id);
+        if (shareDao.findAllByIdIn(id).isEmpty()||shareDao.findAllByIdIn(id).size()==0){
+            System.out.println("批量删除成功");
+            return "ok";
+        }
+        System.out.println("批量删除失败");
+        return "bad";
+    }
+
+    @Override
+    public String amdinshowuserdt(int id, Model model) {
+        List<SharePicture> sharePictures=sharePictureDao.findSharePictureByshareId(id);
+        String cont=shareDao.findcontent(id);
+        model.addAttribute("sharep",sharePictures);
+        model.addAttribute("cont",cont);
+        System.out.println(sharePictures.toString());
+        System.out.println("内容"+cont);
+        return "hello";
+    }
+
+
+    @Override
+    //查看全部动态
+    public String toallshare(Model model) {
+        List<Share> shares=shareDao.findAllBy();
+
+        return "admin-allshare";
     }
 
 

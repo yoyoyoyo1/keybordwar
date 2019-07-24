@@ -18,11 +18,14 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.transform.Result;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
-@ Controller
+@Controller
 public class AdminController {
   @Autowired
     private AdminService adminService;
@@ -43,8 +46,14 @@ public class AdminController {
       return "admin-welcome";
   }
   @GetMapping("/gethello1")
-  public String zz(){
+  public String zz(@RequestParam(value = "start") String start,@RequestParam(value = "end") String end){
+    System.out.println(start+","+end);
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    String start1=start+" 00:00:00";
+    String end1=end+" 00:00:00";
+    System.out.println(start1);
     return "hello";
+
   }
 
   @GetMapping("/toadminlogin")
@@ -258,5 +267,63 @@ public class AdminController {
   public String admindeluser( int id){
     System.out.println("要删除用户的id:"+id);
     return adminService.admindeluser(id);
+  }
+  //查看用户动态
+  @RequestMapping("/admintouserdt")
+  public String admintouserdt(@RequestParam(value = "start",required = false) String start,@RequestParam(value = "end",required = false) String end,@RequestParam(value = "id") int id,@RequestParam(value = "pagenum",required=false) String pagenum,Model model){
+    System.out.println("查看用户动态的id："+id);
+    if (pagenum==null||"".equals(pagenum)){
+      pagenum="0";
+    }
+    int pagenumn=Integer.parseInt(pagenum);
+    int pagesize=10;
+    if ( start == null){
+      start="2000-1-1";
+    }
+    if ( end == null){
+      end="2999-1-1";
+    }
+    model.addAttribute("id",id);
+    System.out.println(start);
+    System.out.println(end);
+    model.addAttribute("start",start);
+    model.addAttribute("end",end);
+    return adminService.admintouserdt(start,end,id,pagenumn,pagesize,model);
+  }
+
+  //批量删除某一用户的动态
+  @RequestMapping("/delbhshare")
+  @ResponseBody
+  public String delbhshare(String [] ids){
+    for (String id:ids){
+      System.out.println(id.toString());
+    }
+    List<String> idss=new ArrayList<>();
+    Collections.addAll(idss,ids);
+    List<String> idz=new ArrayList<>();
+    List<Integer> idsss=new ArrayList<>();
+    idz.add("");
+    idss.removeAll(idz);
+    for (String x:idss){
+      System.out.println(x.toString());
+    }
+    System.out.println("x");
+    for (String z:idss){
+      int x=Integer.parseInt(z);
+      idsss.add(x);
+    }
+    String flag=adminService.admindelbhshare(idsss);
+    return flag;
+  }
+
+  @RequestMapping("/adminshowuserdt")
+  public String adminshowuserdt(int id,Model model){
+    return adminService.amdinshowuserdt(id,model);
+  }
+
+  //查看全部动态
+  @RequestMapping("/toallshare")
+  public String toallshare(Model model){
+     return adminService.toallshare(model);
   }
 }

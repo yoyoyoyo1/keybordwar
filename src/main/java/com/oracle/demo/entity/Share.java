@@ -28,6 +28,7 @@ public class Share {
     @Column(columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" )
     private Date updatedAt;//修改时间
 
+
     public Share(){}
 
     public Share(int id, int userId, String content, int likes,int comments, int forwards, Date createdAt, Date updatedAt) {

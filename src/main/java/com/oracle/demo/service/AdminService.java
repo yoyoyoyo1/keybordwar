@@ -36,5 +36,12 @@ public interface AdminService {
     public String adminfduserbynamepage(String name,int pagenum,int pagesize,Model model);
     //通过用户的id删除用户
     public String admindeluser(int id);
-
+    //查看个人的动态
+    public String admintouserdt(String start,String end,int id,int pagenum,int pagesize,Model model);
+    //批量删除某一用户的动态
+    public String admindelbhshare(List<Integer> id);
+    //查看动态的主要内容
+    public String amdinshowuserdt(int id,Model model);
+    //查看全部动态
+    public String toallshare(Model model);
 }

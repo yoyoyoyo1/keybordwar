@@ -45,7 +45,7 @@
         </form>
       </div>
       <xblock>
-        <a href="javascript:void(0)" title="google" onclick="self.parent.addTab('百度','http://www.baidu.com','icon-add')">打开新TAB</a>
+        <a onclick="parent.addtab('hhh','http://www.baidu.com',true)">akljf</a>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
         <button class="layui-btn" onclick="x_admin_show('添加用户','./member-add.html',600,400)"><i class="layui-icon"></i>添加</button>
         <span class="x-right" style="line-height:40px" th:text="'共有数据：'+${totalpagenum}+'条'"></span>
@@ -78,11 +78,14 @@
             <td th:text="${users.pass}"></td>
             <td th:text="${users.motto}"></td>
             <td class="td-manage">
-
+              <!--
               <a th:onclick="edithimage(this,'[[${users.id}]]')" href="javascript:;"  title="设为默认头像">
                 <i class="layui-icon">&#xe66f;</i>
               </a>
-
+              -->
+              <a th:onclick="parent.addtab('个人动态','/admintouserdt?id=[[${users.id}]]',true)" href="javascript:;"  title="查看动态">
+                <i class="layui-icon">&#xe66f;</i>
+              </a>
               <a title="编辑"  th:onclick="x_admin_show('编辑','/toadminedituser?id=[[${users.id}]]',600,400)" href="javascript:;">
                 <i class="layui-icon">&#xe642;</i>
               </a>
@@ -192,7 +195,7 @@
               layer.msg('这已经是最后一页了',{icon:5,time:1000});
               return;
           }
-          window.location.href="/toadminuserlistbypage?pagenum="+[[${pagenum+1}]]+"&nkey="+[[${nkey}]];
+          window.location.href="/toadminuserlistbypage?pagenum="+[[${totalpages}]]+"&nkey="+[[${nkey}]];
       }
 
        /*用户-停用*/

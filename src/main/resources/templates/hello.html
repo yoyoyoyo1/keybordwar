@@ -28,5 +28,10 @@
     xx:<input name="xx" vlaue="hhh">
     <input type="submit" value="确定">
 </form>
+ <div th:each="user:${sharep}">
+     <img th:src="@{'/userimage/'+${user.img}}" >
+ </div>
+
+     <p th:value="${cont}"></p>
 
 </body>

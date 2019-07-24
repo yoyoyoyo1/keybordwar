@@ -13,4 +13,8 @@ public interface SharePictureDao extends JpaRepository<SharePicture,Integer> {
 
     @Query(value = "select * from SharePicture",nativeQuery = true)
     public List<SharePicture> findSharePictureById();
+
+    List<SharePicture> findAllBy();
+
+    public List<SharePicture> findSharePictureByshareId(int shareid);
 }
