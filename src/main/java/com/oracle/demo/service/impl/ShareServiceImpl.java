@@ -49,6 +49,15 @@ public class ShareServiceImpl implements ShareService {
         page=5*page;
         return shareInfoDao.findShareByOnesPage(userId,page);
     }
+    public List<ShareInfo> findShareByFollowingPage(List<Integer> following,int page)
+    {
+        page=page*5;
+        return shareInfoDao.findShareByFollowingPage(following,page);
+    }
+    public int getOneFollowingShareNum(List<Integer> follwoing)
+    {
+        return shareInfoDao.countOneFollowingShareNum(follwoing);
+    }
     public int getOneShareNum(int userId)
     {
         return shareInfoDao.countOneShareNum(userId);
@@ -78,5 +87,9 @@ public class ShareServiceImpl implements ShareService {
     public List<ShareInfo> findOne(int id)
     {
         return shareInfoDao.findOne(id);
+    }
+    public List<ShareInfo> findOneFollowing(List<Integer> following)
+    {
+        return shareInfoDao.findOneFollowing(following);
     }
 }
