@@ -296,12 +296,12 @@
 
                 more(){
                     axios.get(`/dialog/live?page=${this.page}`).then( (res) =>{
-                        if(res.data.length != 0 ){
-                            this.dialogs = this.dialogs.concat(res.data)
-                            this.page += 1
+                        if(!res.data.length ){
+                            alert("没有更多")
                             return
                         }
-                        alert("没有更多")
+                        this.dialogs = this.dialogs.concat(res.data)
+                        this.page += 1
                     })
                 }
             },

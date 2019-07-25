@@ -54,13 +54,17 @@ public class Dialog {
         return list;
     }
     @GetMapping("/message")
-    public Object message(Integer dialogId,Long time){
-        return messageService.getMessageByDialogId(dialogId);
+    public Object message(Integer dialogId,int page){
+        return messageService.getMessageByDialogId(dialogId,page*10);
     }
 
     @GetMapping("/live")
-    public List<com.oracle.demo.entity.Dialog> liveDialog(){
-        return dialogService.getDialogsByActive(1);
+    public List<com.oracle.demo.entity.Dialog> liveDialog(int page){
+            return dialogService.getDialogs(1,page);
+    }
+    @GetMapping("/history")
+    public List<com.oracle.demo.entity.Dialog> historyDialog(int page){
+        return dialogService.getDialogs(0,page);
     }
 
 }

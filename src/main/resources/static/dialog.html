@@ -340,7 +340,7 @@
                     </div>
                     <div class="col-lg-8 col-md-12 pd-right-none pd-left-none">
                         <div class="main-conversation-box">
-
+                            <p style="text-align: center"><a id="more"  @click="moreMessage" href="javascript:void(0)">点击加载更多</a></p>
                             <div style="overflow:auto" class="messages-line">
 
                                 <!--<me-message :message="message"></me-message>-->
@@ -605,7 +605,6 @@
             }
         },
         template:'#me-message'
-
     })
     new Vue({
         el: '#app',
@@ -618,6 +617,8 @@
             audioUrl:"",
             recorder:"",
             ws:"",
+            noMore:false,
+            page:0
         },
         methods:{
              dataURLtoBlob(dataurl) {
@@ -631,11 +632,9 @@
             compress(image){
                 var canvas = document.createElement('canvas');
                 var context = canvas.getContext('2d');
-
                 // 图片原始尺寸
                 var originWidth = image.width;
                 var originHeight = image.height;
-
                 // 最大尺寸限制，可通过设置宽高来实现图片压缩程度
                 var maxWidth = 300,
                     maxHeight = 300;
@@ -698,7 +697,6 @@
             closeMedia(){
                 this.recorder.stop()
             },
-
             saveRecordingData() {
                 let blob = new Blob(chunk, { 'type': 'audio/ogg; codecs=opus' }),
                     audioStream = URL.createObjectURL(blob),
@@ -757,6 +755,23 @@
                 }, error => {
                     alert('出错，请确保已允许浏览器获取录音权限');
                 });
+            },
+            moreMessage(){
+                if(!this.noMore)
+                axios.get(`/dialog/message?dialogId=${dialogId}&page=${this.page}`).then((res)=>{
+                    if(!res.data.length){
+                        console.log(res.data)
+                        this.noMore = true
+                        document.getElementById("more").innerText = "没有消息了"
+                        document.getElementById("more").style.color = "#eee"
+                        document.getElementById("more").removeEventListener("click",this.moreMessage)
+                        return
+                    }
+                    for(item of res.data){
+                        roomMessage.message.unshift(item)
+                    }
+                    this.page++
+                })
             }
 
         },
@@ -774,17 +789,7 @@
                 console.log(res,2)
                 own = res.data
                 console.log(own)
-                //获取历史信息
-                axios.get(`/dialog/message?dialogId=${dialogId}&time=${time}`).then((res)=>{
-                    if(!res.data){
-                        console.log(res.data)
-                        alert("错误")
-                        return
-                    }
-                    for(item of res.data){
-                        roomMessage.message.push(item)
-                    }
-                })
+
             })
 
             axios.get(`/dialog/live/user?dialogId=${dialogId}`).then((res)=>{
@@ -793,17 +798,21 @@
                     roomPeople.push(people_item)
                 }
                 localStorage.setItem("people", JSON.stringify(people));
-                this.ws = new WS(`wss://192.168.43.238:8080/dialog/${own.id}/${dialogId}`)
+                axios.get(`/dialog/history/user?dialogId=${dialogId}`).then((res)=>{
+                    console.log(res.data,123)
+                    for (people_item of res.data){
+                        people[people_item.id] = people_item
+                    }
+                    console.log(res.data,123)
+                    localStorage.setItem("people", JSON.stringify(people));
+                    this.ws = new WS(`wss://192.168.43.238:8080/dialog/${own.id}/${dialogId}`)
+                    //获取历史信息
+                    this.moreMessage();
+                })
+
             })
 
-            axios.get(`/dialog/history/user?dialogId=${dialogId}`).then((res)=>{
-                console.log(res.data,123)
-                for (people_item of res.data){
-                    people[people_item.id] = people_item
-                }
-                console.log(res.data,123)
-                localStorage.setItem("people", JSON.stringify(people));
-            })
+
         }
     })
 

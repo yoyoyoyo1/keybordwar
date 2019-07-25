@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface MessageService {
-    public Object getMessageByDialogId(Integer dialogId);
+    public Object getMessageByDialogId(Integer dialogId,int page);
     public Object save(Message message);
     public Message sendMessage(Message message, HttpServletResponse response) throws IOException;
     public List<Integer> getFormIdByDialogId(Integer dialogId);

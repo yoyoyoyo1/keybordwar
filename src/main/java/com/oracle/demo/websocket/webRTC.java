@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @ServerEndpoint("/webRTC/{from}/{to}")
 @Component
 public class webRTC {
-    //concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
+    //concurrent包的线程安全Map，用来存放每个客户端对应的MyWebSocket对象。
     private static Map<String,Session> webSocketMap =  new ConcurrentHashMap<>();
 
     //与某个客户端的连接会话，需要通过它来给客户端发送数据

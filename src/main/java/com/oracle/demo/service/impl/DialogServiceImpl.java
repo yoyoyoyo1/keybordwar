@@ -12,8 +12,13 @@ public class DialogServiceImpl implements DialogService {
     @Autowired
     DialogDao dialogDao;
     @Override
-    public List<Dialog> getDialogsByActive(int i) {
-        return dialogDao.getDialogsByActive(i);
+    public List<Dialog> getDialogsByActive(int active) {
+        return dialogDao.getDialogsByActive(active);
+    }
+
+    @Override
+    public List<Dialog> getDialogs(int active,int page) {
+        return dialogDao.getDialogs(active,page*10);
     }
 
     @Override

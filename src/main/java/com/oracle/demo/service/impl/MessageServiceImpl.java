@@ -17,8 +17,8 @@ public class MessageServiceImpl implements MessageService {
     @Autowired
     public MessageDao messageDao;
     @Override
-    public Object getMessageByDialogId(Integer dialogId) {
-        return messageDao.getDialogMessageByIdAndTime(dialogId);
+    public Object getMessageByDialogId(Integer dialogId,int page) {
+        return messageDao.getDialogMessageByIdAndTime(dialogId,page);
     }
 
     @Override

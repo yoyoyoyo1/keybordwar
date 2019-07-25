@@ -9,7 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface DialogDao extends JpaRepository<Dialog,Integer> {
-    public List<Dialog> getDialogsByActive(int i);
+    @Query(value = "SELECT * FROM Dialog WHERE active = ?1 ORDER BY id limit ?2,10",nativeQuery = true)
+    public List<Dialog> getDialogs(int active,int page);
+    public List<Dialog> getDialogsByActive(int active);
     @Modifying
     @Transactional
     @Query(value = "UPDATE Dialog SET active = 0 WHERE active = 1 and unix_timestamp(createdAt) < ?1",nativeQuery = true)
