@@ -223,7 +223,7 @@
 										</div><!--user-pro-img end-->
 									</form>
 									<div class="user_pro_status">
-										<ul class="flw-hr">
+										<ul class="flw-hr" th:if="${otheruser.id} ne ${session.user.id}">
 											<li><a th:href="@{/userdofollowpage(toid=${otheruser.id})}" title="" class="flww" th:if="not ${isfollow}"><i class="la la-plus"></i>关注TA</a></li>
 											<li><a th:href="@{/userundofollowpage(toid=${otheruser.id})}" title="" class="flww" th:if="${isfollow}"><i ></i>取消关注</a></li>
 
@@ -358,13 +358,22 @@
 												</div><!--comment-section end-->
 											</div><!--post-bar end-->
 										</div>
-										<div class="process-comm" th:if="not ${isfollow}"><span>关注他查看更多</span></div>
-										<div class="process-comm" th:if="${isfollow}">
+										<div th:if="${otheruser.id} ne ${session.user.id}">
+											<div class="process-comm" th:if="not ${isfollow}"><span>关注他查看更多</span></div>
+											<div class="process-comm" th:if="${isfollow}">
+												<button th:onclick="'javascript:previousPage(\''+${otheruser.id}+'\')'" class="btn">←</button>
+												<span id="pageNum">1</span>
+												<button th:onclick="'javascript:nextPage(\''+${otheruser.id}+'\',\''+${page}+'\')'" class="btn">→</button><br>
+												共<span th:text="${page}"></span>页
+											</div><!--process-comm end-->
+										</div>
+										<div class="process-comm" th:if="${otheruser.id} eq ${session.user.id}">
 											<button th:onclick="'javascript:previousPage(\''+${otheruser.id}+'\')'" class="btn">←</button>
 											<span id="pageNum">1</span>
 											<button th:onclick="'javascript:nextPage(\''+${otheruser.id}+'\',\''+${page}+'\')'" class="btn">→</button><br>
 											共<span th:text="${page}"></span>页
 										</div><!--process-comm end-->
+
 									</div><!--posts-section end-->
 								</div><!--product-feed-tab end-->
 								<div class="product-feed-tab" id="payment-dd">
