@@ -43,5 +43,5 @@ public interface AdminService {
     //查看动态的主要内容
     public String amdinshowuserdt(int id,Model model);
     //查看全部动态
-    public String toallshare(Model model);
+    public String toallshare(String nkey,int pagenum,int pagesize,Model model);
 }

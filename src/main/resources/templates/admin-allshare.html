@@ -52,33 +52,28 @@
             <th>
               <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
             </th>
-            <th>ID</th>
+            <th>动态ID</th>
             <th>用户id</th>
+            <th>昵称</th>
             <th>点赞数</th>
             <th>评论数</th>
             <th>转发数</th>
             <th>创建时间</th>
-            <th>修改时间</th>
-            <th>昵称</th>
+
             <th>操作</th></tr>
         </thead>
         <tbody>
-          <tr th:each="share:${shares}">
+          <tr th:each="share:${shareinfo}">
             <td>
               <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
             </td>
             <td th:text="${share.id}"></td>
             <td th:text="${share.userId}"></td>
+            <td th:text="${share.nickname}"></td>
             <td th:text="${share.likes}"></td>
             <td th:text="${share.comments}"></td>
             <td th:text="${share.forwards}"></td>
             <td th:text="${share.createdAt}"></td>
-            <td th:text="${share.updatedAt}"></td>
-            <div th:each="user:${users}">
-              <div th:if="${share.userId} eq ${user.id}">
-                 <td th:text="${user.nickname}"></td>
-              </div>
-            </div>
             <td class="td-manage">
               <a onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">
                 <i class="layui-icon">&#xe601;</i>
@@ -98,15 +93,13 @@
       </table>
       <div class="page">
         <div>
-          <a class="prev" href="">&lt;&lt;</a>
-          <a class="num" href="">1</a>
-          <span class="current">2</span>
-          <a class="num" href="">3</a>
-          <a class="num" href="">489</a>
-          <a class="next" href="">&gt;&gt;</a>
+          <a th:onclick="checkpprev()" class="prev" href="javascript:;">首页</a>
+          <a th:onclick="checkprev()" class="prev"  href="javascript:;">上一页</a>
+          <span class="current" th:text="${pagenum+1}"></span>
+          <a  th:onclick="checknext()" class="next" href="javascript:;">下一页</a>
+          <a  th:onclick="checknnext()" class="next" href="javascript:;">尾页</a>
         </div>
       </div>
-
     </div>
     <script>
       layui.use('laydate', function(){

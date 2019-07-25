@@ -323,7 +323,17 @@ public class AdminController {
 
   //查看全部动态
   @RequestMapping("/toallshare")
-  public String toallshare(Model model){
-     return adminService.toallshare(model);
+  public String toallshare(@RequestParam(value = "pagenum",required=false) String pagenum,@RequestParam(value = "nkey",required = false) String nkey,Model model){
+    if (pagenum==null||"".equals(pagenum)){
+      pagenum="0";
+    }
+    if (nkey==null||"".equals(nkey)){
+      nkey="";
+    }
+    System.out.println("查询关键字"+nkey);
+    model.addAttribute("nkey",nkey);
+    int pagenumn=Integer.parseInt(pagenum);
+    int pagesize=10;
+    return adminService.toallshare(nkey,pagenumn,pagesize,model);
   }
 }

@@ -28,6 +28,10 @@ public class Share {
     @Column(columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" )
     private Date updatedAt;//修改时间
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "userId",updatable = false,insertable = false)
+    private User user;
+
 
     public Share(){}
 

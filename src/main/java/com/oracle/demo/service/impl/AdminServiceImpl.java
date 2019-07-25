@@ -1,5 +1,7 @@
 package com.oracle.demo.service.impl;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Maps;
 import com.oracle.demo.entity.*;
 import com.oracle.demo.respository.AdminDao;
 import com.oracle.demo.respository.ShareDao;
@@ -27,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AdminServiceImpl implements AdminService{
@@ -296,8 +299,54 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     //查看全部动态
-    public String toallshare(Model model) {
-        List<Share> shares=shareDao.findAllBy();
+    public String toallshare(String nkey,int pagenum,int pagesize,Model model) {
+        List<User> users=userDao.findAllBy();
+        List<ShareInfo> shareInfos=new ArrayList<>();
+        Pageable pageable= PageRequest.of(pagenum,pagesize);
+        Specification<Share> spec=new Specification<Share>() {
+            @Nullable
+            @Override
+            public Predicate toPredicate(Root<Share> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                Join<Share,User> userJoin=root.join("user",JoinType.LEFT);
+                Predicate p=criteriaBuilder.like(userJoin.get("nickname"),"%"+nkey+"%");
+                return p;
+            }
+        };
+        Page<Share> shares1=shareDao.findAll(spec,pageable);
+        List<Share> shares=shares1.getContent();
+        System.out.println("zzz"+shares.toString());
+        Map<Integer, User> booMap = Maps.uniqueIndex(users, new Function<User, Integer>() {
+            @Override
+            public Integer apply(User user) {
+                return user.getId();
+            }
+        });
+        System.out.println(booMap.toString());
+        for (Share s:shares){
+             User user=booMap.get(s.getUserId());
+             ShareInfo shareInfo=new ShareInfo();
+             if (user != null) {
+                 System.out.println("lll" + user.toString());
+                 shareInfo.setId(s.getId());
+                 shareInfo.setUserId(s.getUserId());
+                 shareInfo.setComments(s.getComments());
+                 shareInfo.setNickname(user.getNickname());
+                 shareInfo.setCreatedAt(s.getCreatedAt());
+                 shareInfo.setLikes(s.getLikes());
+                 shareInfos.add(shareInfo);
+             }
+        }
+        model.addAttribute("shareinfo",shareInfos);
+        //总记录数
+        model.addAttribute("totalpagenum",shares1.getTotalElements());
+        //当前页码
+        model.addAttribute("pagenum",pagenum);
+        System.out.println("当前页"+pagenum);
+        //每页多少数量
+        model.addAttribute("pagesize",pagesize);
+        //总页数
+        model.addAttribute("totalpages",shares1.getTotalPages()-1);
+        model.addAttribute("usershare",shares);
 
         return "admin-allshare";
     }

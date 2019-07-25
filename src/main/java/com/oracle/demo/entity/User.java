@@ -4,6 +4,12 @@ import com.alibaba.fastjson.JSON;
 
 import javax.persistence.*;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static javax.persistence.CascadeType.ALL;
+
 @Entity
 public class User {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -20,6 +26,8 @@ public class User {
     private String image;//用户的头像地址
     @Column(length=30)
     private String motto;//用户的座右铭
+
+
 
     public User(){}
 
