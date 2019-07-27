@@ -32,6 +32,9 @@ public class Share {
     @JoinColumn(name = "userId",updatable = false,insertable = false)
     private User user;
 
+    public User getUser(){
+        return user;
+    }
 
     public Share(){}
 

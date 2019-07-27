@@ -1,6 +1,7 @@
 package com.oracle.demo.service;
 
 import com.oracle.demo.entity.Admin;
+import com.oracle.demo.entity.Dialog;
 import com.oracle.demo.entity.User;
 import org.springframework.ui.Model;
 
@@ -44,4 +45,12 @@ public interface AdminService {
     public String amdinshowuserdt(int id,Model model);
     //查看全部动态
     public String toallshare(String nkey,int pagenum,int pagesize,Model model);
+    //添加圆桌
+    public String adminadddialog(Dialog dialog,Model model);
+    //圆桌列表
+    public String admindialoglist(String start,String end,String nkey,int pagenum,int pagesize,Model model);
+    //批量删除圆桌
+    public String admindelbhdialog(List<Integer> id);
+    //编辑圆桌
+    public String admineditdia(int id,String title,String content,String image,Model model);
 }

@@ -1,6 +1,7 @@
 package com.oracle.demo.respository;
 
 import com.oracle.demo.entity.Admin;
+import com.oracle.demo.entity.Dialog;
 import com.oracle.demo.entity.User;
 import com.sun.mail.imap.protocol.ID;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,5 +26,7 @@ public interface AdminDao extends JpaRepository<Admin,Integer> {
 
     //通过管理员id和账号查找管理员
     public Admin findAdminByIdAndPassword(Integer id,String pass);
+
+    public Dialog save(Dialog dialog);
 
 }

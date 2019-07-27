@@ -106,7 +106,7 @@ public class ShareController {
                 System.out.println("文件路径"+i+":"+file[i].getOriginalFilename());
                 System.out.println("文件的input："+i+":"+file[i].getInputStream());
                 String fileName1=file[i].getOriginalFilename();
-                Thumbnails.of(file[i].getInputStream()).scale(0.4).toFile(fileName1);
+                //Thumbnails.of(file[i].getInputStream()).scale(0.4).toFile(fileName1);
                 String fileName= MD5Util.encode(share.getId()+"")+fileName1;
                 System.out.println("加密路径："+fileName);
                 //相对地址
@@ -116,7 +116,7 @@ public class ShareController {
                // try{
                     Thumbnails.of(file[i].getInputStream()).scale(0.5f).outputQuality(0.25f).toFile(dest);
             //    }catch (IOException e){
-                    file[i].transferTo(dest);
+                   // file[i].transferTo(dest);
                     //picture.setImg(fileName);//文件名保存到实体类对应属性上
                     //picture.setShareId(share.getId());
 

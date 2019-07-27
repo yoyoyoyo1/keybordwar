@@ -44,7 +44,7 @@
       <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
         <button class="layui-btn" onclick="x_admin_show('添加用户','./member-add.html',600,400)"><i class="layui-icon"></i>添加</button>
-        <span class="x-right" style="line-height:40px">共有数据：88 条</span>
+        <span class="x-right" style="line-height:40px" th:text="'共有数据：'+${totalpagenum}+'条'"></span>
       </xblock>
       <table class="layui-table">
         <thead>
@@ -63,13 +63,13 @@
             <th>操作</th></tr>
         </thead>
         <tbody>
-          <tr th:each="share:${shareinfo}">
+          <tr th:each="share:${usershare}">
             <td>
-              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" th:data-id="@{${share.id}}"><i class="layui-icon">&#xe605;</i></div>
             </td>
             <td th:text="${share.id}"></td>
             <td th:text="${share.userId}"></td>
-            <td th:text="${share.nickname}"></td>
+            <td th:text="${share.user.nickname}"></td>
             <td th:text="${share.likes}"></td>
             <td th:text="${share.comments}"></td>
             <td th:text="${share.forwards}"></td>
@@ -115,6 +115,47 @@
           elem: '#end' //指定元素
         });
       });
+      //判断用户是否从首页跳到首页
+      function checkpprev() {
+          var page=[[${pagenum}]];
+          var page1=(parseInt(page));
+          if (page1==0){
+              layer.msg('这已经是第一页了',{icon:5,time:1000});
+              return;
+          }
+          window.location.href="/admintouserdt?pagenum=0&id="+[[${id}]]+"&start="+'[[${start}]]'+"&end="+'[[${end}]]';
+      }
+      //判断用户是否从上一页跳到首页
+      function checkprev() {
+          var page=[[${pagenum}]];
+          var page1=(parseInt(page));
+          if (page1==0){
+              layer.msg('这已经是第一页了',{icon:5,time:1000});
+              return;
+          }
+          window.location.href="/admintouserdt?pagenum="+[[${pagenum-1}]]+"&id="+[[${id}]]+"&start="+'[[${start}]]'+"&end="+'[[${end}]]';
+      }
+      //判断用户是否从下一页跳到尾页
+      function checknext() {
+          var page=[[${pagenum}]];
+          var tpage=[[${totalpages}]];
+          if(page==tpage){
+              layer.msg('这已经是最后一页了',{icon:5,time:1000});
+              return;
+          }
+          window.location.href="/admintouserdt?pagenum="+[[${pagenum+1}]]+"&id="+[[${id}]]+"&start="+'[[${start}]]'+"&end="+'[[${end}]]';
+
+      }
+      //判断用户是否从尾页跳到尾页
+      function checknnext() {
+          var page=[[${pagenum}]];
+          var tpage=[[${totalpages}]];
+          if(page==tpage){
+              layer.msg('这已经是最后一页了',{icon:5,time:1000});
+              return;
+          }
+          window.location.href="/admintouserdt?pagenum="+[[${totalpages}]]+"&id="+[[${id}]]+"&start="+'[[${start}]]'+"&end="+'[[${end}]]';
+      }
 
        /*用户-停用*/
       function member_stop(obj,id){

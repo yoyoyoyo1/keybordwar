@@ -3,10 +3,7 @@ package com.oracle.demo.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.oracle.demo.entity.*;
-import com.oracle.demo.respository.AdminDao;
-import com.oracle.demo.respository.ShareDao;
-import com.oracle.demo.respository.SharePictureDao;
-import com.oracle.demo.respository.UserDao;
+import com.oracle.demo.respository.*;
 import com.oracle.demo.service.AdminService;
 import com.oracle.demo.util.StringUtil;
 import net.sf.json.JSONArray;
@@ -41,6 +38,8 @@ public class AdminServiceImpl implements AdminService{
     ShareDao shareDao;
     @Autowired
     SharePictureDao sharePictureDao;
+    @Autowired
+    DialogDao dialogDao;
 
     @Override
     //管理员登录
@@ -314,7 +313,10 @@ public class AdminServiceImpl implements AdminService{
         };
         Page<Share> shares1=shareDao.findAll(spec,pageable);
         List<Share> shares=shares1.getContent();
+        System.out.println(shares.get(1).getUser().toString());
+
         System.out.println("zzz"+shares.toString());
+        /*
         Map<Integer, User> booMap = Maps.uniqueIndex(users, new Function<User, Integer>() {
             @Override
             public Integer apply(User user) {
@@ -336,7 +338,9 @@ public class AdminServiceImpl implements AdminService{
                  shareInfos.add(shareInfo);
              }
         }
-        model.addAttribute("shareinfo",shareInfos);
+         model.addAttribute("shareinfo",shareInfos);
+        */
+
         //总记录数
         model.addAttribute("totalpagenum",shares1.getTotalElements());
         //当前页码
@@ -351,5 +355,89 @@ public class AdminServiceImpl implements AdminService{
         return "admin-allshare";
     }
 
+    @Override
+    // 添加圆桌
+    public String adminadddialog(Dialog dialog, Model model) {
+       Dialog dialog1=adminDao.save(dialog);
+        System.out.println("添加的圆桌信息:"+dialog1);
+        return "admin-welcome";
+    }
 
+    @Override
+    public String admindialoglist(String start,String end,String nkey,int pagenum,int pagesize,Model model) {
+       Pageable pageable=PageRequest.of(pagenum,pagesize);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+       Specification<Dialog> spec=new Specification<Dialog>() {
+           @Nullable
+           @Override
+           public Predicate toPredicate(Root<Dialog> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+               List<Predicate> p=new ArrayList<>();
+
+               try {
+                   if (StringUtils.isNotEmpty(nkey) && nkey!=null){
+                       Predicate p1=criteriaBuilder.like(root.get("title"),"%"+nkey+"%");
+                       p.add(p1);
+                   }
+                   if (StringUtils.isNotEmpty(start) && StringUtils.isNotEmpty(end)) {
+                       String start1=start+" 00:00:00";
+                       String end1=end+" 00:00:00";
+                       Date startt = sdf.parse(start1);
+                       Date endt = sdf.parse(end1);
+                       Predicate p2 = criteriaBuilder.between(root.get("createdAt"), startt, endt);
+                       p.add(p2);
+                   }
+                   return criteriaBuilder.and(p.toArray(new Predicate[p.size()]));
+               }catch (Exception e){
+                   e.printStackTrace();
+               }
+               System.out.println("sadf"+p.toString());
+               return null;
+           }
+           };
+        Page<Dialog> dialogs =dialogDao.findAll(spec,pageable);
+        List<Dialog> dialogpage=dialogs.getContent();
+        model.addAttribute("dialogpage",dialogpage);
+        //总记录数
+        model.addAttribute("totalpagenum",dialogs.getTotalElements());
+        //当前页码
+        model.addAttribute("pagenum",pagenum);
+        System.out.println("当前页"+pagenum);
+        //每页多少数量
+        model.addAttribute("pagesize",pagesize);
+        //总页数
+        model.addAttribute("totalpages",dialogs.getTotalPages()-1);
+
+       return "admin-dialoglist";
+
+
+    }
+
+    @Override
+    //批量删除圆桌
+    public String admindelbhdialog(List<Integer> id) {
+        dialogDao.deleteDialogByIdIn(id);
+        if (dialogDao.findAllByIdIn(id).isEmpty()||dialogDao.findAllByIdIn(id).size()==0){
+            System.out.println("批量删除成功");
+            return "ok";
+        }
+        System.out.println("批量删除失败");
+        return "bad";
+    }
+
+    @Override
+    //编辑圆桌
+    public String admineditdia(int id,String title,String content,String image, Model model) {
+        int x=dialogDao.updateDialog(title,content,image,id);
+        Dialog dialog=new Dialog();
+        if (x!=0){
+            model.addAttribute("msg","修改成功");
+            dialog=dialogDao.findById(id);
+        }else {
+            model.addAttribute("msg","修改失败");
+            dialog=dialogDao.findById(id);
+        }
+        System.out.println("编辑后"+dialog.toString());
+        model.addAttribute("dialogedit",dialog);
+        return "admin-editdialog";
+    }
 }
