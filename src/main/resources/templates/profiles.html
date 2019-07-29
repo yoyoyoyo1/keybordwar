@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
 <meta charset="UTF-8">
 <title>WorkWise Html Template</title>
@@ -24,14 +24,14 @@
 	
 
 	<div class="wrapper">
-		
+
 
 
 		<header>
 			<div class="container">
 				<div class="header-data">
 					<div class="logo">
-						<a href="index.html" title=""><img src="images/logo.png" alt=""></a>
+						<a href="index" title=""><img src="images/logo.png" alt=""></a>
 					</div><!--logo end-->
 					<div class="search-bar">
 						<form>
@@ -42,27 +42,27 @@
 					<nav>
 						<ul>
 							<li>
-								<a href="index.html" title="">
+								<a th:href="index" title="">
 									<span><img src="images/icon1.png" alt=""></span>
-									Home
+									主页
 								</a>
 							</li>
 							<li>
 								<a href="dialoging.html" title="">
 									<span><img src="images/icon2.png" alt=""></span>
-									Companies
+									圆桌话题
 								</a>
 							</li>
 							<li>
-								<a href="projects.html" title="">
+								<a href="profiles.html" title="">
 									<span><img src="images/icon3.png" alt=""></span>
-									Projects
+									娱乐
 								</a>
 							</li>
 							<li>
 								<a href="profiles.html" title="">
 									<span><img src="images/icon4.png" alt=""></span>
-									Profiles
+									关注的人
 								</a>
 								<ul>
 									<li><a href="user-profile.html" title="">User Profile</a></li>
@@ -76,51 +76,11 @@
 								</a>
 							</li>
 							<li>
-								<a href="#" title="" class="not-box-open">
+								<a th:href="@{/privatechat/message}" title="" class="not-box-open">
 									<span><img src="images/icon6.png" alt=""></span>
 									Messages
 								</a>
-								<div class="notification-box msg">
-									<div class="nt-title">
-										<h4>Setting</h4>
-										<a href="#" title="">Clear all</a>
-									</div>
-									<div class="nott-list">
-										<div class="notfication-details">
-							  				<div class="noty-user-img">
-							  					<img src="images/resources/ny-img1.png" alt="">
-							  				</div>
-							  				<div class="notification-info">
-							  					<h3><a href="messages.html" title="">Jassica William</a> </h3>
-							  					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do.</p>
-							  					<span>2 min ago</span>
-							  				</div><!--notification-info -->
-						  				</div>
-						  				<div class="notfication-details">
-							  				<div class="noty-user-img">
-							  					<img src="images/resources/ny-img2.png" alt="">
-							  				</div>
-							  				<div class="notification-info">
-							  					<h3><a href="messages.html" title="">Jassica William</a></h3>
-							  					<p>Lorem ipsum dolor sit amet.</p>
-							  					<span>2 min ago</span>
-							  				</div><!--notification-info -->
-						  				</div>
-						  				<div class="notfication-details">
-							  				<div class="noty-user-img">
-							  					<img src="images/resources/ny-img3.png" alt="">
-							  				</div>
-							  				<div class="notification-info">
-							  					<h3><a href="messages.html" title="">Jassica William</a></h3>
-							  					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempo incididunt ut labore et dolore magna aliqua.</p>
-							  					<span>2 min ago</span>
-							  				</div><!--notification-info -->
-						  				</div>
-						  				<div class="view-all-nots">
-						  					<a href="messages.html" title="">View All Messsages</a>
-						  				</div>
-									</div><!--nott-list end-->
-								</div><!--notification-box end-->
+
 							</li>
 							<li>
 								<a href="#" title="" class="not-box-open">
@@ -134,44 +94,44 @@
 									</div>
 									<div class="nott-list">
 										<div class="notfication-details">
-							  				<div class="noty-user-img">
-							  					<img src="images/resources/ny-img1.png" alt="">
-							  				</div>
-							  				<div class="notification-info">
-							  					<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-							  					<span>2 min ago</span>
-							  				</div><!--notification-info -->
-						  				</div>
-						  				<div class="notfication-details">
-							  				<div class="noty-user-img">
-							  					<img src="images/resources/ny-img2.png" alt="">
-							  				</div>
-							  				<div class="notification-info">
-							  					<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-							  					<span>2 min ago</span>
-							  				</div><!--notification-info -->
-						  				</div>
-						  				<div class="notfication-details">
-							  				<div class="noty-user-img">
-							  					<img src="images/resources/ny-img3.png" alt="">
-							  				</div>
-							  				<div class="notification-info">
-							  					<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-							  					<span>2 min ago</span>
-							  				</div><!--notification-info -->
-						  				</div>
-						  				<div class="notfication-details">
-							  				<div class="noty-user-img">
-							  					<img src="images/resources/ny-img2.png" alt="">
-							  				</div>
-							  				<div class="notification-info">
-							  					<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-							  					<span>2 min ago</span>
-							  				</div><!--notification-info -->
-						  				</div>
-						  				<div class="view-all-nots">
-						  					<a href="#" title="">View All Notification</a>
-						  				</div>
+											<div class="noty-user-img">
+												<img src="images/resources/ny-img1.png" alt="">
+											</div>
+											<div class="notification-info">
+												<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
+												<span>2 min ago</span>
+											</div><!--notification-info -->
+										</div>
+										<div class="notfication-details">
+											<div class="noty-user-img">
+												<img src="images/resources/ny-img2.png" alt="">
+											</div>
+											<div class="notification-info">
+												<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
+												<span>2 min ago</span>
+											</div><!--notification-info -->
+										</div>
+										<div class="notfication-details">
+											<div class="noty-user-img">
+												<img src="images/resources/ny-img3.png" alt="">
+											</div>
+											<div class="notification-info">
+												<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
+												<span>2 min ago</span>
+											</div><!--notification-info -->
+										</div>
+										<div class="notfication-details">
+											<div class="noty-user-img">
+												<img src="images/resources/ny-img2.png" alt="">
+											</div>
+											<div class="notification-info">
+												<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
+												<span>2 min ago</span>
+											</div><!--notification-info -->
+										</div>
+										<div class="view-all-nots">
+											<a href="#" title="">View All Notification</a>
+										</div>
 									</div><!--nott-list end-->
 								</div><!--notification-box end-->
 							</li>
@@ -180,12 +140,6 @@
 					<div class="menu-btn">
 						<a href="#" title=""><i class="fa fa-bars"></i></a>
 					</div><!--menu-btn end-->
-					<div class="user-account">
-						<div class="user-info">
-							<img src="images/resources/user.png" alt="">
-							<a href="#" title="">John</a>
-							<i class="la la-sort-down"></i>
-						</div>
 						<div class="user-account-settingss">
 							<h3>Online Status</h3>
 							<ul class="on-off-status">
@@ -227,202 +181,89 @@
 					</div>
 				</div><!--header-data end-->
 			</div>
-		</header><!--header end-->	
+		</header><!--header end-->
 
 
 
 		<section class="companies-info">
 			<div class="container">
 				<div class="company-title">
-					<h3>All Companies</h3>
+					<h3>·······娱乐小游戏·······</h3>
 				</div><!--company-title end-->
 				<div class="companies-list">
 					<div class="row">
 						<div class="col-lg-3 col-md-4 col-sm-6 col-12">
 							<div class="company_profile_info">
 								<div class="company-up-info">
-									<img src="images/resources/pf-icon1.png" alt="">
-									<h3>John Doe</h3>
-									<h4>Graphic Designer</h4>
+									<img src="gameimages/kaixin/logo.png" alt="">
+									<h3>开心消消乐</h3>
+									<h4>快来娱乐一夏吧！</h4>
 									<ul>
-										<li><a href="#" title="" class="follow">Follow</a></li>
-										<li><a href="#" title="" class="message-us"><i class="fa fa-envelope"></i></a></li>
-										<li><a href="#" title="" class="hire-us">Hire</a></li>
+										<li><a href="editor_test.html" title="" class="follow">进入游戏</a></li>
 									</ul>
 								</div>
-								<a href="#" title="" class="view-more-pro">View Profile</a>
+
 							</div><!--company_profile_info end-->
 						</div>
 						<div class="col-lg-3 col-md-4 col-sm-6 col-12">
 							<div class="company_profile_info">
 								<div class="company-up-info">
-									<img src="images/resources/pf-icon2.png" alt="">
-									<h3>John Doe</h3>
-									<h4>Graphic Designer</h4>
+									<img src="gameimages/fruitss/logo.png" alt="">
+									<h3>水果忍者</h3>
+									<h4>记得当年非常火的切水果吗</h4>
 									<ul>
-										<li><a href="#" title="" class="follow">Follow</a></li>
-										<li><a href="#" title="" class="message-us"><i class="fa fa-envelope"></i></a></li>
-										<li><a href="#" title="" class="hire-us">Hire</a></li>
+										<li><a href="fruit.html" title="" class="follow">进入游戏</a></li>
 									</ul>
 								</div>
-								<a href="#" title="" class="view-more-pro">View Profile</a>
+
 							</div><!--company_profile_info end-->
 						</div>
 						<div class="col-lg-3 col-md-4 col-sm-6 col-12">
 							<div class="company_profile_info">
 								<div class="company-up-info">
-									<img src="images/resources/pf-icon3.png" alt="">
-									<h3>John Doe</h3>
-									<h4>Graphic Designer</h4>
+									<img src="gameimages/zgxq/stype_2/b_x.png" alt="">
+									<h3>中国象棋</h3>
+									<h4>与人机一绝高下吧</h4>
 									<ul>
-										<li><a href="#" title="" class="follow">Follow</a></li>
-										<li><a href="#" title="" class="message-us"><i class="fa fa-envelope"></i></a></li>
-										<li><a href="#" title="" class="hire-us">Hire</a></li>
+										<li><a href="#" title="" class="follow">进入游戏</a></li>
 									</ul>
 								</div>
-								<a href="#" title="" class="view-more-pro">View Profile</a>
 							</div><!--company_profile_info end-->
 						</div>
 						<div class="col-lg-3 col-md-4 col-sm-6 col-12">
 							<div class="company_profile_info">
 								<div class="company-up-info">
-									<img src="images/resources/pf-icon4.png" alt="">
-									<h3>John Doe</h3>
-									<h4>Graphic Designer</h4>
+									<img src="gameimages/mali.jpg" alt="">
+									<h3>超级玛丽</h3>
+									<h4>超级马里奥兄弟</h4>
 									<ul>
-										<li><a href="#" title="" class="follow">Follow</a></li>
-										<li><a href="#" title="" class="message-us"><i class="fa fa-envelope"></i></a></li>
-										<li><a href="#" title="" class="hire-us">Hire</a></li>
+										<li><a href="#" title="" class="follow">进入游戏</a></li>
 									</ul>
 								</div>
-								<a href="#" title="" class="view-more-pro">View Profile</a>
+
 							</div><!--company_profile_info end-->
 						</div>
+
 						<div class="col-lg-3 col-md-4 col-sm-6 col-12">
 							<div class="company_profile_info">
 								<div class="company-up-info">
-									<img src="images/resources/pf-icon5.png" alt="">
-									<h3>John Doe</h3>
-									<h4>Graphic Designer</h4>
+									<img src="images/process-icon.png" alt="">
+									<h3>敬请期待···</h3>
+									<h4>        </h4>
 									<ul>
-										<li><a href="#" title="" class="follow">Follow</a></li>
-										<li><a href="#" title="" class="message-us"><i class="fa fa-envelope"></i></a></li>
-										<li><a href="#" title="" class="hire-us">Hire</a></li>
+										<li><a href="#" title="" class="follow">进入游戏</a></li>
 									</ul>
 								</div>
-								<a href="#" title="" class="view-more-pro">View Profile</a>
+
 							</div><!--company_profile_info end-->
 						</div>
-						<div class="col-lg-3 col-md-4 col-sm-6 col-12">
-							<div class="company_profile_info">
-								<div class="company-up-info">
-									<img src="images/resources/pf-icon6.png" alt="">
-									<h3>John Doe</h3>
-									<h4>Graphic Designer</h4>
-									<ul>
-										<li><a href="#" title="" class="follow">Follow</a></li>
-										<li><a href="#" title="" class="message-us"><i class="fa fa-envelope"></i></a></li>
-										<li><a href="#" title="" class="hire-us">Hire</a></li>
-									</ul>
-								</div>
-								<a href="#" title="" class="view-more-pro">View Profile</a>
-							</div><!--company_profile_info end-->
-						</div>
-						<div class="col-lg-3 col-md-4 col-sm-6 col-12">
-							<div class="company_profile_info">
-								<div class="company-up-info">
-									<img src="images/resources/pf-icon7.png" alt="">
-									<h3>John Doe</h3>
-									<h4>Graphic Designer</h4>
-									<ul>
-										<li><a href="#" title="" class="follow">Follow</a></li>
-										<li><a href="#" title="" class="message-us"><i class="fa fa-envelope"></i></a></li>
-										<li><a href="#" title="" class="hire-us">Hire</a></li>
-									</ul>
-								</div>
-								<a href="#" title="" class="view-more-pro">View Profile</a>
-							</div><!--company_profile_info end-->
-						</div>
-						<div class="col-lg-3 col-md-4 col-sm-6 col-12">
-							<div class="company_profile_info">
-								<div class="company-up-info">
-									<img src="images/resources/pf-icon8.png" alt="">
-									<h3>John Doe</h3>
-									<h4>Graphic Designer</h4>
-									<ul>
-										<li><a href="#" title="" class="follow">Follow</a></li>
-										<li><a href="#" title="" class="message-us"><i class="fa fa-envelope"></i></a></li>
-										<li><a href="#" title="" class="hire-us">Hire</a></li>
-									</ul>
-								</div>
-								<a href="#" title="" class="view-more-pro">View Profile</a>
-							</div><!--company_profile_info end-->
-						</div>
-						<div class="col-lg-3 col-md-4 col-sm-6 col-12">
-							<div class="company_profile_info">
-								<div class="company-up-info">
-									<img src="images/resources/pf-icon9.png" alt="">
-									<h3>John Doe</h3>
-									<h4>Graphic Designer</h4>
-									<ul>
-										<li><a href="#" title="" class="follow">Follow</a></li>
-										<li><a href="#" title="" class="message-us"><i class="fa fa-envelope"></i></a></li>
-										<li><a href="#" title="" class="hire-us">Hire</a></li>
-									</ul>
-								</div>
-								<a href="#" title="" class="view-more-pro">View Profile</a>
-							</div><!--company_profile_info end-->
-						</div>
-						<div class="col-lg-3 col-md-4 col-sm-6 col-12">
-							<div class="company_profile_info">
-								<div class="company-up-info">
-									<img src="images/resources/pf-icon10.png" alt="">
-									<h3>John Doe</h3>
-									<h4>Graphic Designer</h4>
-									<ul>
-										<li><a href="#" title="" class="follow">Follow</a></li>
-										<li><a href="#" title="" class="message-us"><i class="fa fa-envelope"></i></a></li>
-										<li><a href="#" title="" class="hire-us">Hire</a></li>
-									</ul>
-								</div>
-								<a href="#" title="" class="view-more-pro">View Profile</a>
-							</div><!--company_profile_info end-->
-						</div>
-						<div class="col-lg-3 col-md-4 col-sm-6 col-12">
-							<div class="company_profile_info">
-								<div class="company-up-info">
-									<img src="images/resources/pf-icon11.png" alt="">
-									<h3>John Doe</h3>
-									<h4>Graphic Designer</h4>
-									<ul>
-										<li><a href="#" title="" class="follow">Follow</a></li>
-										<li><a href="#" title="" class="message-us"><i class="fa fa-envelope"></i></a></li>
-										<li><a href="#" title="" class="hire-us">Hire</a></li>
-									</ul>
-								</div>
-								<a href="#" title="" class="view-more-pro">View Profile</a>
-							</div><!--company_profile_info end-->
-						</div>
-						<div class="col-lg-3 col-md-4 col-sm-6 col-12">
-							<div class="company_profile_info">
-								<div class="company-up-info">
-									<img src="images/resources/pf-icon12.png" alt="">
-									<h3>John Doe</h3>
-									<h4>Graphic Designer</h4>
-									<ul>
-										<li><a href="#" title="" class="follow">Follow</a></li>
-										<li><a href="#" title="" class="message-us"><i class="fa fa-envelope"></i></a></li>
-										<li><a href="#" title="" class="hire-us">Hire</a></li>
-									</ul>
-								</div>
-								<a href="#" title="" class="view-more-pro">View Profile</a>
-							</div><!--company_profile_info end-->
-						</div>
+
 					</div>
 				</div><!--companies-list end-->
+				<!--
 				<div class="process-comm">
 					<a href="#" title=""><img src="images/process-icon.png" alt=""></a>
-				</div>
+				</div>-->
 			</div>
 		</section><!--companies-info end-->
 

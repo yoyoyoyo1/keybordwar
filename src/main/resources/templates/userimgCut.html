@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery头像裁剪插件DEMO演示</title>
+
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+
+    <style>
+        .boxCen {
+            text-align: center;
+        }
+        .file-clip {
+            width: 100%;
+            height: 300px;
+            background: #666;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+        .file {
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+            vertical-align: middle;
+            margin: 20px 20px 0 0;
+        }
+        .boxCen .file {
+            vertical-align: bottom;
+        }
+        .service-file {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            opacity: 0;
+            bottom: 0;
+            cursor: pointer;
+        }
+        .file-btn {
+            margin: 5px 10px;
+            padding:0 10px;
+            border: 1px solid #606060;
+            cursor:pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="tt">
+    <div class="boxCen">
+        <div id="clipArea" class="file-clip"></div>
+        <form th:action="@{/userupdateimg(id=${session.user.id})}" method="post" enctype="multipart/form-data">
+            <div class="file">
+</div>
+
+<script type="text/javascript" src="js/iscroll-zoom.js"></script>
+<script type="text/javascript" src="js/hammer.js"></script>
+<script type="text/javascript" src="js/lrz.all.bundle.js"></script>
+<script type="text/javascript" src="js/jquery.photoClip.js"></script>
+<script>
+    $(function(){
+        var html = '<div class="boxCen">';
+        html += '<div id="clipArea" class="file-clip"></div>';
+        html += '<form th:action="@{/userupdateimg(id=${session.user.id})}" method="post" enctype="multipart/form-data">'
+        html += '<div class="file">';
+        html += '<div class="file-btn">选择需要裁剪的图片</div>';
+        html += '<input type="file" class="service-file" id="file"></div>';
+        html += '<input id="updateCutimg" type="submit" value="submit" >上传图片</input>'
+        html += '</form>';
+        html += '<div class="file-btn" id="clipBtn">裁剪图片</div>';
+        html += '<div class="file-btn" id="rotaBtn">选转</div>';
+        html += '<div class="file-btn" id="bigImg" >放大</div>';
+        html += '<div class="file-btn" id="smallImg">缩小</div>';
+        html += '<div class="red">（鼠标滚轮为缩放，每次双击则顺时针旋转90度）</div>';
+        html += '</div>';
+        html += '<div id="imgHtml" class="clipEnd"></div>';
+        $('#tt').html(html);
+        clip();
+
+
+    });
+
+    function clip(){
+        $("#clipArea").photoClip({
+            size: [200, 200],
+            file: "#file",
+            ok: "#clipBtn",
+            view:"#imgcav",
+            rotaBtn:'#rotaBtn',
+            bigBtn:'#bigImg',
+            smallBtn:'#smallImg',
+            outputSize:[200, 200],
+            loadStart: function() {
+                console.log("照片读取中");
+            },
+            loadComplete: function() {
+                console.log("照片读取完成");
+            },
+            clipFinish: function(dataURL) {
+                var img = '<img src="'+dataURL+'">';
+                $('#imgHtml').html(img);
+                document.getElementById("file").value=dataURL;
+                document.getElementById("updateCutimg").click();
+            }
+        });
+    }
+</script>
+
+<div style="text-align:center;clear:both;margin-top:30px;">
+    <script src="/gg_bd_ad_720x90.js" type="text/javascript"></script>
+    <script src="/follow.js" type="text/javascript"></script>
+</div>
+
+</body>
+</html>
