@@ -20,10 +20,12 @@
 	<link rel="stylesheet" type="text/css" href="css/responsive.css">
 	<style type="text/css">
 		.toolbar {
-			border: 1px solid #ccc;
+			border: 0px solid #ccc;
+			width: 50px;
 		}
 		.text {
 			border: 1px solid #ccc;
+			overflow: hidden;
 			height: 400px;
 		}
 		.dongtai {
@@ -81,8 +83,8 @@
 		}
 		.addImages {
 			display:inline-block;
-			width:180px;
-			height:160px;
+			width:120px;
+			height:110px;
 			-webkit-box-sizing:border-box;
 			-moz-box-sizing:border-box;
 			box-sizing:border-box;
@@ -93,7 +95,6 @@
 			margin:10px;
 		}
 		.text-detail {
-			margin-top:40px;
 			text-align:center;
 		}
 		.text-detail span {
@@ -198,9 +199,9 @@
 							</a>
 						</li>
 						<li>
-							<a href="projects.html" title="">
+							<a href="profiles.html" title="">
 								<span><img src="images/icon3.png" alt=""></span>
-								Projects
+								娱乐
 							</a>
 						</li>
 						<li>
@@ -333,12 +334,6 @@
 			</div><!--header-data end-->
 		</div>
 	</header><!--header end-->
-	<div id="fade1" class="black_overlay"></div>
-	<div id="outerdiv" style="position:fixed;top:0;left:0;background:rgba(0,0,0,0.7);z-index:2;width:100%;height:100%;display:none;">
-		<div id="innerdiv" style="position:absolute;">
-			<img id="bigimg" style="border:5px solid #fff;" src="" />
-		</div>
-	</div>
 	<main>
 		<div class="main-section">
 			<div class="container">
@@ -453,8 +448,6 @@
 						<div class="col-lg-6 col-md-8 no-pd">
 							<div class="main-ws-sec">
 								<div id="box" class="post-topbar">
-									<div class="dongtai">动态发布</div>
-									<br/>
 									<form th:action="@{/sendshare(userId=${session.user.id})}"  method="post" enctype="multipart/form-data" >
 										<div id="contents">
 											<div id="div2"  class="text" style="height: 100px">
@@ -462,16 +455,15 @@
 											<div id="div1" class="toolbar">
 											</div>
 											<textarea id="text1" name="content" style="width:100%; height:100px;display: none;"></textarea>
-											<div class="post-st">
+											<div class="post-st" style="margin-top: 2px">
 												<ul><li>
 													<button id="btn"style="border: none" type="button"><a >添加图片</a></button>&nbsp;
 													<button  id="btn2" type="submit"  class="active" value="post" style="border: none"><a>发布</a></button>
 												</li></ul>
 											</div>
 										</div>
-										<br/><br/><br/><br/>
 										<div id="spread" style="overflow: hidden;height:0px">
-											<div style="height:300px;width: 100%;overflow-y: auto">
+											<div style="height:250px;width: 100%;overflow-y: auto">
 
 												<div  id="passForm" >
 													    <!--点击预览图片-->
@@ -482,7 +474,7 @@
 													                <!--multiple属性可选择多个图片上传-->
 													                <input type="file" class="file" name="shareimg" id="fileInput"  accept="image/png, image/jpeg, image/gif, image/jpg" multiple/>
 													                <div class="text-detail">
-													                    <span>+</span>
+													                   <div style="font-size: 20px;margin-top: 0px"><h1>+</h1></div>
 													                    <p>点击上传</p>
 													                </div>
 													            </div>
@@ -526,7 +518,7 @@
 											</script>
 											<div th:each="sp:${shareplist}" >
 												<p th:if="${share.id} eq ${sp.shareId}">
-												<img class="pimg" th:src="'images/'+${sp.img}" alt="" height="150px" width="150px"style="margin: 2px"/>
+												<img class="pimg" th:src="'images/'+${sp.img}" alt=""  width="150px"style="margin: 2px"/>
 												</p>
 											</div>
 
@@ -994,6 +986,11 @@
 		</div>
 	</div><!--chatbox-list end-->
 
+	<div id="outerdiv" style="position:fixed;top:0;left:0;background:rgba(0,0,0,0.7);z-index:2;width:100%;height:100%;display:none;">
+		<div id="innerdiv" style="position:absolute;">
+			<img id="bigimg" style="border:5px solid #fff;" src="" />
+		</div>
+	</div>
 </div><!--theme-layout end-->
 
 
@@ -1035,17 +1032,15 @@
     //实现的功能
     function imgShow(outerdiv, innerdiv, bigimg, _this){
         var src = _this.attr("src");//获取当前点击的pimg元素中的src属性
-        $(bigimg).attr("src", src);//设置#bigimg元素的src属性
-
+        $(bigimg).attr("src", src)
         /*获取当前点击图片的真实大小，并显示弹出层及大图*/
-        $("<img/>").attr("src", src).load(function(){
+        $(bigimg).on("load",function(){
             var windowW = $(window).width();//获取当前窗口宽度
             var windowH = $(window).height();//获取当前窗口高度
             var realWidth = this.width;//获取图片真实宽度
             var realHeight = this.height;//获取图片真实高度
             var imgWidth, imgHeight;
             var scale = 0.8;//缩放尺寸，当图片真实宽度和高度大于窗口宽度和高度时进行缩放
-
             if(realHeight>windowH*scale) {//判断图片高度
                 imgHeight = windowH*scale;//如大于窗口高度，图片高度进行缩放
                 imgWidth = imgHeight/realHeight*realWidth;//等比例缩放宽度
@@ -1060,7 +1055,6 @@
                 imgHeight = realHeight;
             }
             $(bigimg).css("width",imgWidth);//以最终的宽度对图片缩放
-
             var w = (windowW-imgWidth)/2;//计算图片与窗口左边距
             var h = (windowH-imgHeight)/2;//计算图片与窗口上边距
             $(innerdiv).css({"top":h, "left":w});//设置#innerdiv的top和left属性

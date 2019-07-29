@@ -109,14 +109,15 @@ public class ShareController {
                 String filePath= ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/images/";
                 //Thumbnails.of(fileName).scale(0.4).toFile(fileName);
                 File dest=new File(filePath + fileName);
-               // try{
-                    Thumbnails.of(file[i].getInputStream()).scale(0.5f).outputQuality(0.25f).toFile(dest);
-            //    }catch (IOException e){
+                try{
                    // file[i].transferTo(dest);
+                    Thumbnails.of(file[i].getInputStream()).scale(0.5f).outputQuality(0.25f).toFile(dest);
+                }catch (IOException e){
+                    //file[i].transferTo(dest);
                     //picture.setImg(fileName);//文件名保存到实体类对应属性上
                     //picture.setShareId(share.getId());
-
-        //       }
+                    e.printStackTrace();
+               }
                //catch (IOException e1){
 //                    e1.printStackTrace();
 //                }

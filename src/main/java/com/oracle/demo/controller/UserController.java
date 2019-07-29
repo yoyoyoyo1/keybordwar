@@ -1,11 +1,9 @@
 package com.oracle.demo.controller;
 
-import com.oracle.demo.entity.Follow;
-import com.oracle.demo.entity.Share;
-import com.oracle.demo.entity.ShareInfo;
-import com.oracle.demo.entity.User;
+import com.oracle.demo.entity.*;
 import com.oracle.demo.respository.LikeDao;
 import com.oracle.demo.respository.ShareInfoDao;
+import com.oracle.demo.respository.SharePictureDao;
 import com.oracle.demo.respository.UserDao;
 import com.oracle.demo.service.FollowService;
 import com.oracle.demo.service.ShareService;
@@ -45,6 +43,8 @@ public class UserController {
     @Autowired
     private LikeDao likeDao;
     List<Integer> following=null;
+    @Autowired
+    private SharePictureDao sharePictureDao;
     @RequestMapping("userlogin")
     @ResponseBody
     public String userlogin(String email, String pass, HttpSession httpSession)
@@ -99,6 +99,8 @@ public class UserController {
         }
         model.addAttribute("shareList",shareList);
         List<Integer> followme=followService.followMeList(userId);
+        List<SharePicture> simg=sharePictureDao.findimg();
+        model.addAttribute("shareplist",simg);
         if(followme.size()!=0)
         {
             model.addAttribute("followme",userService.followMeList(followme));
