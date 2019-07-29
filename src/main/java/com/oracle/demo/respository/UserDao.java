@@ -2,7 +2,6 @@ package com.oracle.demo.respository;
 
 import com.oracle.demo.entity.User;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -12,6 +11,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserDao extends JpaRepository<User,Integer>, PagingAndSortingRepository<User,Integer>,JpaSpecificationExecutor<User> {
     @Query(value = "select * from User where email=?1",nativeQuery = true)
@@ -59,7 +59,9 @@ public interface UserDao extends JpaRepository<User,Integer>, PagingAndSortingRe
     //blic Page<User> getUserListByIdContaining(String mohu, Pageable pageable);
     @Query(value = "select * from User where id in ?1",nativeQuery = true)
     public List<User> followMe(List<Integer> followme);
-    @Query(value = "select * from User where id = ?1",nativeQuery = true)
+    @Query(value = "select * from User where id in (?1) ",nativeQuery = true)
+    public List<User> findByIds(List<Integer> ids);
+    @Query(value = "select * from User where id = ?1 ",nativeQuery = true)
     public User findById(int id);
     @Modifying
     @Transactional

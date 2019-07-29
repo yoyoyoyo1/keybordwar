@@ -1,7 +1,10 @@
 package com.oracle.demo.controller;
 
+import com.oracle.demo.entity.Likes;
 import com.oracle.demo.entity.Message;
 import com.oracle.demo.entity.User;
+import com.oracle.demo.respository.DialogDao;
+import com.oracle.demo.respository.LikeDao;
 import com.oracle.demo.service.DialogService;
 import com.oracle.demo.service.MessageService;
 import com.oracle.demo.service.UserService;
@@ -14,11 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
-import java.util.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/dialog")
@@ -29,29 +28,48 @@ public class Dialog {
     UserService userService;
     @Autowired
     DialogService dialogService;
+    @Autowired
+    LikeDao likeDao;
+    @Autowired
+    DialogDao dialogDao;
+    @GetMapping("/hot/spot")
+    public List<com.oracle.demo.entity.Dialog> hotSpot(){
+        return dialogDao.hotSpotDialog();
+    }
+    @GetMapping("/like")
+    public Object like(HttpSession session,int l,int dialogId){
+        int userId = ((User)session.getAttribute("user")).getId();
+        com.oracle.demo.entity.Dialog dialog = dialogDao.findById(dialogId).get();
+
+        if(l==1){
+            likeDao.deleteDialogLike(userId,dialogId);
+            dialogDao.updateLikes(dialogId,dialog.getLikes()-1);
+        }else{
+            Likes likes = new Likes();
+            likes.setDialogId(dialogId);
+            likes.setUserId(userId);
+            likeDao.save(likes);
+            dialogDao.updateLikes(dialogId,dialog.getLikes()+1);
+        }
+        return 1;
+    }
     @GetMapping("/live/user")
     public Object liveUser(Integer dialogId){
-        List<User> list = new ArrayList<>();
-        System.out.println(dialogWebSocket.Dialog);
         Map<Integer,Session> dialog =  dialogWebSocket.Dialog.get(dialogId);
-        if(dialog==null){
-            return list;
+        if(dialog==null||dialog.size()==0){
+            return new ArrayList<>();
         }
-        for (Integer key : dialog.keySet()) {
-            list.add(userService.findById(key));
-        }
-        return list;
+        return  userService.findByIds(new ArrayList<>(dialog.keySet()));
     }
 
     @GetMapping("/history/user")
     public Object historyUser(Integer dialogId){
-        List<User> list = new ArrayList<>();
         List<Integer> userList = messageService.getFormIdByDialogId(dialogId);
-        System.out.println(userList);
-        for(Integer key : userList){
-            list.add(userService.findById(key));
+        if(userList.size()!=0){
+            return userService.findByIds(userList);
+        }else {
+            return new  ArrayList<>();
         }
-        return list;
     }
     @GetMapping("/message")
     public Object message(Integer dialogId,int page){
@@ -63,8 +81,17 @@ public class Dialog {
             return dialogService.getDialogs(1,page);
     }
     @GetMapping("/history")
-    public List<com.oracle.demo.entity.Dialog> historyDialog(int page){
-        return dialogService.getDialogs(0,page);
+    public Map<String,Object> historyDialog(HttpSession session,int page){
+
+        List<Integer> dialogIds = new ArrayList<>();
+        Map<String,Object> result  = new HashMap<>();
+        List<com.oracle.demo.entity.Dialog> dialogs = dialogService.getDialogs(0,page);
+        for(com.oracle.demo.entity.Dialog key : dialogs){
+            dialogIds.add(key.getId());
+        }
+        result.put("dialogs",dialogs);
+        result.put("like",likeDao.getLikesByDialogId(((User)session.getAttribute("user")).getId(),dialogIds));
+        return result;
     }
 
 }
