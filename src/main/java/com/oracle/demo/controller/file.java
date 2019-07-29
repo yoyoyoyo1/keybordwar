@@ -16,7 +16,6 @@ import java.util.Map;
 
 @RestController
 public class file {
-
     @PostMapping("/api/video/upload")
     public Object upload(HttpSession httpSession,@RequestParam("file") MultipartFile file) throws IOException {
         System.out.println(file);

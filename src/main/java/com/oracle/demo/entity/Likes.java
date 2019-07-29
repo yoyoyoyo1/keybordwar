@@ -12,15 +12,23 @@ public class Likes {
     private  int id;
     private int userId;//用户id
     private int shareId;//说说id
+    @Column(columnDefinition="int default 0")
+    private int dialogId;
     @Column(columnDefinition="tinyint default 0")
     private int watch;//观看状态
 
-
     public Likes(){
-
     }
 
-    public Likes(int id,int userId, int shareId,  int watch) {
+    public int getDialogId() {
+        return dialogId;
+    }
+
+    public void setDialogId(int dialogId) {
+        this.dialogId = dialogId;
+    }
+
+    public Likes(int id, int userId, int shareId, int watch) {
         this.userId = userId;
         this.id = id;
         this.shareId = shareId;

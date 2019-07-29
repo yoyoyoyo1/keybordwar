@@ -259,40 +259,81 @@
                     <img src="images/resources/cmp-icon12.png" alt="">
                     <h3>{{dialog.title}}</h3>
                     <ul>
-                        <li><a href="" title="" class="follow">查看</a></li>
+                        <li><a href="javascript:void(0)" @click="check(dialog)" class="follow">查看</a></li>
+						<li><a @click="doLike(dialog)" href="javascript:void (0)" class="follow"> {{likeMessage}}</a>{{dialog.likes}} </li>
                     </ul>
                 </div>
-                <a  href="javascript:void(0)" @mouseover="showContent" class="view-more-pro">详细信息</a>
+                <a  href="javascript:void(0)" @click="showContent" class="view-more-pro">详细信息</a>
             </div><!--company_profile_info end-->
         </div>
     </script>
+    <a href="/dialogeded.html" id="dialoged"></a>
     <script src="js/vue.min.js"></script>
     <script src="js/axios.min.js"></script>
     <script>
         //定义desktop组件
+        let like = {}
+        let dialogs = []
         Vue.component('desktop',{
             //定义数据
             props:['dialog'],
+            data: function () {
+                return {
+                    like,
+                    clickLike:false,
+                    likeMessage:like[this.dialog.id] ? "取消点赞":"点赞"
+                }
+
+            },
             //定义方法
             methods:{
                 showContent(){
                     alert(this.dialog.content)
                 },
+                check(dialog){
+                    localStorage.setItem("dialogId",dialog.id)
+                    document.getElementById("dialoged").click()
+                },
+                doLike(dialog){
+                    let l ;//0代表点赞 ，1 代表取消
+                    if(this.clickLike){
+                        return
+                    }
+                    this.clickLike = true
+                    if(this.likeMessage=="点赞"){
+                        dialog.likes += 1
+                        this.likeMessage = "取消点赞"
+                        l = 0;
+                    }else {
+                        this.likeMessage = "点赞"
+                        dialog.likes -= 1
+                        l = 1;
+                    }
+                    axios.get(`/dialog/like?l=${l}&dialogId=${dialog.id}`).then((res)=>{
+                        this.clickLike = false
+                    })
+
+                }
             },
+
             template:'#desktop'
 
         })
         new Vue({
             el: '#app',
             data: {
-                dialogs: [],
+                dialogs,
                 page:0,
+                like
             },
             methods:{
                 more(){
                     axios.get(`/dialog/history?page=${this.page}`).then( (res) =>{
                         if(res.data.length != 0 ){
-                            this.dialogs = this.dialogs.concat(res.data)
+                            this.dialogs = this.dialogs.concat(res.data.dialogs)
+                            for(let l of res.data.like){
+                                this.like[l.dialogId] = 1
+                            }
                             this.page += 1
                             return
                         }

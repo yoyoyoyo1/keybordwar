@@ -10,9 +10,6 @@ import com.oracle.demo.respository.UserDao;
 import com.oracle.demo.service.AdminService;
 import com.oracle.demo.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ClassUtils;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.transform.Result;
 import java.io.File;
@@ -47,14 +43,21 @@ public class AdminController {
   //管理员登录
   @RequestMapping(value = "/adminlogin" ,method = RequestMethod.POST)
     public String adminlogin(@ModelAttribute Admin admin,Model model,HttpSession session){
-    System.out.println("管理员登录："+admin.toString());
-    return adminService.adminlogin(admin,model,session);
+    Admin admin1=adminDao.findAdminByAccountAndPassword(admin.getAccount(),admin.getPassword());
+    if (admin1 == null){
+      model.addAttribute("msg","登录失败，账号或密码错误");
+
+      return "admin/admin-login";
+    }
+    session.setAttribute("admining",admin1);
+    model.addAttribute("msg","登录成功");
+    return "admin/admin-index";
   }
 
   @RequestMapping("/gethello")
   public String xxx(@RequestParam(value = "xx") String xx){
     System.out.println(xx);
-      return "admin-welcome";
+      return "admin/admin-welcome";
   }
   @GetMapping("/gethello1")
   public String zz(@RequestParam(value = "start") String start,@RequestParam(value = "end") String end){
@@ -69,13 +72,13 @@ public class AdminController {
 
   @RequestMapping("/toadminlogin")
   public String login(){
-      return "admin-login";
+      return "admin/admin-login";
   }
 
   @GetMapping("/getwelcome")
   public String welcome()
   {
-    return "admin-welcome";
+    return "admin/admin-welcome";
   }
 
   //管理员退出登录，销毁全部session
@@ -84,12 +87,12 @@ public class AdminController {
   {
     session.invalidate();
     model.addAttribute("msg","退出成功");
-    return "admin-login";
+    return "admin/admin-login";
   }
   //显示全部用户
   @RequestMapping("/toadminadduser")
   public String toadminadduser() {
-    return "admin-adduser";
+    return "admin/admin-adduser";
   }
 
   //添加用户
@@ -109,7 +112,7 @@ public class AdminController {
     System.out.println("添加用户的密码通过md5加密为："+passmd5);
     adminService.adminadduser(user);
     model.addAttribute("msg","添加用户成功");
-    return "admin-adduser";
+    return "admin/admin-adduser";
   }
 
   /*

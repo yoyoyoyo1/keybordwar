@@ -21,6 +21,12 @@ public interface DialogDao extends JpaRepository<Dialog,Integer>,JpaSpecificatio
     @Transactional
     @Query(value = "UPDATE Dialog SET active = 0 WHERE id=?1",nativeQuery = true)
     public int updateActive(Integer i);
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE Dialog SET likes = ?2 WHERE id=?1",nativeQuery = true)
+    public int updateLikes(Integer id,Integer likes);
+    @Query(value = "SELECT * FROM Dialog ORDER BY likes desc limit 5 ",nativeQuery = true)
+    public List<Dialog> hotSpotDialog();
 
     //批量删除圆桌
     @Modifying
