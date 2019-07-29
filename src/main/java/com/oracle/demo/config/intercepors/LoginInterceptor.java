@@ -17,7 +17,6 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //每一个项目对于登陆的实现逻辑都有所区别，我这里使用最简单的Session提取User来验证登陆。
         HttpSession session = request.getSession();
-        System.out.println("srrrrrrrrrrrrs"+session);
         //这里的User是登陆时放入session的
         User user = (User) session.getAttribute("user");
         //如果session中没有user，表示没登陆

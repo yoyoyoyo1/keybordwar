@@ -12,12 +12,12 @@ public class Likes {
     private  int id;
     private int userId;//用户id
     private int shareId;//说说id
+    @Column(columnDefinition="int default 0")
     private int dialogId;
     @Column(columnDefinition="tinyint default 0")
     private int watch;//观看状态
 
     public Likes(){
-
     }
 
     public int getDialogId() {
