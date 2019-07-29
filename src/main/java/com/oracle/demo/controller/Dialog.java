@@ -39,7 +39,7 @@ public class Dialog {
     @GetMapping("/like")
     public Object like(HttpSession session,int l,int dialogId){
         int userId = ((User)session.getAttribute("user")).getId();
-        com.oracle.demo.entity.Dialog dialog = dialogDao.findById(dialogId).get();
+        com.oracle.demo.entity.Dialog dialog = dialogDao.findById(dialogId);
 
         if(l==1){
             likeDao.deleteDialogLike(userId,dialogId);

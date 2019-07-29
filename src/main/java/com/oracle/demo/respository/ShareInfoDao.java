@@ -28,5 +28,4 @@ public interface ShareInfoDao extends JpaRepository<ShareInfo,String> {
     @Query(value = "SELECT COUNT(*) FROM Share where Share.userId = ?1",nativeQuery = true)
     public int countOneShareNum(int userId);
 
-
 }

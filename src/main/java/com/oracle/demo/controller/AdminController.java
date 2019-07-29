@@ -2,7 +2,9 @@ package com.oracle.demo.controller;
 
 import com.oracle.demo.entity.Admin;
 import com.oracle.demo.entity.User;
+import com.oracle.demo.entity.Dialog;
 import com.oracle.demo.respository.AdminDao;
+import com.oracle.demo.respository.DialogDao;
 import com.oracle.demo.respository.UserDao;
 import com.oracle.demo.service.AdminService;
 import com.oracle.demo.util.MD5Util;
@@ -12,12 +14,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.transform.Result;
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,6 +39,8 @@ public class AdminController {
   private UserDao userDao;
   @Autowired
   private AdminDao adminDao;
+  @Autowired
+  private DialogDao dialogDao;
   //管理员登录
   @RequestMapping(value = "/adminlogin" ,method = RequestMethod.POST)
     public String adminlogin(@ModelAttribute Admin admin,Model model,HttpSession session){
@@ -315,7 +323,7 @@ public class AdminController {
     String flag=adminService.admindelbhshare(idsss);
     return flag;
   }
-
+  //查看用户个人的动态
   @RequestMapping("/adminshowuserdt")
   public String adminshowuserdt(int id,Model model){
     return adminService.amdinshowuserdt(id,model);
@@ -323,7 +331,174 @@ public class AdminController {
 
   //查看全部动态
   @RequestMapping("/toallshare")
-  public String toallshare(Model model){
-     return adminService.toallshare(model);
+  public String toallshare(@RequestParam(value = "pagenum",required=false) String pagenum,@RequestParam(value = "nkey",required = false) String nkey,Model model){
+    if (pagenum==null||"".equals(pagenum)){
+      pagenum="0";
+    }
+    if (nkey==null||"".equals(nkey)){
+      nkey="";
+    }
+    System.out.println("查询关键字"+nkey);
+    model.addAttribute("nkey",nkey);
+    int pagenumn=Integer.parseInt(pagenum);
+    int pagesize=10;
+    return adminService.toallshare(nkey,pagenumn,pagesize,model);
+  }
+
+  //跳向圆桌界面
+  @RequestMapping("/toadminadddialog")
+  public String toadminadddialog(){
+    return "admin-adddialog";
+  }
+
+  //添加圆桌
+  @RequestMapping("/adminadddialog")
+  public String adminadddialog(@RequestParam(value = "title") String title, @RequestParam(value = "content") String content,@RequestParam(value = "image",required = false) MultipartFile file, Model model){
+    Dialog dialog=new Dialog();
+    dialog.setActive(1);
+    dialog.setContent(content);
+    dialog.setTitle(title);
+    String filename;
+    filename=MD5Util.encode(dialog.getCreatedAt()+"")+file.getOriginalFilename();
+    System.out.println("这这");
+    String filePath= ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/dialogimage/";
+    File dest=new File(filePath + filename);
+    dialog.setActive(1);
+    try {
+
+      if (file.getOriginalFilename()==null||file.getOriginalFilename().equals("")){
+        dialog.setImage("oracle.png");
+      }else {
+        file.transferTo(dest);
+        dialog.setImage(filename);
+      }
+      return adminService.adminadddialog(dialog,model);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return adminService.adminadddialog(dialog,model);
+  }
+
+  //圆桌列表
+
+  @RequestMapping("/admindialoglist")
+  public String amdindialoglist(@RequestParam(value = "start",required = false) String start,@RequestParam(value = "end",required = false) String end,@RequestParam(value = "pagenum",required=false) String pagenum,@RequestParam(value = "nkey",required = false) String nkey,Model model){
+    if (pagenum==null||"".equals(pagenum)){
+      pagenum="0";
+    }
+    if (nkey==null||"".equals(nkey)){
+      nkey="";
+    }
+    if ( start == null){
+      start="2000-1-1";
+    }
+    if ( end == null){
+      end="2999-1-1";
+    }
+    System.out.println("查询关键字"+nkey);
+    model.addAttribute("start",start);
+    model.addAttribute("end",end);
+    model.addAttribute("nkey",nkey);
+    int pagenumn=Integer.parseInt(pagenum);
+    int pagesize=10;
+    return adminService.admindialoglist(start,end,nkey,pagenumn,pagesize,model);
+  }
+
+  //圆桌的批量删除
+  @RequestMapping("/delbhdialog")
+  @ResponseBody
+  public String delbhdialog(String [] ids){
+    for (String id:ids){
+      System.out.println(id.toString());
+    }
+    List<String> idss=new ArrayList<>();
+    Collections.addAll(idss,ids);
+    List<String> idz=new ArrayList<>();
+    List<Integer> idsss=new ArrayList<>();
+    idz.add("");
+    idss.removeAll(idz);
+    for (String x:idss){
+      System.out.println(x.toString());
+    }
+    System.out.println("x");
+    for (String z:idss){
+      int x=Integer.parseInt(z);
+      idsss.add(x);
+    }
+    String flag=adminService.admindelbhdialog(idsss);
+    return flag;
+  }
+  //单个删除圆桌
+  @RequestMapping("/admindeldia")
+  @ResponseBody
+  public String admindeldia(int id){
+    System.out.println("要删除圆桌的id:"+id);
+    int x=dialogDao.deleteDialogById(id);
+    if (x!=0){
+      return "ok";
+    }else{
+      return "bad";
+    }
+  }
+  //去编辑圆桌
+  @RequestMapping("/toadmineditdia")
+  public String toadmineditdia(int id,Model model){
+    Dialog dialog=new Dialog();
+    dialog=dialogDao.findById(id);
+    model.addAttribute("dialogedit",dialog);
+    return "admin-editdialog";
+  }
+  //编辑圆桌
+  @RequestMapping("/admineditdialog")
+  public String admineditdia(@RequestParam(value = "title") String title,@RequestParam(value="content",required = false) String content,@RequestParam(value="id") int id,@RequestParam(value = "image",required = false) MultipartFile file,Model model){
+    Dialog dialog=dialogDao.findById(id);
+    Date date=new Date();
+    SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
+    String nowdate=sdf.format(date);
+    System.out.println(nowdate);
+    String filename=MD5Util.encode(nowdate+"")+file.getOriginalFilename();
+    System.out.println("这这");
+    String filePath= ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/dialogimage/";
+    File dest=new File(filePath + filename);
+    String imagename;
+    try {
+      if (file.getOriginalFilename()==null||file.getOriginalFilename().equals("")){
+        imagename=dialog.getImage();
+      }else {
+        file.transferTo(dest);
+        imagename=filename;
+      }
+      return adminService.admineditdia(id,title,content,imagename,model);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return adminService.admineditdia(id,title,content,dialog.getImage(),model);
+  }
+
+  //启用圆桌
+  @RequestMapping("/admindialogon")
+  @ResponseBody
+  public String admindialogon(int id){
+    int x=dialogDao.updateDialogon(1,id);
+    if (x!=0){
+      return "ok";
+    }else
+    {
+      return "bad";
+    }
+  }
+
+  //关闭圆桌
+  @RequestMapping("/admindialogoff")
+  @ResponseBody
+  public String admindialogoff(int id){
+    int x=dialogDao.updateDialogoff(0,id);
+    if (x!=0){
+      return "ok";
+
+    }else
+    {
+      return "bad";
+    }
   }
 }
