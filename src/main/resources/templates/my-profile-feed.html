@@ -313,6 +313,7 @@
                                                     <ul th:id="${share.id}" class="like-com">
                                                         <li th:text="${share.likes}"></li>
                                                     </ul>
+                                                    <a th:href="@{javascript:getComment(}+@{${share.id}}+@{);}">评论&nbsp<span th:text="${share.comments}"/></a>
                                                     <form th:action="@{/addLike(userId=${session.user.id},shareId=${share.id})}"  method="post" target="nm_iframe">
                                                         <div th:if="${share.likeInfo} eq 0">
                                                             <button class="like" type="submit" th:onclick="like(this,[[${share.id}]]);" value="post">&#10084;</button>
@@ -322,8 +323,45 @@
                                                         </div>
                                                     </form>
                                                     <iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
-                                                    <a href="#">评论&nbsp<span th:text="${share.comments}"/></a>
                                                 </div>
+                                                <div th:id="comment+${share.id}" class="comment-section" style="display:none;">
+                                                    <div class="plus-ic">
+                                                        <i class="la la-plus"></i>
+                                                    </div>
+                                                    <div class="comment-sec">
+                                                        <ul th:id="commentt+${share.id}">
+
+                                                            <!--<ul>-->
+                                                            <!--<li>-->
+                                                            <!--<div class="comment-list">-->
+                                                            <!--<div class="bg-img">-->
+                                                            <!--<img src="images/resources/bg-img2.png" alt="">-->
+                                                            <!--</div>-->
+                                                            <!--<div class="comment">-->
+                                                            <!--<h3>didi</h3>-->
+                                                            <!--<span><img src="images/clock.png" alt=""> 3 min ago</span>-->
+                                                            <!--<p>Hi John </p>-->
+                                                            <!--<a href="#" title=""><i class="fa fa-reply-all"></i>Reply</a>-->
+                                                            <!--</div>-->
+                                                            <!--</div>&lt;!&ndash;comment-list end&ndash;&gt;-->
+                                                            <!--</li>-->
+                                                            <!--</ul>-->
+                                                        </ul>
+                                                    </div><!--comment-sec end-->
+                                                    <p class="tc"><a th:href="@{javascript:hide(}+@{${share.id}}+@{);}">收起</a></p>
+                                                    <div class="post-comment">
+                                                        <div class="cm_img">
+                                                            <img th:src="'userimage/'+${session.user.image}" alt="" height="40px" width="40px">
+                                                        </div>
+                                                        <div class="comment_box">
+                                                            <form th:id="send+${share.id}" target="send_comment">
+                                                                <input th:id="content+${share.id}" type="text" placeholder="回复此动态">
+                                                                <button th:onclick="sendComment([[${share.id}]],[[${session.user.id}]]);">Send</button>
+                                                            </form>
+                                                            <iframe name="send_comment" style="display:none;"></iframe>
+                                                        </div>
+                                                    </div><!--post-comment end-->
+                                                </div><!--comment-section end-->
                                             </div><!--post-bar end-->
                                         </div>
                                         <div class="process-comm">
@@ -335,6 +373,95 @@
                                     </div><!--posts-section end-->
                                 </div><!--product-feed-tab end-->
                             </div><!--main-ws-sec end-->
+                            <div class="product-feed-tab" id="saved-jobs">
+                                <div class="posts-section">
+                                    <div id="shareSpace2" th:fragment="shareSpace2">
+                                        <div th:each="share : ${shareList2}" class="post-bar">
+                                            <div class="post_topbar">
+                                                <div class="usy-dt">
+                                                    <a th:href="@{/othersprofile(id=${share.userId})}"><img th:src="'userimage/'+${share.image}" alt="" height="50px" width="50px"></a>
+                                                    <div class="usy-name">
+                                                        <h3 th:text="${share.nickname}"></h3>
+                                                        <span th:text="${share.createdAt}"><img src="images/clock.png" alt=""></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="job_descp">
+                                                <p th:text="${share.content}"> </p>
+                                                <div style="width: 100%;height: 300px">
+                                                    <img th:src="'shareimg/'+${share.img}" alt="" height="100px" width="100px">
+                                                </div>
+                                                <!--
+                                                <div th:each="sharePicture : ${sharePictureList}" class="post-bar">
+                                                    <div th:if="${sharePictureList.shareId} eq ${share.id}">
+                                                    <img th:src="${sharePicture.img }" alt="" height="50px" width="50px">
+                                                </div>
+                                                </div>-->
+                                                <a href="#" title="">查看更多</a>
+                                            </div>
+                                            <div class="job-status-bar">
+                                                <ul th:id="${share.id}" class="like-com">
+                                                    <li th:text="${share.likes}"></li>
+                                                </ul>
+                                                <a th:href="@{javascript:getComment(}+@{${share.id}}+@{);}">评论&nbsp<span th:text="${share.comments}"/></a>
+                                                <form th:action="@{/addLike(userId=${session.user.id},shareId=${share.id})}"  method="post" target="nm_iframe">
+                                                    <div th:if="${share.likeInfo} eq 0">
+                                                        <button class="like" type="submit" th:onclick="like(this,[[${share.id}]]);" value="post">&#10084;</button>
+                                                    </div>
+                                                    <div th:if="${share.likeInfo} eq 1">
+                                                        <button class="unLike" type="submit" th:onclick="like(this,[[${share.id}]]);" value="post">&#10084;</button>
+                                                    </div>
+                                                </form>
+                                                <iframe id="id_iframe2" name="nm_iframe" style="display:none;"></iframe>
+                                            </div>
+                                            <div th:id="comment+${share.id}" class="comment-section" style="display:none;">
+                                                <div class="plus-ic">
+                                                    <i class="la la-plus"></i>
+                                                </div>
+                                                <div class="comment-sec">
+                                                    <ul th:id="commentt+${share.id}">
+
+                                                        <!--<ul>-->
+                                                        <!--<li>-->
+                                                        <!--<div class="comment-list">-->
+                                                        <!--<div class="bg-img">-->
+                                                        <!--<img src="images/resources/bg-img2.png" alt="">-->
+                                                        <!--</div>-->
+                                                        <!--<div class="comment">-->
+                                                        <!--<h3>didi</h3>-->
+                                                        <!--<span><img src="images/clock.png" alt=""> 3 min ago</span>-->
+                                                        <!--<p>Hi John </p>-->
+                                                        <!--<a href="#" title=""><i class="fa fa-reply-all"></i>Reply</a>-->
+                                                        <!--</div>-->
+                                                        <!--</div>&lt;!&ndash;comment-list end&ndash;&gt;-->
+                                                        <!--</li>-->
+                                                        <!--</ul>-->
+                                                    </ul>
+                                                </div><!--comment-sec end-->
+                                                <p class="tc"><a th:href="@{javascript:hide(}+@{${share.id}}+@{);}">收起</a></p>
+                                                <div class="post-comment">
+                                                    <div class="cm_img">
+                                                        <img th:src="'userimage/'+${session.user.image}" alt="" height="40px" width="40px">
+                                                    </div>
+                                                    <div class="comment_box">
+                                                        <form th:id="send+${share.id}" target="send_comment">
+                                                            <input th:id="content+${share.id}" type="text" placeholder="回复此动态">
+                                                            <button th:onclick="sendComment([[${share.id}]],[[${session.user.id}]]);">Send</button>
+                                                        </form>
+                                                        <iframe name="send_comment" style="display:none;"></iframe>
+                                                    </div>
+                                                </div><!--post-comment end-->
+                                            </div><!--comment-section end-->
+                                        </div><!--post-bar end-->
+                                    </div>
+                                    <div class="process-comm">
+                                        <button onclick="previousPage2()" class="btn">←</button>
+                                        <span id="pageNum2">1</span>
+                                        <button th:onclick="nextPage2([[${page2}]])" class="btn">→</button><br>
+                                        共<span th:text="${page2}"></span>页
+                                    </div><!--process-comm end-->
+                                </div><!--posts-section end-->
+                            </div><!--product-feed-tab end-->
                         </div>
                         <div class="col-lg-3">
                             <div class="right-sidebar">
@@ -521,6 +648,137 @@
 <script type="text/javascript" src="js/flatpickr.min.js"></script>
 <script type="text/javascript" src="lib/slick/slick.min.js"></script>
 <script type="text/javascript" src="js/script.js"></script>
+<script>//评论用
+//	function ceshi() {
+//        console.log("nmsl");
+//        var a=document.getElementById('ceshi').value;
+//        console.log(a);
+//    }
+function sendComment(shareId,userId) {
+    var content=document.getElementById('content'+shareId).value;
+    $.ajax({
+        type:"post",
+        url:"/sendComment?content="+content+"&shareId="+shareId+"&userId="+userId,
+        data:{},
+        async: false,
+        success:function (a) {
+            getComment(shareId);
+            console.log(a);
+        }
+    })
+
+}
+function getCOCPut(commentId,nickname) {
+    console.log("hiohoih")
+    $.ajax({
+        type:"post",
+        url:"/getShareId?commentId="+commentId,
+        data:{},
+        async: false,
+        success:function (shareId) {
+            document.getElementById('send'+shareId).innerHTML = "";
+            var cocSend="<input id=\"content"+shareId+"\" type=\"text\" placeholder=\"回复"+nickname+"\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<button onclick=\"sendCOC("+commentId+","+shareId+");\">Send</button>"
+            $("#send"+shareId).append(cocSend);
+        }
+    })
+
+}
+function sendCOC(commentId, shareId) {
+    var content=document.getElementById('content'+shareId).value;
+    console.log("123");
+    console.log(content);
+    $.ajax({
+        type:"post",
+        url:"/sendCOC?commentId="+commentId+"&content="+content+"&shareId="+shareId,
+        data:{},
+        async: false,
+        success:function (a) {
+            getComment(shareId);
+        }
+    })
+}
+function getComment(shareId) {
+    $.ajax({
+        type:"post",
+        url:"/getComment?i="+shareId,
+        data:{},
+        async: false,
+        success:function(comments) {
+            document.getElementById('commentt'+shareId).innerHTML = "";
+            showData(comments);
+        }
+    });
+    $.ajax({
+        type:"post",
+        url:"/getCOC?i="+shareId,
+        data:{},
+        async: false,
+        success:function(coc) {
+            showCOCData(coc);
+        }
+    });
+    function showData(d){
+        for(var i = 0;i<d.length;i++){
+            //循环遍历一边d
+            var html = "<li>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"comment-list\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"bg-img\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<img src=\"userimage/"+d[i].image+"\" alt=\"\""+"height=\"40px\" width=\"40px\""+">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"comment\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<h3>" + d[i].nickname +
+                "</h3>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span><img src=\"images/clock.png\" alt=\"\">"+ d[i].createdAt +
+                "</span>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<p>" + d[i].content +
+                "</p>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<a href=\"javascript:getCOCPut("+d[i].id+",'"+d[i].nickname+"');\" title=\"\"><i class=\"fa fa-reply-all\"></i>Reply</a>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div><!--comment-list end-->\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t<ul id=\"coc"+d[i].id+"\"><ul></li>";
+            //通过表体id把显示文本显示到网页中
+            $("#commentt"+shareId).append(html);
+        }
+    }
+    function showCOCData(d){
+        for(var i = 0;i<d.length;i++){
+            //循环遍历一边
+            var html = "<li>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"comment-list\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"bg-img\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<img src=\"userimage/"+d[i].image+"\" alt=\"\""+"height=\"40px\" width=\"40px\""+">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"comment\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<h3>" + d[i].nickname +
+                "</h3>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span><img src=\"images/clock.png\" alt=\"\">"+ d[i].createdAt +
+                "</span>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<p>" + d[i].content +
+                "</p>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div><!--comment-list end-->\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t</li>";
+            //通过表体id把显示文本显示到网页中
+            $("#coc"+d[i].cocNeedId).append(html);
+        }
+    }
+    document.getElementById("comment"+shareId).style.display = "block";
+
+
+}
+</script>
+<script>
+    function show(id){
+        document.getElementById("comment"+id).style.display = "block";
+    }
+
+    function hide(id){
+        document.getElementById("comment"+id).style.display='none';
+    }
+
+</script>
 <script type="text/javascript">
 
     function updateUserImage() {
@@ -545,6 +803,7 @@
     }
     //i是页数-1
     var i=0;
+    var ii=0;
 
     function nextPage(page) {
         page=page-1;
@@ -560,6 +819,23 @@
             i--;
             $('#shareSpace').load("/mypage?page="+i);
             document.getElementById("pageNum").innerText = i+1;
+            scrollTo(0,0);
+        }
+    }
+    function nextPage2(page) {
+        page=page-1;
+        if(ii<page){
+            ii++;
+            $('#shareSpace2').load("/mypagefollowing?page="+ii);
+            document.getElementById("pageNum2").innerText = ii+1;
+            scrollTo(0,0);
+        }
+    }
+    function previousPage2() {
+        if(ii>0){
+            ii--;
+            $('#shareSpace2').load("/mypagefollowing?page="+ii);
+            document.getElementById("pageNum2").innerText = ii+1;
             scrollTo(0,0);
         }
     }
