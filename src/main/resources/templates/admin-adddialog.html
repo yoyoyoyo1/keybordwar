@@ -57,11 +57,13 @@
                 </div>
                 <span></span>
             </div>
-          <div class="layui-form-item">
-              <button  class="layui-btn" lay-filter="add" lay-submit="">
-                  增加
-              </button>
-          </div>
+            <div class="layui-form-item">
+                <label  class="layui-form-label">
+                </label>
+                <button  class="layui-btn" lay-filter="add" lay-submit="">
+                    增加
+                </button>
+            </div>
       </form>
     </div>
     <script th:inline="javascript">
@@ -87,9 +89,9 @@
         
           //自定义验证规则
         form.verify({
-            nickname: function(value){
-                if( value.length < 2) {
-                    return '昵称长度昵称至少2个字符';
+            title: function(value){
+                if( value.length < 2 || value.length>20) {
+                    return '标题长度在2-20之间';
                 }},
             pass: [/(.+){6,12}$/, '密码必须6到12位']
              ,

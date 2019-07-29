@@ -7,6 +7,7 @@ import com.sun.mail.imap.protocol.ID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;
@@ -28,5 +29,11 @@ public interface AdminDao extends JpaRepository<Admin,Integer> {
     public Admin findAdminByIdAndPassword(Integer id,String pass);
 
     public Dialog save(Dialog dialog);
+
+    @Query(value = "SELECT COUNT(*) FROM User ",nativeQuery = true)
+    public int usernum();
+
+    @Query(value = "SELECT COUNT(*) FROM Dialog ",nativeQuery = true)
+    public int dialognum();
 
 }

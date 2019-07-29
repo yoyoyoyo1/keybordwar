@@ -44,7 +44,7 @@ public interface AdminService {
     //查看动态的主要内容
     public String amdinshowuserdt(int id,Model model);
     //查看全部动态
-    public String toallshare(String nkey,int pagenum,int pagesize,Model model);
+    public String toallshare(String start,String end,String nkey,int pagenum,int pagesize,Model model);
     //添加圆桌
     public String adminadddialog(Dialog dialog,Model model);
     //圆桌列表
@@ -53,4 +53,6 @@ public interface AdminService {
     public String admindelbhdialog(List<Integer> id);
     //编辑圆桌
     public String admineditdia(int id,String title,String content,String image,Model model);
+    //显示动态内容
+    public String toshowshare(int id,Model model);
 }

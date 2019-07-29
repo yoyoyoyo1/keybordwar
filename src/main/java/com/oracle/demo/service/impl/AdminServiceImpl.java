@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.persistence.criteria.*;
 import javax.servlet.http.HttpServletRequest;
@@ -40,7 +41,8 @@ public class AdminServiceImpl implements AdminService{
     SharePictureDao sharePictureDao;
     @Autowired
     DialogDao dialogDao;
-
+    @Autowired
+    ShareInfoDao shareInfoDao;
     @Override
     //管理员登录
     public String adminlogin(Admin admin,Model model,HttpSession session) {
@@ -49,7 +51,15 @@ public class AdminServiceImpl implements AdminService{
             model.addAttribute("msg","登录成功");
              Admin admin1=adminDao.findAdminByAccountAndPassword(admin.getAccount(),admin.getPassword());
              session.setAttribute("admining",admin1);
+            int sharenum=shareInfoDao.countShareNum();
+            int usernum=adminDao.usernum();
+            int dialognum=adminDao.dialognum();
+            session.setAttribute("sharenum",sharenum);
+            session.setAttribute("usernum",usernum);
+            session.setAttribute("dialognum",dialognum);
+            System.out.println(usernum+"lll"+sharenum+"hhh"+dialognum);
              return "admin-index";
+
 
         }
         model.addAttribute("msg","登录失败，账号或密码错误");
@@ -298,49 +308,42 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     //查看全部动态
-    public String toallshare(String nkey,int pagenum,int pagesize,Model model) {
-        List<User> users=userDao.findAllBy();
-        List<ShareInfo> shareInfos=new ArrayList<>();
+    public String toallshare(String start,String end,String nkey,int pagenum,int pagesize,Model model) {
         Pageable pageable= PageRequest.of(pagenum,pagesize);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Specification<Share> spec=new Specification<Share>() {
             @Nullable
             @Override
             public Predicate toPredicate(Root<Share> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                Join<Share,User> userJoin=root.join("user",JoinType.LEFT);
-                Predicate p=criteriaBuilder.like(userJoin.get("nickname"),"%"+nkey+"%");
-                return p;
+                List<Predicate> p=new ArrayList<>();
+
+                try {
+                    if (StringUtils.isNotEmpty(nkey) && nkey!=null){
+                        Join<Share,User> userJoin=root.join("user",JoinType.LEFT);
+                        Predicate p1=criteriaBuilder.like(userJoin.get("nickname"),"%"+nkey+"%");
+                        p.add(p1);
+                    }
+                    if (StringUtils.isNotEmpty(start) && StringUtils.isNotEmpty(end)) {
+                        String start1=start+" 00:00:00";
+                        String end1=end+" 00:00:00";
+                        Date startt = sdf.parse(start1);
+                        Date endt = sdf.parse(end1);
+                        Predicate p2 = criteriaBuilder.between(root.get("createdAt"), startt, endt);
+                        p.add(p2);
+                    }
+                    return criteriaBuilder.and(p.toArray(new Predicate[p.size()]));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                System.out.println("sadf"+p.toString());
+                return null;
+                //Join<Share,User> userJoin=root.join("user",JoinType.LEFT);
+                //Predicate p=criteriaBuilder.like(userJoin.get("nickname"),"%"+nkey+"%");
             }
         };
         Page<Share> shares1=shareDao.findAll(spec,pageable);
         List<Share> shares=shares1.getContent();
-        System.out.println(shares.get(1).getUser().toString());
-
         System.out.println("zzz"+shares.toString());
-        /*
-        Map<Integer, User> booMap = Maps.uniqueIndex(users, new Function<User, Integer>() {
-            @Override
-            public Integer apply(User user) {
-                return user.getId();
-            }
-        });
-        System.out.println(booMap.toString());
-        for (Share s:shares){
-             User user=booMap.get(s.getUserId());
-             ShareInfo shareInfo=new ShareInfo();
-             if (user != null) {
-                 System.out.println("lll" + user.toString());
-                 shareInfo.setId(s.getId());
-                 shareInfo.setUserId(s.getUserId());
-                 shareInfo.setComments(s.getComments());
-                 shareInfo.setNickname(user.getNickname());
-                 shareInfo.setCreatedAt(s.getCreatedAt());
-                 shareInfo.setLikes(s.getLikes());
-                 shareInfos.add(shareInfo);
-             }
-        }
-         model.addAttribute("shareinfo",shareInfos);
-        */
-
         //总记录数
         model.addAttribute("totalpagenum",shares1.getTotalElements());
         //当前页码
@@ -360,10 +363,12 @@ public class AdminServiceImpl implements AdminService{
     public String adminadddialog(Dialog dialog, Model model) {
        Dialog dialog1=adminDao.save(dialog);
         System.out.println("添加的圆桌信息:"+dialog1);
-        return "admin-welcome";
+        model.addAttribute("msg","添加圆桌成功");
+        return "admin-adddialog";
     }
 
     @Override
+    //查看全部的圆桌
     public String admindialoglist(String start,String end,String nkey,int pagenum,int pagesize,Model model) {
        Pageable pageable=PageRequest.of(pagenum,pagesize);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -439,5 +444,17 @@ public class AdminServiceImpl implements AdminService{
         System.out.println("编辑后"+dialog.toString());
         model.addAttribute("dialogedit",dialog);
         return "admin-editdialog";
+    }
+
+    @Override
+    public String toshowshare(int id, Model model) {
+        Share share=shareDao.findById(id);
+        int  userid=share.getUserId();
+        User user=userDao.findById(userid);
+        List<SharePicture> sharep=sharePictureDao.findSharePictureByshareId(id);
+        model.addAttribute("suser",user);
+        model.addAttribute("sshare",share);
+        model.addAttribute("ssharep",sharep);
+        return "admin-showsharect";
     }
 }

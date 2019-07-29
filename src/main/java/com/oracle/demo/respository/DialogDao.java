@@ -52,5 +52,5 @@ public interface DialogDao extends JpaRepository<Dialog,Integer>,JpaSpecificatio
     @Query(value = "update Dialog  set active=?1 where  id=?2",nativeQuery = true)
     public int updateDialogoff(int active,int id);
 
-
+    public List<Dialog> findAllByTitleLike(String nkey);
 }

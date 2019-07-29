@@ -5,6 +5,7 @@ import com.oracle.demo.entity.User;
 import com.oracle.demo.entity.Dialog;
 import com.oracle.demo.respository.AdminDao;
 import com.oracle.demo.respository.DialogDao;
+import com.oracle.demo.respository.ShareDao;
 import com.oracle.demo.respository.UserDao;
 import com.oracle.demo.service.AdminService;
 import com.oracle.demo.util.MD5Util;
@@ -41,6 +42,8 @@ public class AdminController {
   private AdminDao adminDao;
   @Autowired
   private DialogDao dialogDao;
+  @Autowired
+  private ShareDao shareDao;
   //管理员登录
   @RequestMapping(value = "/adminlogin" ,method = RequestMethod.POST)
     public String adminlogin(@ModelAttribute Admin admin,Model model,HttpSession session){
@@ -94,7 +97,7 @@ public class AdminController {
   public String adminadduser(@ModelAttribute User user,Model model){
     //System.out.println("添加用户的图片:"+user.getImage().equals(""));
     //System.out.println("添加用户的座右铭"+user.getMotto().equals(""));
-    if (user.getImage().equals("")){
+    if (user.getImage().equals("")||user.getImage()==null){
       user.setImage("default.png");
     }
     if (user.getMotto().equals(""))
@@ -179,11 +182,23 @@ public class AdminController {
   @RequestMapping("/getnkname")
   @ResponseBody
   public List<String> getnkname(String nkey){
-     List<User> users=userDao.findAllByNicknameLike(nkey+"%");
+     List<User> users=userDao.findAllByNicknameLike("%"+nkey+"%");
      List<String> nk=new ArrayList<>();
      for (User user:users){
        nk.add(user.getNickname());
      }
+    System.out.println("补全用户昵称的查询:"+nk.toString());
+    return nk;
+  }
+
+  @RequestMapping("/getntitle")
+  @ResponseBody
+  public List<String> getntitle(String nkey){
+    List<Dialog> dialogs=dialogDao.findAllByTitleLike("%"+nkey+"%");
+    List<String> nk=new ArrayList<>();
+    for (Dialog user:dialogs){
+      nk.add(user.getTitle());
+    }
     System.out.println("补全用户昵称的查询:"+nk.toString());
     return nk;
   }
@@ -285,15 +300,15 @@ public class AdminController {
     }
     int pagenumn=Integer.parseInt(pagenum);
     int pagesize=10;
-    if ( start == null){
+    if ( start == null||start.equals("")){
       start="2000-1-1";
     }
-    if ( end == null){
+    if ( end == null||end.equals("")){
       end="2999-1-1";
     }
     model.addAttribute("id",id);
-    System.out.println(start);
-    System.out.println(end);
+    System.out.println("开始时间"+start);
+    System.out.println("结束时间"+end);
     model.addAttribute("start",start);
     model.addAttribute("end",end);
     return adminService.admintouserdt(start,end,id,pagenumn,pagesize,model);
@@ -331,18 +346,26 @@ public class AdminController {
 
   //查看全部动态
   @RequestMapping("/toallshare")
-  public String toallshare(@RequestParam(value = "pagenum",required=false) String pagenum,@RequestParam(value = "nkey",required = false) String nkey,Model model){
+  public String toallshare(@RequestParam(value = "start",required = false) String start,@RequestParam(value = "end",required = false) String end,@RequestParam(value = "pagenum",required=false) String pagenum,@RequestParam(value = "nkey",required = false) String nkey,Model model){
     if (pagenum==null||"".equals(pagenum)){
       pagenum="0";
     }
     if (nkey==null||"".equals(nkey)){
       nkey="";
     }
+    if ( start == null||start.equals("")){
+      start="2000-1-1";
+    }
+    if ( end == null||end.equals("")){
+      end="2999-1-1";
+    }
     System.out.println("查询关键字"+nkey);
+    model.addAttribute("start",start);
+    model.addAttribute("end",end);
     model.addAttribute("nkey",nkey);
     int pagenumn=Integer.parseInt(pagenum);
     int pagesize=10;
-    return adminService.toallshare(nkey,pagenumn,pagesize,model);
+    return adminService.toallshare(start,end,nkey,pagenumn,pagesize,model);
   }
 
   //跳向圆桌界面
@@ -389,12 +412,14 @@ public class AdminController {
     if (nkey==null||"".equals(nkey)){
       nkey="";
     }
-    if ( start == null){
+    if ( start == null||start.equals("")){
       start="2000-1-1";
     }
-    if ( end == null){
+    if ( end == null||end.equals("")){
       end="2999-1-1";
     }
+    System.out.println("圆桌开始日期6"+start);
+    System.out.println("圆桌结束日期"+end);
     System.out.println("查询关键字"+nkey);
     model.addAttribute("start",start);
     model.addAttribute("end",end);
@@ -500,5 +525,30 @@ public class AdminController {
     {
       return "bad";
     }
+  }
+  //显示动态的主要内容
+  @RequestMapping("/toshowshare")
+  public String toshowshare(int id,Model model){
+     return adminService.toshowshare(id,model);
+  }
+
+  //管理员删除单一动态
+  @RequestMapping("/admindelshare")
+  @ResponseBody
+  public String admindelshare(int id){
+    System.out.println("id:"+id);
+    int x=shareDao.deleteshare(id);
+    if (x!=0){
+      return "ok";
+    }else
+    {
+      return "bad";
+    }
+  }
+
+  //前往前台页面
+  @RequestMapping("/touser")
+  public String touser(){
+    return "sign-in";
   }
 }

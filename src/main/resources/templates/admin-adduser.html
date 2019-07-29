@@ -90,16 +90,7 @@
                     autocomplete="off" class="layui-input">
                 </div>
             </div>
-            <div>
-                <label class="layui-form-label">
-                    <span></span>头像
-                </label>
-                <div class="layui-input-inline">
-                    <input type="file" id="L_image" name="image"
-                           autocomplete="off" class="layui-input">
-                </div>
-                <span></span>（暂未实现）
-            </div>
+            <input type="hidden" name="image">
           <div class="layui-form-item">
               <label for="L_repass" class="layui-form-label">
               </label>
@@ -125,30 +116,31 @@
         })
     </script>
    <script>
-        $(layui.use(['form','layer'], function(){
+        $(layui.use(['form','layer'], function() {
             $ = layui.jquery;
-          var form = layui.form
-          ,layer = layui.layer;
-        
-          //自定义验证规则
-        form.verify({
-            nickname: function(value){
-                if( value.length < 2) {
-                    return '昵称长度昵称至少2个字符';
-                }},
-            pass: [/(.+){6,12}$/, '密码必须6到12位']
-             ,
-            repass: function(value){
-            if($('#L_pass').val()!=$('#L_repass').val()){
-                return '两次密码不一致';
-            }
-        }
-        });
+            var form = layui.form
+                , layer = layui.layer;
 
-          //监听提交
-          form.on('submit(add)', function(data){
-          });
-        });
+            //自定义验证规则
+            form.verify({
+                nickname: function (value) {
+                    if (value.length < 2) {
+                        return '昵称长度昵称至少2个字符';
+                    }
+                },
+                pass: [/(.+){6,12}$/, '密码必须6到12位']
+                ,
+                repass: function (value) {
+                    if ($('#L_pass').val() != $('#L_repass').val()) {
+                        return '两次密码不一致';
+                    }
+                }
+            });
+
+            //监听提交
+            form.on('submit(add)', function (data) {
+            });
+        }))
 
     </script>
 

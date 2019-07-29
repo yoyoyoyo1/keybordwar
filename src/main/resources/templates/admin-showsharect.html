@@ -22,53 +22,40 @@
   
   <body>
     <div class="x-body">
-        <form class="layui-form" th:action="@{/admineditdialog}" method="post" th:object="${dialogedit}" enctype="multipart/form-data">
-            <input type="hidden" name="id" th:value="${dialogedit.id}">
+        <form class="layui-form" >
+            <input type="hidden" name="id" >
           <div class="layui-form-item">
-              <label for="title" class="layui-form-label">
-                  <span class="x-red">*</span>标题
+              <label class="layui-form-label">
+                  <span class="x-red"></span>用户Id:
               </label>
-              <div class="layui-input-inline">
-                  <input type="text" id="title" name="title" required="" lay-verify="title"
-                  autocomplete="off" class="layui-input" th:value="${dialogedit.title}">
-              </div>
               <div class="layui-form-mid layui-word-aux">
-                  <span class="x-red">*</span>
+                  <span  th:text="${suser.id}"></span>
               </div>
           </div>
-          <div class="layui-form-item">
-              <label for="content" class="layui-form-label">
-                  <span class="x-red">*</span>补充内容
-              </label>
-              <div class="layui-input-inline">
-                  <input type="text" id="content" name="content"
-                  autocomplete="off" class="layui-input" th:value="${dialogedit.content}">
-              </div>
-          </div>
-            <div class="layui-form-item">
-                <label for="hhh" class="layui-form-label">
-                    <span class="x-red"></span>圆桌头像
-                </label>
-                <div class="layui-input-inline">
-                    <img id="hhh" th:src="@{'/dialogimage/'+${dialogedit.image}}" height="70px" width="70px">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label for="image" class="layui-form-label">
-                    <span class="x-red"></span>修改头像
-                </label>
-                <div class="layui-input-inline">
-                    <input type="file"  id="image" name="image"
-                           autocomplete="off" >
-                </div>
-            </div>
           <div class="layui-form-item">
               <label  class="layui-form-label">
+                  <span class="x-red"></span>昵称:
               </label>
-              <button  class="layui-btn" lay-filter="add" lay-submit="">
-                  修改
-              </button>
+              <div class="layui-form-mid layui-word-aux">
+                  <span  th:text="${suser.nickname}"></span>
+              </div>
           </div>
+            <div class="layui-form-item">
+                <label  class="layui-form-label">
+                    <span class="x-red"></span>动态内容
+                </label>
+                <div class="layui-form-mid layui-word-aux">
+                    <span  th:text="${sshare.content}"></span>
+                </div>
+            </div>
+            <div class="layui-form-item" th:if="${ssharep != null}">
+                <label  class="layui-form-label">
+                    <span class="x-red" ></span>
+                </label>
+                <div class="layui-form-mid layui-word-aux" th:each="sharep:${ssharep}">
+                    <img th:src="@{'/images/'+${sharep.img}}" height="70px" width="70px">
+                </div>
+            </div>
       </form>
     </div>
     <script th:inline="javascript">
@@ -94,9 +81,9 @@
       
         //自定义验证规则
         form.verify({
-          title: function(value){
-            if(value.length < 2 || value.length >20){
-              return '标题长度请在2-20之间';
+          nikename: function(value){
+            if(value.length < 2){
+              return '昵称至少得2个字符啊';
             }
           }
           ,pass: [/(.+){6,12}$/, '密码必须6到12位']

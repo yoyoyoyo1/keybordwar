@@ -45,9 +45,8 @@
         </form>
       </div>
       <xblock>
-        <a onclick="parent.addtab('hhh','http://www.baidu.com',true)">akljf</a>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('添加用户','./member-add.html',600,400)"><i class="layui-icon"></i>添加</button>
+        <button class="layui-btn" th:onclick="x_admin_show('添加用户','/toadminadduser',600,400)"><i class="layui-icon"></i>添加</button>
         <span class="x-right" style="line-height:40px" th:text="'共有数据：'+${totalpagenum}+'条'"></span>
       </xblock>
       <table class="layui-table">

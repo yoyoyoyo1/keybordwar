@@ -36,7 +36,7 @@
     <div class="x-body">
       <div class="layui-row">
         <form class="layui-form layui-col-md12 x-so" th:action="@{/admindialoglist}">
-          <input class="layui-input" autocomplete="off" placeholder="开始日" name="start1" id="start">
+          <input class="layui-input" autocomplete="off" placeholder="开始日" name="start" id="start">
           <input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">
           <input type="text" name="nkey"  id="nkname"  placeholder="请输入标题" autocomplete="off" class="layui-input">
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
@@ -44,7 +44,7 @@
       </div>
       <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('添加用户','./member-add.html',600,400)"><i class="layui-icon"></i>添加</button>
+        <button class="layui-btn" th:onclick="x_admin_show('添加圆桌','toadminadddialog',600,400)"><i class="layui-icon"></i>添加</button>
         <span class="x-right" style="line-height:40px" th:text="'共有数据：'+${totalpagenum}+'条'"></span>
       </xblock>
       <table class="layui-table">
@@ -168,6 +168,34 @@
       function updatedialogimage() {
           document.getElementById("dialogimage").click();
       }
+
+      //补全标题
+      $("#nkname").autocomplete({
+          source:function (requset,response) {
+              $.ajax({
+                  async:false,
+                  type:"post",
+                  url:"getntitle?nkey="+$("#nkname").val(),
+                  data:{
+                      localName : $("#nkname").val()
+                  },
+                  success:function (data) {
+                      console.log(data),
+                          response(
+                              $.map(data,function (item) {
+                                  return {
+                                      label:item,
+                                      value:item,
+                                  }
+                              })
+                          )
+                  }
+              });
+          },
+          minLength: 1,
+          max:5,
+
+      })
 
       /*用户-停用*/
       function member_stop(obj,id){
