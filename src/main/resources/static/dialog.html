@@ -417,7 +417,7 @@
 <script type="x-template" id="room-people">
     <div class="usr-msg-details">
         <div class="usr-ms-img">
-            <img :src="'userimage/' + user.image" alt="">
+            <img :src="'userimage/' + user.image" onerror="this.src='/userimage/default.png'" alt="">
             <span class="msg-status"></span>
         </div>
         <div class="usr-mg-info">

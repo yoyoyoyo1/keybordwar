@@ -18,4 +18,6 @@ public interface MessageDao extends JpaRepository<Message,Integer> {
     public List<Integer> latelyTalk(Integer userId,Long time);
     @Query(value = " SELECT following FROM Follow WHERE follower =?1 and following in (select follower FROM Follow where following = ?1)",nativeQuery = true)
     public List<Integer> eachOtherFollow(Integer userId);
+    @Query(value = " SELECT toId FROM Message WHERE toId in (?1) and unix_timestamp(createdAt) < ?1 ",nativeQuery = true)
+    public List<Integer> getLazyDialogId(List<Integer> ids,Long time);
 }

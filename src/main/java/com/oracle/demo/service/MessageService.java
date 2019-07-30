@@ -16,5 +16,5 @@ public interface MessageService {
     public Object getchatMessageById(Integer formId,Integer toId);
     public List<Integer> latelyTalk(Integer userId,Long time);
     public List<Integer> eachOtherFollow(Integer userId);
-
+    public List<Integer> getLazyDialogId(List<Integer> ids,Long time);
 }

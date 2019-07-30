@@ -4,7 +4,9 @@ package com.oracle.demo.controller;
 import com.oracle.demo.entity.Share;
 import com.oracle.demo.entity.ShareInfo;
 import com.oracle.demo.entity.User;
+import com.oracle.demo.respository.DialogDao;
 import com.oracle.demo.respository.LikeDao;
+import com.oracle.demo.service.DialogService;
 import com.oracle.demo.service.impl.ShareServiceImpl;
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import com.oracle.demo.entity.SharePicture;
@@ -33,7 +35,8 @@ public class ShareController {
     LikeDao likeDao;
     @Autowired
     private SharePictureDao sharePictureDao;
-
+    @Autowired
+    private DialogDao dialogDao;
 
     @RequestMapping("/index")
     public String toIndex(Model model, HttpSession session){
@@ -58,7 +61,7 @@ public class ShareController {
         model.addAttribute("shareList",shareList);
 
         model.addAttribute("page",page);
-
+        model.addAttribute("hotDialog",dialogDao.hotSpotDialog());
         List<SharePicture> simg=sharePictureDao.findimg();
         model.addAttribute("shareplist",simg);
         //model.addAttribute("sharePictureList",sharePictureList);

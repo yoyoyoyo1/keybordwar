@@ -20,14 +20,11 @@ public class Init implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-//        System.out.println(1);
-        dialogService.updateAll((new Date().getTime())/1000-2*60*60);
         List<Dialog> dialogs = dialogService.getDialogsByActive(1);
         System.out.println(dialogs);
         for (Dialog dialog : dialogs){
             dialogWebSocket.Dialog.put(dialog.getId(),new HashMap<>());
             dialogWebSocket.dialogs.put(dialog.getId(),dialog);
-
         }
     }
 }

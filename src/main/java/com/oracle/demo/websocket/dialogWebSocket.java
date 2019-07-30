@@ -45,7 +45,6 @@ public class dialogWebSocket {
                        @PathParam("userId") Integer userId,
                        @PathParam("dialogId") Integer dialogId) throws IOException {
         Map<Integer,Session> userList =  Dialog.get(dialogId);
-
         if(userList==null || userList.size() >= 10){
             session.close();
             return;
@@ -82,16 +81,7 @@ public class dialogWebSocket {
     @OnMessage
     public void onMessage(String message, Session session) throws IOException {
         //群发消息
-        Dialog d = dialogWebSocket.dialogs.get(dialogId);
-        if ((new Date().getTime() - d.getCreatedAt().getTime()) > 2 * 60 * 60 * 1000){
 
-            dialogService.updateActive(dialogId);
-            for (Integer key : dialogWebSocket.Dialog.get(dialogId).keySet()) {
-                dialogWebSocket.Dialog.get(dialogId).get(key).close();
-            }
-            dialogWebSocket.Dialog.remove(dialogId);
-            return;
-        }
         JSONObject messageJson = JSONObject.fromObject(message);
         Message mess =  new Message();
         mess.setFormId(userId);

@@ -50,6 +50,11 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
+    public List<Integer> getLazyDialogId(List<Integer> ids, Long time) {
+        return messageDao.getLazyDialogId(ids,time);
+    }
+
+    @Override
     public List<Integer> getFormIdByDialogId(Integer dialogId) {
         return messageDao.getFormIdByDialogId(dialogId);
     }

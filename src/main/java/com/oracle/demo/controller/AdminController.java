@@ -43,15 +43,7 @@ public class AdminController {
   //管理员登录
   @RequestMapping(value = "/adminlogin" ,method = RequestMethod.POST)
     public String adminlogin(@ModelAttribute Admin admin,Model model,HttpSession session){
-    Admin admin1=adminDao.findAdminByAccountAndPassword(admin.getAccount(),admin.getPassword());
-    if (admin1 == null){
-      model.addAttribute("msg","登录失败，账号或密码错误");
-
-      return "admin/admin-login";
-    }
-    session.setAttribute("admining",admin1);
-    model.addAttribute("msg","登录成功");
-    return "admin/admin-index";
+    return adminService.adminlogin(admin,model,session);
   }
 
   @RequestMapping("/gethello")
@@ -386,10 +378,10 @@ public class AdminController {
     dialog.setTitle(title);
     String filename;
     filename=MD5Util.encode(dialog.getCreatedAt()+"")+file.getOriginalFilename();
-    System.out.println("这这");
     String filePath= ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/dialogimage/";
     File dest=new File(filePath + filename);
     dialog.setActive(1);
+
     try {
 
       if (file.getOriginalFilename()==null||file.getOriginalFilename().equals("")){
@@ -398,6 +390,7 @@ public class AdminController {
         file.transferTo(dest);
         dialog.setImage(filename);
       }
+
       return adminService.adminadddialog(dialog,model);
     } catch (IOException e) {
       e.printStackTrace();
@@ -474,7 +467,7 @@ public class AdminController {
     Dialog dialog=new Dialog();
     dialog=dialogDao.findById(id);
     model.addAttribute("dialogedit",dialog);
-    return "admin-editdialog";
+    return "admin/admin-editdialog";
   }
   //编辑圆桌
   @RequestMapping("/admineditdialog")

@@ -27,7 +27,7 @@ public class DialogServiceImpl implements DialogService {
     }
 
     @Override
-    public int updateAll(Long time) {
-        return dialogDao.updateAll(time);
+    public int updateAll(List<Integer> ids) {
+        return dialogDao.updateAll(ids);
     }
 }

@@ -15,8 +15,8 @@ public interface DialogDao extends JpaRepository<Dialog,Integer>,JpaSpecificatio
     public List<Dialog> getDialogsByActive(int active);
     @Modifying
     @Transactional
-    @Query(value = "UPDATE Dialog SET active = 0 WHERE active = 1 and unix_timestamp(createdAt) < ?1",nativeQuery = true)
-    public int updateAll(Long time);
+    @Query(value = "UPDATE Dialog SET active = 0 WHERE id in (?1) ",nativeQuery = true)
+    public int updateAll(List<Integer> ids);
     @Modifying
     @Transactional
     @Query(value = "UPDATE Dialog SET active = 0 WHERE id=?1",nativeQuery = true)

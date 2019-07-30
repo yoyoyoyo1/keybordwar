@@ -30,7 +30,7 @@ public class WebConfigurer implements WebMvcConfigurer {
                   "/adminlogin","/gethello1","/getwelcome","/adminlogout","/toadminadduser","/adminadduser",
                   "/tohello1","/adminfinduserbynname","/amdinfinduserbyemail","/adminfinduserbyphone","/admindeluserbyid",
                   "/delbhuser","/getnkname","/toadminedituser","/adminedituser","/adminedithimage","/toadmineditpass",
-                  "/admineditpass","/toadminuserlistbypage","/admindeluser");
+                  "/admineditpass","/toadminuserlistbypage","/admindeluser","/admintouserdt","/delbhshare","/adminshowuserdt","/toallshare","/toadminadddialog","/adminadddialog","/admindialoglist","/delbhdialog","/admindeldia","/toadmineditdia","/admineditdialog","/admindialogon","/admindialogoff","/toshowshare","/admindelshare","/touser","/userimage/**","/dialogimage/**","/images/**");
 
     }
 

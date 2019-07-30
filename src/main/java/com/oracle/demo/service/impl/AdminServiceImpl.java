@@ -6,6 +6,7 @@ import com.oracle.demo.entity.*;
 import com.oracle.demo.respository.*;
 import com.oracle.demo.service.AdminService;
 import com.oracle.demo.util.StringUtil;
+import com.oracle.demo.websocket.dialogWebSocket;
 import net.sf.json.JSONArray;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,7 @@ import javax.persistence.criteria.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class AdminServiceImpl implements AdminService{
@@ -58,12 +56,12 @@ public class AdminServiceImpl implements AdminService{
             session.setAttribute("usernum",usernum);
             session.setAttribute("dialognum",dialognum);
             System.out.println(usernum+"lll"+sharenum+"hhh"+dialognum);
-             return "admin-index";
+             return "admin/admin-index";
 
 
         }
         model.addAttribute("msg","登录失败，账号或密码错误");
-        return "admin-login";
+        return "admin/admin-login";
     }
 
     @Override
@@ -82,7 +80,7 @@ public class AdminServiceImpl implements AdminService{
             model.addAttribute("Userlist",users);
             JSONArray json=JSONArray.fromObject(users);
             model.addAttribute("userjson",json);
-        return "admin-userlist";
+        return "admin/admin-userlist";
     }
 
     @Override
@@ -91,7 +89,7 @@ public class AdminServiceImpl implements AdminService{
         List<User> usersbylikenname=userDao.findAllByNicknameLike("%"+nkey+"%");
         System.out.println("昵称模糊查询用户列表："+usersbylikenname.toString());
         model.addAttribute("Userlist",usersbylikenname);
-        return "admin-userlist";
+        return "admin/admin-userlist";
     }
 
     @Override
@@ -100,7 +98,7 @@ public class AdminServiceImpl implements AdminService{
         List<User> usersbylikeemail=userDao.findAllByEmailLike("%"+ekey+"%");
         System.out.println("邮箱模糊查询用户列表"+usersbylikeemail.toString());
         model.addAttribute("Userlist",usersbylikeemail);
-        return "admin-userlist";
+        return "admin/admin-userlist";
     }
 
     @Override
@@ -109,7 +107,7 @@ public class AdminServiceImpl implements AdminService{
         List<User> usersbylikephone=userDao.findAllByPhoneLike("%"+pkey+"%");
         System.out.println("手机模糊查询用户列表"+usersbylikephone.toString());
         model.addAttribute("Userlist",usersbylikephone);
-        return "admin-userlist";
+        return "admin/admin-userlist";
     }
 
     @Override
@@ -129,7 +127,7 @@ public class AdminServiceImpl implements AdminService{
     public String toadminedituser(int id, Model model) {
         User user1=userDao.findById(id);
         model.addAttribute("adeduser",user1);
-        return "admin-edituser";
+        return "admin/admin-edituser";
     }
 
     @Override
@@ -145,7 +143,7 @@ public class AdminServiceImpl implements AdminService{
             model.addAttribute("adeduser",user1);
             model.addAttribute("msg","修改失败");
         }
-        return "admin-edituser";
+        return "admin/admin-edituser";
     }
 
     @Override
@@ -166,7 +164,7 @@ public class AdminServiceImpl implements AdminService{
     public String toadminedituserpass(int id, Model model) {
         User user2=userDao.findById(id);
         model.addAttribute("adeduserpass",user2);
-        return "admin-edituserpass";
+        return "admin/admin-edituserpass";
     }
 
     @Override
@@ -186,7 +184,7 @@ public class AdminServiceImpl implements AdminService{
             model.addAttribute("msg", "输入的管理员密码错误");
         }
         model.addAttribute("adeduserpass",user3);
-        return "admin-edituserpass";
+        return "admin/admin-edituserpass";
     }
 
     @Override
@@ -217,7 +215,7 @@ public class AdminServiceImpl implements AdminService{
         model.addAttribute("totalpages",userPage.getTotalPages()-1);
 
         System.out.println("按已查询的nkey"+name);
-        return "admin-userlist";
+        return "admin/admin-userlist";
     }
 
     @Override
@@ -278,7 +276,7 @@ public class AdminServiceImpl implements AdminService{
         //总页数
         model.addAttribute("totalpages",shares1.getTotalPages()-1);
         model.addAttribute("usershare",shares);
-        return "admin-usershare";
+        return "admin/admin-usershare";
 
     }
 
@@ -355,16 +353,17 @@ public class AdminServiceImpl implements AdminService{
         model.addAttribute("totalpages",shares1.getTotalPages()-1);
         model.addAttribute("usershare",shares);
 
-        return "admin-allshare";
+        return "admin/admin-allshare";
     }
 
     @Override
     // 添加圆桌
     public String adminadddialog(Dialog dialog, Model model) {
-       Dialog dialog1=adminDao.save(dialog);
-        System.out.println("添加的圆桌信息:"+dialog1);
+        Dialog dialog1=adminDao.save(dialog);
+        dialogWebSocket.Dialog.put(dialog1.getId(),new HashMap<>());
+        dialogWebSocket.dialogs.put(dialog1.getId(),dialog1);
         model.addAttribute("msg","添加圆桌成功");
-        return "admin-adddialog";
+        return "admin/admin-adddialog";
     }
 
     @Override
@@ -412,7 +411,7 @@ public class AdminServiceImpl implements AdminService{
         //总页数
         model.addAttribute("totalpages",dialogs.getTotalPages()-1);
 
-       return "admin-dialoglist";
+       return "admin/admin-dialoglist";
 
 
     }
@@ -443,7 +442,7 @@ public class AdminServiceImpl implements AdminService{
         }
         System.out.println("编辑后"+dialog.toString());
         model.addAttribute("dialogedit",dialog);
-        return "admin-editdialog";
+        return "admin/admin-editdialog";
     }
 
     @Override
@@ -455,6 +454,6 @@ public class AdminServiceImpl implements AdminService{
         model.addAttribute("suser",user);
         model.addAttribute("sshare",share);
         model.addAttribute("ssharep",sharep);
-        return "admin-showsharect";
+        return "admin/admin-showsharect";
     }
 }

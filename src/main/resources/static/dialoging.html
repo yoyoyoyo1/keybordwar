@@ -256,7 +256,7 @@
         <div class="col-lg-3 col-md-4 col-sm-6">
             <div class="company_profile_info">
                 <div class="company-up-info">
-                    <img src="images/resources/cmp-icon12.png" alt="">
+                    <img :src="'/dialogimage/'+dialog.image" onerror="this.src='dialogimage/oracle.png'" alt="">
                     <h3>{{dialog.title}}</h3>
                     <ul>
                         <li><a  href="javascript:void(0)" @click="join(dialog.id)" title="" class="follow">加入</a></li>
