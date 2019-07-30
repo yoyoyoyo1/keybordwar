@@ -19,6 +19,7 @@ public interface UserService {
     //更换头像
     public int changeImg(String name,int id);
     //根据id查找
+    public List<User> findByIds(List<Integer> ids);
     public User findById(int id);
     //修改签名和昵称
     public int updateInfo(String nickname,String motto,int id);

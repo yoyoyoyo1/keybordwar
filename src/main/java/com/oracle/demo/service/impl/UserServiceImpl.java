@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -37,6 +38,12 @@ public class UserServiceImpl implements UserService {
     {
         return userDao.changeImg(name,id);
     }
+
+    @Override
+    public List<User> findByIds(List<Integer> ids) {
+        return userDao.findByIds(ids);
+    }
+
     public User findById(int id)
     {
         return userDao.findById(id);

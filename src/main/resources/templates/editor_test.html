@@ -1,129 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html class="SG-game-show" style="background:none;background-color:transparent; width:100%;" manifest="manifest.mf">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>图片压缩--canvas</title>
-    <style>
-        .file {
-            position: relative;
-            display: inline-block;
-            background: #D0EEFF;
-            border: 1px solid #99D3F5;
-            border-radius: 4px;
-            padding: 4px 12px;
-            overflow: hidden;
-            color: #1E88C7;
-            text-decoration: none;
-            text-indent: 0;
-            line-height: 20px;
-        }
-        .file input {
-            position: absolute;
-            font-size: 100px;
-            right: 0;
-            top: 0;
-            opacity: 0;
-        }
-        .file:hover {
-            background: #AADFFD;
-            border-color: #78C3F3;
-            color: #004974;
-            text-decoration: none;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+    <script type="text/javascript">
+        var SpilGamesBrandTimer = +new Date(),
+            _SPTimer={w:{},start:function(a){this.w[(a||"_")]=+new Date()},end:function(a){window._gaq=window._gaq||[],a=a||"_";if(this.w[a]){
+                }}};
+        _SPTimer.start('pageLoad');
+    </script>
+
+    <title>HTML5方块消除游戏源码DEMO演示</title>
+    <style type="text/css"> * { padding: 0px; margin: 0px; cursor: default; } body { font: 12px/20px Palatino; }</style>
+    <!--<script type="text/javascript">document.write('<script type="text/javascript" src="../resource/js/resource_loader.js?ver='+Math.random()+'"><\/script>')</script>-->
+
 </head>
 <body>
-<a class="file"><input type="file" id="fileElem" accept="image/*"  οnchange="handleFiles(this)">选择</a>
-<div class="canvas">
-    <p>
-        canvas：
-    </p>
-    <canvas id="canvas"></canvas>
+<div style="text-align:center;clear:both">
+    <script src="/gg_bd_ad_720x90.js" type="text/javascript"></script>
+    <script src="/follow.js" type="text/javascript"></script>
 </div>
-<div id="fileList" class="img-wrap">
-
-    <p>
-        原图：
-    </p>
-</div>
-<div id="wrap">
-    <p>
-        压缩后：
-    </p>
-</div>
-<script>
-    window.URL=window.URL||window.webkitURL;
-    var fileElem=document.getElementById("fileElem");
-    var fileList=document.getElementById("fileList");
-    var wrap=document.getElementById("wrap");
-    var canvas=document.getElementById("canvas");
-    var ctx=canvas.getContext("2d");
-
-
-    canvas.width = 300;
-    canvas.height = 300;
-
-
-    function handleFiles(obj){
-
-        var files = obj.files,
-            img = new Image();
-
-        if(files.length > 0){
-            if(window.URL){
-                img.src = window.URL.createObjectURL(files[0]);
-                img.wwidth = 200;
-                img.onload=function(e){
-                    window.URL.revokeObjectURL(this.src);
-
-                    ctx.drawImage(img,0,0,canvas.width,canvas.width);
-
-                    var imgend = new Image();
-                    var dataurl  = canvas.toDataURL('image/png');
-//Canvas转换为Blob对象
-                    var blob = dataURLtoBlob(dataurl);
-
-                    var url = window.URL.createObjectURL(blob);
-
-                    imgend.onload = function() {
-                        URL.revokeObjectURL(url);
-                    };
-
-                    console.log(imgend)
-                    imgend.src=url;
-                    imgend.id="imgend";
-                    wrap.appendChild(imgend);
-                }
-                img.id="img1";
-                img.className="img1";
-                fileList.appendChild(img);
-
-
-            }
-//opera不支持createObjectURL/revokeObjectURL方法。需要用FileReader对象来处理
-            else if(window.FileReader){
-                var reader = new FileReader();
-                reader.readAsDataURL(files[0]);
-                reader.onload = function(e){
-                    alert(files[0].name+","+e.total+"bytes");
-                    img.src = this.result;
-                    img.width = 200;
-                    fileList.appendChile(img);
-                }
-            }
-        }
-
-    }
-
-
-    function dataURLtoBlob(dataurl) {
-        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-        while(n--){
-            u8arr[n] = bstr.charCodeAt(n);
-        }
-        return new Blob([u8arr], {type:mime});
-    }
-</script>
+<iframe frameborder="0" scrolling="no" src="uploadpic_test.html" width="100%" height="500px"></iframe>
 </body>
 </html>

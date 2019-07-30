@@ -1,11 +1,13 @@
 package com.oracle.demo.respository;
 
 import com.oracle.demo.entity.Admin;
+import com.oracle.demo.entity.Dialog;
 import com.oracle.demo.entity.User;
 import com.sun.mail.imap.protocol.ID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;
@@ -25,5 +27,13 @@ public interface AdminDao extends JpaRepository<Admin,Integer> {
 
     //通过管理员id和账号查找管理员
     public Admin findAdminByIdAndPassword(Integer id,String pass);
+
+    public Dialog save(Dialog dialog);
+
+    @Query(value = "SELECT COUNT(*) FROM User ",nativeQuery = true)
+    public int usernum();
+
+    @Query(value = "SELECT COUNT(*) FROM Dialog ",nativeQuery = true)
+    public int dialognum();
 
 }

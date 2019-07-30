@@ -42,22 +42,24 @@ public class MessageController {
 
         return "redirect:tomessage";//需要跳转至动态首页控制器
     }
-    @GetMapping("/history/message")
+
+    @GetMapping("history/message")
     @ResponseBody
     public Object message(Integer formId,Integer toId)
     {
-        return messageService.getchatMessageById(formId,toId);
+      return messageService.getchatMessageById(formId,toId);
     }
     @GetMapping("/user/latelyTalk")
     @ResponseBody
     public List<User> latelyTalk(HttpSession session){
-        List<User> userList = new ArrayList<>();
         Map<String, Object> user = BeanToMap.BeanToMap(session.getAttribute("user"));
         List<Integer> a = messageService.latelyTalk((Integer) user.get("id"),((new Date()).getTime()/1000)-60*24*30);
-        for(Integer id : a){
-            userList.add(userService.findById(id));
+        if(a.size()!=0){
+            return userService.findByIds(a);
+        }else {
+            return new  ArrayList<>();
         }
-        return userList;
+
     }
     @GetMapping("/user/eachother")
     @ResponseBody
@@ -65,10 +67,11 @@ public class MessageController {
         List<User> userList = new ArrayList<>();
         Map<String, Object> user = BeanToMap.BeanToMap(session.getAttribute("user"));
         List<Integer> a = messageService.eachOtherFollow((Integer) user.get("id"));
-        for(Integer id : a){
-            userList.add(userService.findById(id));
+        if(a.size()!=0){
+            return userService.findByIds(a);
+        }else {
+            return new  ArrayList<>();
         }
-        return userList;
     }
 
 }

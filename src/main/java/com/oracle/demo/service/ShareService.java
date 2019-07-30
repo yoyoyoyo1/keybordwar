@@ -23,6 +23,9 @@ public interface ShareService {
     //用户删除动态
     public int deleteshare(int id);
     public List<ShareInfo> findOne(int id);
+    public List<ShareInfo> findOneFollowing(List<Integer> following);
     public int getOneShareNum(int id);
+    public int getOneFollowingShareNum(List<Integer> following);
     List<ShareInfo> getOnesBypage(int userId,int page);
+    List<ShareInfo> findShareByFollowingPage(List<Integer> following,int page);
 }

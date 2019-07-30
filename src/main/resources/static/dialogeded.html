@@ -1,0 +1,625 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>WorkWise Html Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" type="text/css" href="css/animate.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/line-awesome.css">
+    <link rel="stylesheet" type="text/css" href="css/line-awesome-font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <!--<link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.min.css">-->
+    <link rel="stylesheet" type="text/css" href="lib/slick/slick.css">
+    <link rel="stylesheet" type="text/css" href="lib/slick/slick-theme.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/responsive.css">
+    <style>
+        .audio {
+            position: relative;
+            margin-right: 6px;
+            max-width: 116px;
+            min-width: 30px;
+            height: 24px;
+            line-height: 24px;
+            padding: 0 4px 0 10px;
+            border-radius: 2px;
+            color: #000;
+            text-align: right;
+            background-color: rgba(107, 197, 107, 0.85);
+        }
+
+        .audio {
+            text-align: left;
+        }
+
+        .audio:before {
+            position: absolute;
+            right: -8px;
+            top: 8px;
+            content: '';
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 4px;
+            border-color: transparent transparent transparent rgba(107, 197, 107, 0.85);
+        }
+        .left:before{
+            left: -8px;
+            border-color: transparent rgba(107, 197, 107, 0.85) transparent transparent;
+        }
+
+        .audio span {
+            color: rgba(255, 255, 255, .8);
+            display: inline-block;
+            transform-origin: center;
+        }
+
+
+        @keyframes wink {
+            from {
+                color: rgba(255, 255, 255, .8);
+            }
+            to {
+                color: rgba(255, 255, 255, .1);
+            }
+        }
+
+        .audio .span-right:nth-child(1) {
+            font-weight: 400;
+        }
+        .audio .span-right:nth-child(2) {
+            transform: scale(0.8);
+            font-weight: 500;
+        }
+        .audio .span-right:nth-child(3) {
+            transform: scale(0.5);
+            font-weight: 700;
+        }
+
+        .audio .span-left:nth-child(1) {
+            transform: scale(0.5);
+            font-weight: 700;
+        }
+
+        .audio .span-left:nth-child(2) {
+            transform: scale(0.8);
+            font-weight: 500;
+        }
+        .audio .span-left:nth-child(3) {
+            font-weight: 400;
+        }
+
+        .audio.wink span {
+            animation: wink 1s ease infinite;
+        }
+
+        .duration {
+            margin: 3px 2px;
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+<div id="app" class="wrapper">
+
+
+
+    <header>
+        <div class="container">
+            <div class="header-data">
+                <div class="logo">
+                    <a href="index.html" title=""><img src="images/logo.png" alt=""></a>
+                </div><!--logo end-->
+                <div class="search-bar">
+                    <form>
+                        <input type="text" name="search" placeholder="Search...">
+                        <button type="submit"><i class="la la-search"></i></button>
+                    </form>
+                </div><!--search-bar end-->
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="index.html" title="">
+                                <span><img src="images/icon1.png" alt=""></span>
+                                Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="companies.html" title="">
+                                <span><img src="images/icon2.png" alt=""></span>
+                                Companies
+                            </a>
+                        </li>
+                        <li>
+                            <a href="projects.html" title="">
+                                <span><img src="images/icon3.png" alt=""></span>
+                                Projects
+                            </a>
+                        </li>
+                        <li>
+                            <a href="profiles.html" title="">
+                                <span><img src="images/icon4.png" alt=""></span>
+                                Profiles
+                            </a>
+                            <ul>
+                                <li><a href="user-profile.html" title="">User Profile</a></li>
+                                <li><a href="my-profile-feed.html" title="">my-profile-feed</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="jobs.html" title="">
+                                <span><img src="images/icon5.png" alt=""></span>
+                                Jobs
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" title="" class="not-box-open">
+                                <span><img src="images/icon6.png" alt=""></span>
+                                Messages
+                            </a>
+                            <div class="notification-box msg">
+                                <div class="nt-title">
+                                    <h4>Setting</h4>
+                                    <a href="#" title="">Clear all</a>
+                                </div>
+                                <div class="nott-list">
+                                    <div class="notfication-details">
+                                        <div class="noty-user-img">
+                                            <img src="images/resources/ny-img1.png" alt="">
+                                        </div>
+                                        <div class="notification-info">
+                                            <h3><a href="messages.html" title="">Jassica William</a> </h3>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do.</p>
+                                            <span>2 min ago</span>
+                                        </div><!--notification-info -->
+                                    </div>
+                                    <div class="notfication-details">
+                                        <div class="noty-user-img">
+                                            <img src="images/resources/ny-img2.png" alt="">
+                                        </div>
+                                        <div class="notification-info">
+                                            <h3><a href="messages.html" title="">Jassica William</a></h3>
+                                            <p>Lorem ipsum dolor sit amet.</p>
+                                            <span>2 min ago</span>
+                                        </div><!--notification-info -->
+                                    </div>
+                                    <div class="notfication-details">
+                                        <div class="noty-user-img">
+                                            <img src="images/resources/ny-img3.png" alt="">
+                                        </div>
+                                        <div class="notification-info">
+                                            <h3><a href="messages.html" title="">Jassica William</a></h3>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempo incididunt ut labore et dolore magna aliqua.</p>
+                                            <span>2 min ago</span>
+                                        </div><!--notification-info -->
+                                    </div>
+                                    <div class="view-all-nots">
+                                        <a href="messages.html" title="">View All Messsages</a>
+                                    </div>
+                                </div><!--nott-list end-->
+                            </div><!--notification-box end-->
+                        </li>
+                        <li>
+                            <a href="#" title="" class="not-box-open">
+                                <span><img src="images/icon7.png" alt=""></span>
+                                Notification
+                            </a>
+                            <div class="notification-box">
+                                <div class="nt-title">
+                                    <h4>Setting</h4>
+                                    <a href="#" title="">Clear all</a>
+                                </div>
+                                <div class="nott-list">
+                                    <div class="notfication-details">
+                                        <div class="noty-user-img">
+                                            <img src="images/resources/ny-img1.png" alt="">
+                                        </div>
+                                        <div class="notification-info">
+                                            <h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
+                                            <span>2 min ago</span>
+                                        </div><!--notification-info -->
+                                    </div>
+                                    <div class="notfication-details">
+                                        <div class="noty-user-img">
+                                            <img src="images/resources/ny-img2.png" alt="">
+                                        </div>
+                                        <div class="notification-info">
+                                            <h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
+                                            <span>2 min ago</span>
+                                        </div><!--notification-info -->
+                                    </div>
+                                    <div class="notfication-details">
+                                        <div class="noty-user-img">
+                                            <img src="images/resources/ny-img3.png" alt="">
+                                        </div>
+                                        <div class="notification-info">
+                                            <h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
+                                            <span>2 min ago</span>
+                                        </div><!--notification-info -->
+                                    </div>
+                                    <div class="notfication-details">
+                                        <div class="noty-user-img">
+                                            <img src="images/resources/ny-img2.png" alt="">
+                                        </div>
+                                        <div class="notification-info">
+                                            <h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
+                                            <span>2 min ago</span>
+                                        </div><!--notification-info -->
+                                    </div>
+                                    <div class="view-all-nots">
+                                        <a href="#" title="">View All Notification</a>
+                                    </div>
+                                </div><!--nott-list end-->
+                            </div><!--notification-box end-->
+                        </li>
+                    </ul>
+                </nav><!--nav end-->
+                <div class="menu-btn">
+                    <a href="#" title=""><i class="fa fa-bars"></i></a>
+                </div><!--menu-btn end-->
+                <div class="user-account">
+                    <div class="user-info">
+                        <img src="images/resources/user.png" alt="">
+                        <a href="#" title="">John</a>
+                        <i class="la la-sort-down"></i>
+                    </div>
+                    <div class="user-account-settingss">
+                        <h3>Online Status</h3>
+                        <ul class="on-off-status">
+                            <li>
+                                <div class="fgt-sec">
+                                    <input type="radio" name="cc" id="c5">
+                                    <label for="c5">
+                                        <span></span>
+                                    </label>
+                                    <small>Online</small>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="fgt-sec">
+                                    <input type="radio" name="cc" id="c6">
+                                    <label for="c6">
+                                        <span></span>
+                                    </label>
+                                    <small>Offline</small>
+                                </div>
+                            </li>
+                        </ul>
+                        <h3>Custom Status</h3>
+                        <div class="search_form">
+                            <form>
+                                <input type="text" name="search">
+                                <button type="submit">Ok</button>
+                            </form>
+                        </div><!--search_form end-->
+                        <h3>Setting</h3>
+                        <ul class="us-links">
+                            <li><a href="profile-account-setting.html" title="">Account Setting</a></li>
+                            <li><a href="#" title="">Privacy</a></li>
+                            <li><a href="#" title="">Faqs</a></li>
+                            <li><a href="#" title="">Terms & Conditions</a></li>
+                        </ul>
+                        <h3 class="tc"><a href="#" title="">Logout</a></h3>
+                    </div><!--user-account-settingss end-->
+                </div>
+            </div><!--header-data end-->
+        </div>
+    </header><!--header end-->
+
+
+
+    <section class="messages-page">
+        <div class="container">
+            <div class="messages-sec">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 pd-right-none pd-left-none">
+                        <div class="main-conversation-box">
+                            <p style="text-align: center"><a id="more"  @click="moreMessage" href="javascript:void(0)">点击加载更多</a></p>
+                            <div style="overflow:auto" class="messages-line">
+                                <room-message :message="message" v-for="(message,index) in roomMessage.message">
+                                </room-message>
+                            </div><!--messages-line end-->
+                        </div><!--main-conversation-box end-->
+                    </div>
+                </div>
+            </div><!--messages-sec end-->
+        </div>
+    </section><!--messages-page end-->
+
+
+
+    <footer>
+        <div class="footy-sec mn no-margin">
+            <div class="container">
+                <ul>
+                    <li><a href="#" title="">Help Center</a></li>
+                    <li><a href="#" title="">Privacy Policy</a></li>
+                    <li><a href="#" title="">Community Guidelines</a></li>
+                    <li><a href="#" title="">Cookies Policy</a></li>
+                    <li><a href="#" title="">Career</a></li>
+                    <li><a href="#" title="">Forum</a></li>
+                    <li><a href="#" title="">Language</a></li>
+                    <li><a href="#" title="">Copyright Policy</a></li>
+                </ul>
+                <p><img src="images/copy-icon2.png" alt="">Copyright 2017</p>
+                <img class="fl-rgt" src="images/logo2.png" alt="">
+            </div>
+        </div>
+    </footer>
+
+</div><!--theme-layout end-->
+<audio src="" id="audio"></audio>
+
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/popper.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<!--<script type="text/javascript" src="js/jquery.mCustomScrollbar.js"></script>-->
+<script type="text/javascript" src="lib/slick/slick.min.js"></script>
+<!--<script type="text/javascript" src="js/scrollbar.js"></script>-->
+<script type="text/javascript" src="js/script.js"></script>
+
+</body>
+</html>
+
+
+<script src="js/vue.min.js"></script>
+<script src="js/axios.min.js"></script>
+<script type="x-template" id="room-people">
+    <div class="usr-msg-details">
+        <div class="usr-ms-img">
+            <img :src="'userimage/' + user.image" alt="">
+            <span class="msg-status"></span>
+        </div>
+        <div class="usr-mg-info">
+            <h3>{{user.nickname}}</h3>
+            <p>{{user.motto}}</p>
+        </div><!--usr-mg-info end-->
+        <!--<span class="msg-notifc">1</span>-->
+    </div><!--usr-msg-details end-->
+</script>
+
+<script type="x-template" id="room-message">
+    <other-message v-if="own.id != message.formId" :message="message"></other-message>
+    <me-message v-else :message="message"></me-message>
+</script>
+
+<script type="x-template" id="me-message">
+    <div class="main-message-box ta-right">
+        <div class="message-dt ">
+            <div class="message-inner-dt">
+                <p v-if="message.type=='text'">{{message.content}}</p>
+                <div  v-else-if="message.type === 'audio'" @click="Play($event,message.content)" class="audio" style="width: 40px; float: right">
+                    <span class="span">(</span>
+                    <span class="span">(</span>
+                    <span class="span">(</span>
+                </div>
+                <p v-else>
+                    <img :src="'/audio/'+message.content" alt="">
+                </p>
+            </div><!--message-inner-dt end-->
+            <span>{{message.createAt}}</span>
+        </div><!--message-dt end-->
+        <div class="messg-usr-img">
+            <img :src="'userimage/' + people[message.formId].image" alt="">
+        </div><!--messg-usr-img end-->
+    </div><!--main-message-box end-->
+
+</script>
+<script type="x-template" id="other-message">
+    <div class="main-message-box st3">
+        <div class="message-dt st3">
+            <div class="message-inner-dt">
+                <p v-if="message.type=='text'">{{message.content}}</p>
+                <div  v-else-if="message.type === 'audio'" @click="Play($event,message.content)" class="audio left" style="width: 40px; float:left">
+                    <span class="span-left">)</span>
+                    <span class="span-left">)</span>
+                    <span class="span-left">)</span>
+                </div>
+                <p v-else>
+                    <img :src="'/audio/'+message.content" alt="">
+                </p>
+            </div><!--message-inner-dt end-->
+            <span>{{message.createAt}}</span>
+        </div><!--message-dt end-->
+        <div class="messg-usr-img">
+            <img :src=" 'userimage/' + people[message.formId].image" alt="">
+        </div><!--messg-usr-img end-->
+    </div><!--main-message-box end-->
+
+</script>
+<script src="./js/ws.js">
+
+</script>
+<script>
+    let audio = document.getElementById("audio")
+    audio.onended = function () {
+        let winks = document.getElementsByClassName("wink")
+        for(wink of winks){
+            if(wink.className.indexOf("left")!=-1){
+                wink.className = " left "
+            }else {
+                wink.className = ""
+            }
+            wink.className += " audio "
+        }
+    }
+    let emoji = ["😀","😁","😂","😃","😄","😅","😆","😉","😊","😋","😎","😍","😘",
+        "😗","😙","😚","😇","😐","😑","😶","😏","😣","😥","😮","😯","😪","😫","😴",
+        "😌","😛","😜","😝","😒","😓","😔","😕","😲","😷","😖","😞","😟","😤","😢",
+        "😭","😦","😧","😨","😬","😰","😱","😳","😵","😡","😠", "🌹","🍀","🍎","💰"
+        ,"📱","🌙","🍁","🍂","🍃","🌷","💎","🔪","🔫","🏀","⚽","⚡","👄","👍","🔥"]
+    let people = {}
+    let roomPeople = []
+    let message = {content:"123",createAt:new Date(),formId:1}
+    let roomMessage = {time:0,message:[]}
+    let own = {}
+    let dialogId = parseInt(localStorage.getItem("dialogId"));
+    let chunk = []
+    Vue.component('room-people',{
+        //定义数据
+        props:['user'],
+        data:function () {
+            return{
+                own
+            }
+        },
+        //定义方法
+        methods:{
+
+        },
+        template:'#room-people'
+
+    })
+    Vue.component('room-message',{
+        //定义数据
+        props:['message'],
+        data:function () {
+            return{
+                people,
+                own
+            }
+        },
+        //定义方法
+        methods:{
+
+        },
+        template:'#room-message'
+
+    })
+    Vue.component('other-message',{
+        //定义数据
+        props:['message'],
+        data:function () {
+            return{
+                people
+            }
+        },
+        //定义方法
+        methods:{
+            Play(e,content){
+                let audio = document.getElementById("audio")
+                console.log(content)
+                audio.src = "/audio/"+content;
+                audio.play()
+                let a = event.currentTarget
+                audio.onplaying = function () {
+                    let winks = document.getElementsByClassName("wink")
+                    for(wink of winks){
+                        if(wink.className.indexOf("left")!=-1){
+                            wink.className = " left "
+                        }else {
+                            wink.className = ""
+                        }
+                        wink.className += " audio "
+
+                    }
+                    a.className += " wink "
+                }
+
+            }
+        },
+        template:'#other-message'
+
+    })
+    //定义我发的消息组件
+    Vue.component('me-message',{
+        //定义数据
+        props:['message'],
+        data:function () {
+            return{
+                people
+            }
+        },
+        //定义方法
+        methods:{
+            Play(event,content){
+                let audio = document.getElementById("audio")
+                console.log(content)
+                audio.src = "/audio/"+content;
+                audio.play()
+                let a = event.currentTarget
+                audio.onplaying = function () {
+                    let winks = document.getElementsByClassName("wink")
+                    for(wink of winks){
+                        if(wink.className.indexOf("left")!=-1){
+                            wink.className = " left "
+                        }else {
+                            wink.className = ""
+                        }
+                        wink.className += " audio "
+
+                    }
+                    a.className += " wink "
+                }
+            }
+        },
+        template:'#me-message'
+    })
+    new Vue({
+        el: '#app',
+        data: {
+            people,
+            roomPeople,
+            message,
+            roomMessage,
+            emoji,
+            audioUrl:"",
+            recorder:"",
+            ws:"",
+            noMore:false,
+            page:0
+        },
+        methods:{
+            moreMessage(){
+                if(!this.noMore)
+                    axios.get(`/dialog/message?dialogId=${dialogId}&page=${this.page}`).then((res)=>{
+                        if(!res.data.length){
+                            console.log(res.data)
+                            this.noMore = true
+                            document.getElementById("more").innerText = "没有消息了"
+                            document.getElementById("more").style.color = "#eee"
+                            document.getElementById("more").removeEventListener("click",this.moreMessage)
+                            return
+                        }
+                        for(item of res.data){
+                            roomMessage.message.unshift(item)
+                        }
+                        this.page++
+                    })
+            }
+
+        },
+        mounted(){
+            if(JSON.parse(localStorage.getItem("people"))){
+                people = JSON.parse(localStorage.getItem("people"))
+            }
+            //得到自己
+            axios.get("/user/self").then((res)=>{
+                own = res.data
+                console.log(own)
+
+            })
+
+            axios.get(`/dialog/history/user?dialogId=${dialogId}`).then((res)=>{
+                for (people_item of res.data){
+                    people[people_item.id] = people_item
+                }
+                localStorage.setItem("people", JSON.stringify(people));
+                //获取历史信息
+                this.moreMessage();
+            })
+
+
+        }
+    })
+
+</script>

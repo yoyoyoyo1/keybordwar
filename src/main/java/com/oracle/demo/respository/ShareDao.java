@@ -18,12 +18,13 @@ public interface ShareDao extends JpaRepository<Share,String> ,JpaSpecificationE
     @Modifying
     @org.springframework.transaction.annotation.Transactional
     @Query(value = "delete from Share where id=?1",nativeQuery = true)
-    public int deleteshare(int id);
+    public int deleteshare(Integer id);
 
     //管理员查看全部动态
     public List<Share> findAllBy();
 
     public List<Share> findAllByUserId(int id);
+    public Share findById(int id);
 
     //批量删除某一用户的动态
     @Transactional
@@ -34,4 +35,9 @@ public interface ShareDao extends JpaRepository<Share,String> ,JpaSpecificationE
 
     @Query(value = "select content from Share where id=?1",nativeQuery = true)
     public String findcontent(int id);
+
+    @Transactional
+    @Modifying
+    @Query(value = "select count(*) from Share",nativeQuery = true)
+    public int sharecnum();
 }

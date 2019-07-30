@@ -2,22 +2,25 @@ package com.oracle.demo.controller;
 
 import com.oracle.demo.entity.Admin;
 import com.oracle.demo.entity.User;
+import com.oracle.demo.entity.Dialog;
 import com.oracle.demo.respository.AdminDao;
+import com.oracle.demo.respository.DialogDao;
+import com.oracle.demo.respository.ShareDao;
 import com.oracle.demo.respository.UserDao;
 import com.oracle.demo.service.AdminService;
 import com.oracle.demo.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.transform.Result;
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,17 +36,28 @@ public class AdminController {
   private UserDao userDao;
   @Autowired
   private AdminDao adminDao;
+  @Autowired
+  private DialogDao dialogDao;
+  @Autowired
+  private ShareDao shareDao;
   //管理员登录
   @RequestMapping(value = "/adminlogin" ,method = RequestMethod.POST)
     public String adminlogin(@ModelAttribute Admin admin,Model model,HttpSession session){
-    System.out.println("管理员登录："+admin.toString());
-    return adminService.adminlogin(admin,model,session);
+    Admin admin1=adminDao.findAdminByAccountAndPassword(admin.getAccount(),admin.getPassword());
+    if (admin1 == null){
+      model.addAttribute("msg","登录失败，账号或密码错误");
+
+      return "admin/admin-login";
+    }
+    session.setAttribute("admining",admin1);
+    model.addAttribute("msg","登录成功");
+    return "admin/admin-index";
   }
 
   @RequestMapping("/gethello")
   public String xxx(@RequestParam(value = "xx") String xx){
     System.out.println(xx);
-      return "admin-welcome";
+      return "admin/admin-welcome";
   }
   @GetMapping("/gethello1")
   public String zz(@RequestParam(value = "start") String start,@RequestParam(value = "end") String end){
@@ -58,13 +72,13 @@ public class AdminController {
 
   @RequestMapping("/toadminlogin")
   public String login(){
-      return "admin-login";
+      return "admin/admin-login";
   }
 
   @GetMapping("/getwelcome")
   public String welcome()
   {
-    return "admin-welcome";
+    return "admin/admin-welcome";
   }
 
   //管理员退出登录，销毁全部session
@@ -73,12 +87,12 @@ public class AdminController {
   {
     session.invalidate();
     model.addAttribute("msg","退出成功");
-    return "admin-login";
+    return "admin/admin-login";
   }
   //显示全部用户
   @RequestMapping("/toadminadduser")
   public String toadminadduser() {
-    return "admin-adduser";
+    return "admin/admin-adduser";
   }
 
   //添加用户
@@ -86,7 +100,7 @@ public class AdminController {
   public String adminadduser(@ModelAttribute User user,Model model){
     //System.out.println("添加用户的图片:"+user.getImage().equals(""));
     //System.out.println("添加用户的座右铭"+user.getMotto().equals(""));
-    if (user.getImage().equals("")){
+    if (user.getImage().equals("")||user.getImage()==null){
       user.setImage("default.png");
     }
     if (user.getMotto().equals(""))
@@ -98,7 +112,7 @@ public class AdminController {
     System.out.println("添加用户的密码通过md5加密为："+passmd5);
     adminService.adminadduser(user);
     model.addAttribute("msg","添加用户成功");
-    return "admin-adduser";
+    return "admin/admin-adduser";
   }
 
   /*
@@ -171,11 +185,23 @@ public class AdminController {
   @RequestMapping("/getnkname")
   @ResponseBody
   public List<String> getnkname(String nkey){
-     List<User> users=userDao.findAllByNicknameLike(nkey+"%");
+     List<User> users=userDao.findAllByNicknameLike("%"+nkey+"%");
      List<String> nk=new ArrayList<>();
      for (User user:users){
        nk.add(user.getNickname());
      }
+    System.out.println("补全用户昵称的查询:"+nk.toString());
+    return nk;
+  }
+
+  @RequestMapping("/getntitle")
+  @ResponseBody
+  public List<String> getntitle(String nkey){
+    List<Dialog> dialogs=dialogDao.findAllByTitleLike("%"+nkey+"%");
+    List<String> nk=new ArrayList<>();
+    for (Dialog user:dialogs){
+      nk.add(user.getTitle());
+    }
     System.out.println("补全用户昵称的查询:"+nk.toString());
     return nk;
   }
@@ -277,15 +303,15 @@ public class AdminController {
     }
     int pagenumn=Integer.parseInt(pagenum);
     int pagesize=10;
-    if ( start == null){
+    if ( start == null||start.equals("")){
       start="2000-1-1";
     }
-    if ( end == null){
+    if ( end == null||end.equals("")){
       end="2999-1-1";
     }
     model.addAttribute("id",id);
-    System.out.println(start);
-    System.out.println(end);
+    System.out.println("开始时间"+start);
+    System.out.println("结束时间"+end);
     model.addAttribute("start",start);
     model.addAttribute("end",end);
     return adminService.admintouserdt(start,end,id,pagenumn,pagesize,model);
@@ -315,7 +341,7 @@ public class AdminController {
     String flag=adminService.admindelbhshare(idsss);
     return flag;
   }
-
+  //查看用户个人的动态
   @RequestMapping("/adminshowuserdt")
   public String adminshowuserdt(int id,Model model){
     return adminService.amdinshowuserdt(id,model);
@@ -323,17 +349,209 @@ public class AdminController {
 
   //查看全部动态
   @RequestMapping("/toallshare")
-  public String toallshare(@RequestParam(value = "pagenum",required=false) String pagenum,@RequestParam(value = "nkey",required = false) String nkey,Model model){
+  public String toallshare(@RequestParam(value = "start",required = false) String start,@RequestParam(value = "end",required = false) String end,@RequestParam(value = "pagenum",required=false) String pagenum,@RequestParam(value = "nkey",required = false) String nkey,Model model){
     if (pagenum==null||"".equals(pagenum)){
       pagenum="0";
     }
     if (nkey==null||"".equals(nkey)){
       nkey="";
     }
+    if ( start == null||start.equals("")){
+      start="2000-1-1";
+    }
+    if ( end == null||end.equals("")){
+      end="2999-1-1";
+    }
     System.out.println("查询关键字"+nkey);
+    model.addAttribute("start",start);
+    model.addAttribute("end",end);
     model.addAttribute("nkey",nkey);
     int pagenumn=Integer.parseInt(pagenum);
     int pagesize=10;
-    return adminService.toallshare(nkey,pagenumn,pagesize,model);
+    return adminService.toallshare(start,end,nkey,pagenumn,pagesize,model);
+  }
+
+  //跳向圆桌界面
+  @RequestMapping("/toadminadddialog")
+  public String toadminadddialog(){
+    return "admin-adddialog";
+  }
+
+  //添加圆桌
+  @RequestMapping("/adminadddialog")
+  public String adminadddialog(@RequestParam(value = "title") String title, @RequestParam(value = "content") String content,@RequestParam(value = "image",required = false) MultipartFile file, Model model){
+    Dialog dialog=new Dialog();
+    dialog.setActive(1);
+    dialog.setContent(content);
+    dialog.setTitle(title);
+    String filename;
+    filename=MD5Util.encode(dialog.getCreatedAt()+"")+file.getOriginalFilename();
+    System.out.println("这这");
+    String filePath= ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/dialogimage/";
+    File dest=new File(filePath + filename);
+    dialog.setActive(1);
+    try {
+
+      if (file.getOriginalFilename()==null||file.getOriginalFilename().equals("")){
+        dialog.setImage("oracle.png");
+      }else {
+        file.transferTo(dest);
+        dialog.setImage(filename);
+      }
+      return adminService.adminadddialog(dialog,model);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return adminService.adminadddialog(dialog,model);
+  }
+
+  //圆桌列表
+
+  @RequestMapping("/admindialoglist")
+  public String amdindialoglist(@RequestParam(value = "start",required = false) String start,@RequestParam(value = "end",required = false) String end,@RequestParam(value = "pagenum",required=false) String pagenum,@RequestParam(value = "nkey",required = false) String nkey,Model model){
+    if (pagenum==null||"".equals(pagenum)){
+      pagenum="0";
+    }
+    if (nkey==null||"".equals(nkey)){
+      nkey="";
+    }
+    if ( start == null||start.equals("")){
+      start="2000-1-1";
+    }
+    if ( end == null||end.equals("")){
+      end="2999-1-1";
+    }
+    System.out.println("圆桌开始日期6"+start);
+    System.out.println("圆桌结束日期"+end);
+    System.out.println("查询关键字"+nkey);
+    model.addAttribute("start",start);
+    model.addAttribute("end",end);
+    model.addAttribute("nkey",nkey);
+    int pagenumn=Integer.parseInt(pagenum);
+    int pagesize=10;
+    return adminService.admindialoglist(start,end,nkey,pagenumn,pagesize,model);
+  }
+
+  //圆桌的批量删除
+  @RequestMapping("/delbhdialog")
+  @ResponseBody
+  public String delbhdialog(String [] ids){
+    for (String id:ids){
+      System.out.println(id.toString());
+    }
+    List<String> idss=new ArrayList<>();
+    Collections.addAll(idss,ids);
+    List<String> idz=new ArrayList<>();
+    List<Integer> idsss=new ArrayList<>();
+    idz.add("");
+    idss.removeAll(idz);
+    for (String x:idss){
+      System.out.println(x.toString());
+    }
+    System.out.println("x");
+    for (String z:idss){
+      int x=Integer.parseInt(z);
+      idsss.add(x);
+    }
+    String flag=adminService.admindelbhdialog(idsss);
+    return flag;
+  }
+  //单个删除圆桌
+  @RequestMapping("/admindeldia")
+  @ResponseBody
+  public String admindeldia(int id){
+    System.out.println("要删除圆桌的id:"+id);
+    int x=dialogDao.deleteDialogById(id);
+    if (x!=0){
+      return "ok";
+    }else{
+      return "bad";
+    }
+  }
+  //去编辑圆桌
+  @RequestMapping("/toadmineditdia")
+  public String toadmineditdia(int id,Model model){
+    Dialog dialog=new Dialog();
+    dialog=dialogDao.findById(id);
+    model.addAttribute("dialogedit",dialog);
+    return "admin-editdialog";
+  }
+  //编辑圆桌
+  @RequestMapping("/admineditdialog")
+  public String admineditdia(@RequestParam(value = "title") String title,@RequestParam(value="content",required = false) String content,@RequestParam(value="id") int id,@RequestParam(value = "image",required = false) MultipartFile file,Model model){
+    Dialog dialog=dialogDao.findById(id);
+    Date date=new Date();
+    SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
+    String nowdate=sdf.format(date);
+    System.out.println(nowdate);
+    String filename=MD5Util.encode(nowdate+"")+file.getOriginalFilename();
+    System.out.println("这这");
+    String filePath= ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/dialogimage/";
+    File dest=new File(filePath + filename);
+    String imagename;
+    try {
+      if (file.getOriginalFilename()==null||file.getOriginalFilename().equals("")){
+        imagename=dialog.getImage();
+      }else {
+        file.transferTo(dest);
+        imagename=filename;
+      }
+      return adminService.admineditdia(id,title,content,imagename,model);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return adminService.admineditdia(id,title,content,dialog.getImage(),model);
+  }
+
+  //启用圆桌
+  @RequestMapping("/admindialogon")
+  @ResponseBody
+  public String admindialogon(int id){
+    int x=dialogDao.updateDialogon(1,id);
+    if (x!=0){
+      return "ok";
+    }else
+    {
+      return "bad";
+    }
+  }
+
+  //关闭圆桌
+  @RequestMapping("/admindialogoff")
+  @ResponseBody
+  public String admindialogoff(int id){
+    int x=dialogDao.updateDialogoff(0,id);
+    if (x!=0){
+      return "ok";
+
+    }else
+    {
+      return "bad";
+    }
+  }
+  //显示动态的主要内容
+  @RequestMapping("/toshowshare")
+  public String toshowshare(int id,Model model){
+     return adminService.toshowshare(id,model);
+  }
+
+  //管理员删除单一动态
+  @RequestMapping("/admindelshare")
+  @ResponseBody
+  public String admindelshare(int id){
+    System.out.println("id:"+id);
+    int x=shareDao.deleteshare(id);
+    if (x!=0){
+      return "ok";
+    }else
+    {
+      return "bad";
+    }
+  }
+
+  //前往前台页面
+  @RequestMapping("/touser")
+  public String touser(){
+    return "sign-in";
   }
 }

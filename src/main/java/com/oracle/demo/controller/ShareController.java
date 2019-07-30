@@ -16,9 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ClassUtils;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -85,8 +83,6 @@ public class ShareController {
         //model.addAttribute("sharePictureList",sharePictureList);
         return "index::shareSpace";
     }
-
-
     @RequestMapping("sendshare")
     public String sendshare(@ModelAttribute Share share,@RequestParam("shareimg") MultipartFile[] file,HttpServletResponse response,
                             SharePicture picture) throws IOException
@@ -106,21 +102,22 @@ public class ShareController {
                 System.out.println("文件路径"+i+":"+file[i].getOriginalFilename());
                 System.out.println("文件的input："+i+":"+file[i].getInputStream());
                 String fileName1=file[i].getOriginalFilename();
-                Thumbnails.of(file[i].getInputStream()).scale(0.4).toFile(fileName1);
+                //Thumbnails.of(file[i].getInputStream()).scale(0.4).toFile(fileName1);
                 String fileName= MD5Util.encode(share.getId()+"")+fileName1;
                 System.out.println("加密路径："+fileName);
                 //相对地址
                 String filePath= ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/images/";
                 //Thumbnails.of(fileName).scale(0.4).toFile(fileName);
                 File dest=new File(filePath + fileName);
-               // try{
+                try{
+                   // file[i].transferTo(dest);
                     Thumbnails.of(file[i].getInputStream()).scale(0.5f).outputQuality(0.25f).toFile(dest);
-            //    }catch (IOException e){
-                    file[i].transferTo(dest);
+                }catch (IOException e){
+                    //file[i].transferTo(dest);
                     //picture.setImg(fileName);//文件名保存到实体类对应属性上
                     //picture.setShareId(share.getId());
-
-        //       }
+                    e.printStackTrace();
+               }
                //catch (IOException e1){
 //                    e1.printStackTrace();
 //                }

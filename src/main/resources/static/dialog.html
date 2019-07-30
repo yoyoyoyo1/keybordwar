@@ -805,7 +805,7 @@
                     }
                     console.log(res.data,123)
                     localStorage.setItem("people", JSON.stringify(people));
-                    this.ws = new WS(`wss://192.168.43.238:8080/dialog/${own.id}/${dialogId}`)
+                    this.ws = new WS(`wss://127.0.0.1:8080/dialog/${own.id}/${dialogId}`)
                     //获取历史信息
                     this.moreMessage();
                 })

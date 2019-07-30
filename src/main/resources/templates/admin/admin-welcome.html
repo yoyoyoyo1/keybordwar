@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8">
+        <title>欢迎页面-X-admin2.0</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="stylesheet" href="/css/font.css">
+        <link rel="stylesheet" href="/css/xadmin.css">
+    </head>
+    <script language="JavaScript">
+        function startTime()
+        {
+            var today=new Date();//定义日期对象
+            var yyyy = today.getFullYear();//通过日期对象的getFullYear()方法返回年
+            var MM = today.getMonth()+1;//通过日期对象的getMonth()方法返回年
+            var dd = today.getDate();//通过日期对象的getDate()方法返回年
+            var hh=today.getHours();//通过日期对象的getHours方法返回小时
+            var mm=today.getMinutes();//通过日期对象的getMinutes方法返回分钟
+            var ss=today.getSeconds();//通过日期对象的getSeconds方法返回秒
+            // 如果分钟或小时的值小于10，则在其值前加0，比如如果时间是下午3点20分9秒的话，则显示15：20：09
+            MM=checkTime(MM);
+            dd=checkTime(dd);
+            mm=checkTime(mm);
+            ss=checkTime(ss);
+            var day; //用于保存星期（getDay()方法得到星期编号）
+            if(today.getDay()==0)   day   =   "星期日 "
+            if(today.getDay()==1)   day   =   "星期一 "
+            if(today.getDay()==2)   day   =   "星期二 "
+            if(today.getDay()==3)   day   =   "星期三 "
+            if(today.getDay()==4)   day   =   "星期四 "
+            if(today.getDay()==5)   day   =   "星期五 "
+            if(today.getDay()==6)   day   =   "星期六 "
+            document.getElementById('nowDateTimeSpan').innerHTML=yyyy+"-"+MM +"-"+ dd +" " + hh+":"+mm+":"+ss+"   " + day;
+            setTimeout('startTime()',1000);//每一秒中重新加载startTime()方法
+        }
+
+        function checkTime(i)
+        {
+            if (i<10){
+                i="0" + i;
+            }
+            return i;
+        }
+    </script>
+    <body onload="startTime()">
+    <div class="x-body layui-anim layui-anim-up">
+        <blockquote class="layui-elem-quote">欢迎管理员：
+            <span class="x-red" th:text="${session.admining.getAccount()}"></span>
+            当前时间：<span id="nowDateTimeSpan"></span>
+        </blockquote>
+        <fieldset class="layui-elem-field">
+            <legend>数据统计</legend>
+            <div class="layui-field-box">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body">
+                            <div class="layui-carousel x-admin-carousel x-admin-backlog" lay-anim="" lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 90px;">
+                                <div carousel-item="">
+                                    <ul class="layui-row layui-col-space10 layui-this">
+                                        <li class="layui-col-xs2">
+                                            <a href="javascript:;" class="x-admin-backlog-body">
+                                                <h3>动态数</h3>
+                                                <p>
+                                                    <cite><span th:text="${session.sharenum}"></span></cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs2">
+                                            <a href="javascript:;" class="x-admin-backlog-body">
+                                                <h3>用户数</h3>
+                                                <p>
+                                                    <cite ><span th:text="${session.usernum}"></span></cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs2">
+                                            <a href="javascript:;" class="x-admin-backlog-body">
+                                                <h3>圆桌数</h3>
+                                                <p>
+                                                    <cite><span th:text="${session.dialognum}"></span> </cite></p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="layui-elem-field">
+            <legend>系统通知</legend>
+            <div class="layui-field-box">
+                <table class="layui-table" lay-skin="line">
+                    <tbody>
+
+                        <tr>
+                            <td >
+                                没有通知！！！
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+        <fieldset class="layui-elem-field">
+            <legend>开发团队</legend>
+            <div class="layui-field-box">
+                <table class="layui-table">
+                    <tbody>
+                        <tr>
+                            <th>版权所有</th>
+                            <td>键盘党
+                        </tr>
+                        <tr>
+                            <th>开发者</th>
+                            <td>kingofmouth</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+    </div>
+    
+    </body>
+
+</html>

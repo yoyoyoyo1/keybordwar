@@ -1,11 +1,10 @@
 package com.oracle.demo.controller;
 
-import com.oracle.demo.entity.Follow;
-import com.oracle.demo.entity.Share;
-import com.oracle.demo.entity.ShareInfo;
-import com.oracle.demo.entity.User;
+import com.alibaba.fastjson.JSON;
+import com.oracle.demo.entity.*;
 import com.oracle.demo.respository.LikeDao;
 import com.oracle.demo.respository.ShareInfoDao;
+import com.oracle.demo.respository.SharePictureDao;
 import com.oracle.demo.respository.UserDao;
 import com.oracle.demo.service.FollowService;
 import com.oracle.demo.service.ShareService;
@@ -44,6 +43,9 @@ public class UserController {
     private ShareService shareService;
     @Autowired
     private LikeDao likeDao;
+    List<Integer> following=null;
+    @Autowired
+    private SharePictureDao sharePictureDao;
     @RequestMapping("userlogin")
     @ResponseBody
     public String userlogin(String email, String pass, HttpSession httpSession)
@@ -98,17 +100,35 @@ public class UserController {
         }
         model.addAttribute("shareList",shareList);
         List<Integer> followme=followService.followMeList(userId);
+        List<SharePicture> simg=sharePictureDao.findimg();
+        model.addAttribute("shareplist",simg);
         if(followme.size()!=0)
         {
             model.addAttribute("followme",userService.followMeList(followme));
         }else {
         model.addAttribute("followme",null);}
-        List<Integer> following=followService.followingList(userId);
+        following=followService.followingList(userId);
         if(following.size()!=0)
         {
             model.addAttribute("following",userService.followMeList(following));
+            List<ShareInfo> shareList2=shareService.findOneFollowing(following);
+            for (int i=0;i<shareList2.size();i++){
+                if(likeDao.findLike(shareList2.get(i).getId(),userId)==null)
+                {
+                    shareList2.get(i).setLikeInfo(0);
+                }else {
+                    shareList2.get(i).setLikeInfo(1);
+                }
+
+            }
+            model.addAttribute("shareList2",shareList2);
+            int page2=shareService.getOneFollowingShareNum(following);
+            page2=page2/5+1;//获得动态页数
+            model.addAttribute("page2",page2);
         }else {
-        model.addAttribute("following",null);}
+        model.addAttribute("following",null);
+        model.addAttribute("shareList2",null);
+        model.addAttribute("page2",0);}
         Follow follow=new Follow();
         follow.setFollowering(followService.showFollowing(userId));
         follow.setFollower(followService.showFollower(userId));
@@ -117,6 +137,7 @@ public class UserController {
         int page=shareService.getOneShareNum(userId);
         page=page/5+1;//获得动态页数
         model.addAttribute("page",page);
+
         return "my-profile-feed";
     }
     @RequestMapping("mypage")
@@ -136,6 +157,26 @@ public class UserController {
         model.addAttribute("shareList",shareList);
         //model.addAttribute("sharePictureList",sharePictureList);
         return "my-profile-feed::shareSpace";
+    }
+    @RequestMapping("mypagefollowing")
+    public String mypagefollowing(Model model,int page, HttpSession session)
+    {
+        System.out.println(page+"-------------------");
+        System.out.println(following+"aaaaaaaaaaaaa");
+        User user=(User)session.getAttribute("user");
+        int userid=user.getId();
+        List<ShareInfo> shareList=shareService.findShareByFollowingPage(following,page);
+        for (int i=0;i<shareList.size();i++){
+            if(likeDao.findLike(shareList.get(i).getId(),userid)==null)
+            {
+                shareList.get(i).setLikeInfo(0);
+            }else {
+                shareList.get(i).setLikeInfo(1);
+            }
+        }
+        model.addAttribute("shareList2",shareList);
+        //model.addAttribute("sharePictureList",sharePictureList);
+        return "my-profile-feed::shareSpace2";
     }
     @RequestMapping("otherpage")
     public String otherpage(Model model,int page,int id)

@@ -39,7 +39,6 @@
           <input type="hidden" name="id" th:value="${id}">
           <input class="layui-input test-item" autocomplete="off" placeholder="开始日" name="start" id="start1">
           <input class="layui-input test-item" autocomplete="off" placeholder="截止日" name="end" id="end1">
-          <input type="text" name="username"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>
@@ -54,13 +53,11 @@
               <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
             </th>
             <th>ID</th>
-            <th>用户id</th>
             <th>点赞数</th>
             <th>评论数</th>
             <th>转发数</th>
             <th>创建时间</th>
             <th>修改时间</th>
-            <th>查看内容</th>
             <th>操作</th></tr>
         </thead>
         <tbody>
@@ -69,24 +66,16 @@
               <div class="layui-unselect layui-form-checkbox" lay-skin="primary" th:data-id="@{${share.id}}"><i class="layui-icon">&#xe605;</i></div>
             </td>
             <td th:text="${share.id}"></td>
-            <td th:text="${share.userId}"></td>
             <td th:text="${share.likes}"></td>
             <td th:text="${share.comments}"></td>
             <td th:text="${share.forwards}"></td>
             <td th:text="${share.createdAt}"></td>
             <td th:text="${share.updatedAt}"></td>
-            <td><a th:onclick="x_admin_show('动态内容','/adminshowuserdt?id=[[${share.id}]]',600,600)" title="查看内容" href="javascript:;">查看内容</a></td>
             <td class="td-manage">
-              <a onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">
-                <i class="layui-icon">&#xe601;</i>
+              <a th:onclick="x_admin_show('动态内容','/toshowshare?id=[[${share.id}]]',600,400)" href="javascript:;"  title="动态内容">
+                <i class="layui-icon">&#xe66f;</i>
               </a>
-              <a title="编辑"  onclick="x_admin_show('编辑','member-edit.html',600,400)" href="javascript:;">
-                <i class="layui-icon">&#xe642;</i>
-              </a>
-              <a onclick="x_admin_show('修改密码','member-password.html',600,400)" title="修改密码" href="javascript:;">
-                <i class="layui-icon">&#xe631;</i>
-              </a>
-              <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
+              <a title="删除" th:onclick="member_del(this,'[[${share.id}]]')" href="javascript:;">
                 <i class="layui-icon">&#xe640;</i>
               </a>
             </td>
@@ -188,9 +177,21 @@
       /*用户-删除*/
       function member_del(obj,id){
           layer.confirm('确认要删除吗？',function(index){
-              //发异步删除数据
-              $(obj).parents("tr").remove();
-              layer.msg('已删除!',{icon:1,time:1000});
+              $.ajax({
+                  type:"POST",
+                  url:"/admindelshare",
+                  data: {"id":id},
+                  traditional:true,
+                  success:function (res) {
+                      if (res  == "ok"){
+                          $(obj).parents("tr").remove();
+                          layer.msg('已删除!',{icon:1,time:1000});
+                      }
+                      else{
+                          layer.msg('删除成功',{icon: 5,time:1000});
+                      }
+                  }
+              })
           });
       }
 

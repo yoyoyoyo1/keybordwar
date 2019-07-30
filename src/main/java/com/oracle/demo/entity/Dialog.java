@@ -20,6 +20,7 @@ public class Dialog {
     private int active;
     @Column(columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP" )
     private Date createdAt;
+
     public Dialog(){}
 
     public Dialog(int id, String title, String content,String image) {

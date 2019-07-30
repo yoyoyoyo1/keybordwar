@@ -35,16 +35,16 @@
     </div>
     <div class="x-body">
       <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so">
-          <input class="layui-input" autocomplete="off" placeholder="开始日" name="start1" id="start">
+        <form class="layui-form layui-col-md12 x-so" th:action="@{/toallshare}" method="post">
+          <input class="layui-input" autocomplete="off" placeholder="开始日" name="start" id="start">
           <input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">
+          <input type="text" name="nkey"  id="nkname"  placeholder="请输入用户昵称" autocomplete="off" class="layui-input">
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>
       <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('添加用户','./member-add.html',600,400)"><i class="layui-icon"></i>添加</button>
-        <span class="x-right" style="line-height:40px">共有数据：88 条</span>
+        <span class="x-right" style="line-height:40px" th:text="'共有数据：'+${totalpagenum}+'条'"></span>
       </xblock>
       <table class="layui-table">
         <thead>
@@ -59,32 +59,25 @@
             <th>评论数</th>
             <th>转发数</th>
             <th>创建时间</th>
-
             <th>操作</th></tr>
         </thead>
         <tbody>
-          <tr th:each="share:${shareinfo}">
+          <tr th:each="share:${usershare}">
             <td>
-              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" th:data-id="@{${share.id}}"><i class="layui-icon">&#xe605;</i></div>
             </td>
             <td th:text="${share.id}"></td>
             <td th:text="${share.userId}"></td>
-            <td th:text="${share.nickname}"></td>
+            <td th:text="${share.user.nickname}"></td>
             <td th:text="${share.likes}"></td>
             <td th:text="${share.comments}"></td>
             <td th:text="${share.forwards}"></td>
             <td th:text="${share.createdAt}"></td>
             <td class="td-manage">
-              <a onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">
-                <i class="layui-icon">&#xe601;</i>
+              <a th:onclick="x_admin_show('动态内容','/toshowshare?id=[[${share.id}]]',600,400)" href="javascript:;"  title="动态内容">
+                <i class="layui-icon">&#xe66f;</i>
               </a>
-              <a title="编辑"  onclick="x_admin_show('编辑','member-edit.html',600,400)" href="javascript:;">
-                <i class="layui-icon">&#xe642;</i>
-              </a>
-              <a onclick="x_admin_show('修改密码','member-password.html',600,400)" title="修改密码" href="javascript:;">
-                <i class="layui-icon">&#xe631;</i>
-              </a>
-              <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
+              <a title="删除" th:onclick="member_del(this,'[[${share.id}]]')" href="javascript:;">
                 <i class="layui-icon">&#xe640;</i>
               </a>
             </td>
@@ -115,6 +108,47 @@
           elem: '#end' //指定元素
         });
       });
+      //判断用户是否从首页跳到首页
+      function checkpprev() {
+          var page=[[${pagenum}]];
+          var page1=(parseInt(page));
+          if (page1==0){
+              layer.msg('这已经是第一页了',{icon:5,time:1000});
+              return;
+          }
+          window.location.href="/toallshare?pagenum=0&start="+'[[${start}]]'+"&end="+'[[${end}]]'+"&nkey="+'[[${key}]]';
+      }
+      //判断用户是否从上一页跳到首页
+      function checkprev() {
+          var page=[[${pagenum}]];
+          var page1=(parseInt(page));
+          if (page1==0){
+              layer.msg('这已经是第一页了',{icon:5,time:1000});
+              return;
+          }
+          window.location.href="/toallshare?pagenum="+[[${pagenum-1}]]+"&start="+'[[${start}]]'+"&end="+'[[${end}]]'+"&nkey="+'[[${key}]]';
+      }
+      //判断用户是否从下一页跳到尾页
+      function checknext() {
+          var page=[[${pagenum}]];
+          var tpage=[[${totalpages}]];
+          if(page==tpage){
+              layer.msg('这已经是最后一页了',{icon:5,time:1000});
+              return;
+          }
+          window.location.href="/toallshare?pagenum="+[[${pagenum+1}]]+"&start="+'[[${start}]]'+"&end="+'[[${end}]]'+"&nkey="+'[[${key}]]';
+
+      }
+      //判断用户是否从尾页跳到尾页
+      function checknnext() {
+          var page=[[${pagenum}]];
+          var tpage=[[${totalpages}]];
+          if(page==tpage){
+              layer.msg('这已经是最后一页了',{icon:5,time:1000});
+              return;
+          }
+          window.location.href="/toallshare?pagenum="+[[${totalpages}]]+"&start="+'[[${start}]]'+"&end="+'[[${end}]]'+"&nkey="+'[[${key}]]';
+      }
 
        /*用户-停用*/
       function member_stop(obj,id){
@@ -139,27 +173,89 @@
               
           });
       }
+      $("#nkname").autocomplete({
+          source:function (requset,response) {
+              $.ajax({
+                  async:false,
+                  type:"post",
+                  url:"getnkname?nkey="+$("#nkname").val(),
+                  data:{
+                      localName : $("#nkname").val()
+                  },
+                  success:function (data) {
+                      console.log(data),
+                          response(
+                              $.map(data,function (item) {
+                                  return {
+                                      label:item,
+                                      value:item,
+                                  }
+                              })
+                          )
+                  }
+              });
+          },
+          minLength: 1,
+          max:5,
+
+      })
 
       /*用户-删除*/
       function member_del(obj,id){
           layer.confirm('确认要删除吗？',function(index){
-              //发异步删除数据
-              $(obj).parents("tr").remove();
-              layer.msg('已删除!',{icon:1,time:1000});
+              $.ajax({
+                  type:"POST",
+                  url:"/admindelshare",
+                  data: {"id":id},
+                  traditional:true,
+                  success:function (res) {
+                      if (res  == "ok"){
+                          $(obj).parents("tr").remove();
+                          layer.msg('已删除!',{icon:1,time:1000});
+                      }
+                      else{
+                          layer.msg('删除成功',{icon: 5,time:1000});
+                      }
+                  }
+              })
           });
       }
 
 
-
       function delAll (argument) {
 
-        var data = tableCheck.getData();
-  
-        layer.confirm('确认要删除吗？'+data,function(index){
-            //捉到所有被选中的，发异步进行删除
-            layer.msg('删除成功', {icon: 1});
-            $(".layui-form-checked").not('.header').parents('tr').remove();
-        });
+          var data = tableCheck.getData();
+          if (data == ""){
+              layer.msg('至少选择一个把',{icom:2});
+              return;
+          }
+
+          layer.confirm('确认要删除吗？'+'动态id为:'+data,function(index){
+              //捉到所有被选中的，发异步进行删除
+              var ids="";
+              if (data.length>0){
+                  for (var i=0;i<data.length;i++){
+                      ids += data[i]+",";
+                  }
+              }
+              $.ajax({
+                  type:"POST",
+                  url:"/delbhshare",
+                  data: {"ids":ids},
+                  traditional:true,
+                  success:function (res) {
+                      if (res=="ok" && res !=null){
+                          layer.msg('删除成功', {icon: 1});
+                          $(".layui-form-checked").not('.header').parents('tr').remove();
+                      }
+                      else{
+                          layer.alert("删除失败");
+                      }
+                  }
+
+              });
+
+          });
       }
     </script>
 
