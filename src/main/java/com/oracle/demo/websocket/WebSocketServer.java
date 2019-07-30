@@ -75,10 +75,7 @@ public class WebSocketServer {
         Map<String, Object> a = BeanToMap.BeanToMap(mess);
         a.put("type",JSON.toJSONString(mess));
         if(sessionMap.get(toId) != null){
-            mess.setWatch(1);
-            a = BeanToMap.BeanToMap(mess);
-            a.put("type",JSON.toJSONString(mess));
-            sendMessage(toId,a);
+            sendMessage(toId,JSON.toJSONString(mess));
         }
         sendMessage(from,JSON.toJSONString(mess));
         messageService.save(mess);

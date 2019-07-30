@@ -12,7 +12,7 @@ class WS{
         this.ws.onmessage = (evt)=> {
             console.log(evt.data)
             let data = JSON.parse(evt.data)
-            console.log(data.type,data,evt.data)
+            console.log(data)
             this[data.type](data)
         };
 
