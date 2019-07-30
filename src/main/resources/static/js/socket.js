@@ -12,7 +12,7 @@ class WS{
         this.ws.onmessage = (evt)=> {
             console.log(evt.data)
             let data = JSON.parse(evt.data)
-            console.log(data)
+            console.log(data.type,data,evt.data)
             this[data.type](data)
         };
 
@@ -32,10 +32,13 @@ class WS{
         roomMessage.message.push(data)
     }
     image(data){
-
+        roomMessage.message.push(data)
+    }
+    audio(data){
+        roomMessage.message.push(data)
     }
     send(message) {
-        ws.send(message)
+        this.ws.send(JSON.stringify(message))
     }
 
 }

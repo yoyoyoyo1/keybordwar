@@ -42,11 +42,11 @@ public class MessageController {
 
         return "redirect:tomessage";//需要跳转至动态首页控制器
     }
-    @RequestMapping("/message")
+    @GetMapping("/history/message")
+    @ResponseBody
     public Object message(Integer formId,Integer toId)
     {
-        messageService.getchatMessageById(formId,toId);
-        return "messages";
+        return messageService.getchatMessageById(formId,toId);
     }
     @GetMapping("/user/latelyTalk")
     @ResponseBody

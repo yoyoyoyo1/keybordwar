@@ -69,17 +69,18 @@ public class WebSocketServer {
         mess.setCreateAt(new Date());
         mess.setToId(toId);
         mess.setFormId(from);
-        mess.setContent((String) messageMap.get("str"));
+        mess.setContent((String) messageMap.get("content"));
+        mess.setType((String) messageMap.get("type"));
         mess.setWatch(0);
         Map<String, Object> a = BeanToMap.BeanToMap(mess);
-        a.put("type","text");
+        a.put("type",JSON.toJSONString(mess));
         if(sessionMap.get(toId) != null){
             mess.setWatch(1);
             a = BeanToMap.BeanToMap(mess);
-            a.put("type","text");
+            a.put("type",JSON.toJSONString(mess));
             sendMessage(toId,a);
         }
-        sendMessage(from,a);
+        sendMessage(from,JSON.toJSONString(mess));
         messageService.save(mess);
     }
 
@@ -97,7 +98,7 @@ public class WebSocketServer {
      * 实现服务器主动推送
      */
     public void sendMessage(Integer toId,Object message) throws IOException{
-        sessionMap.get(toId).getBasicRemote().sendText(JSON.toJSONString(message));
+        sessionMap.get(toId).getBasicRemote().sendText(message.toString());
 
     }
 
